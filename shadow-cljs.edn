@@ -1,0 +1,18 @@
+{:source-paths ["src"]
+
+ :dependencies
+ [[reagent "0.8.1"]
+  [proto-repl "0.3.1"]]
+
+ :nrepl {:port 3333
+         :middleware []}
+
+ :builds
+ {:example  {:target     :browser
+             :output-dir "public/js"
+             :asset-path "js"
+             :modules {:main {:entries [example.core]}}
+             :devtools {:before-load example.core/stop
+                        :after-load example.core/start
+                        :http-root "public"
+                        :http-port 8020}}}}
