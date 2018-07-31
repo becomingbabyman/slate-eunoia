@@ -4,7 +4,7 @@ goog.require('reagent.core');
 goog.require('lib.plugins.helpers.auto_replace');
 goog.require('lib.plugins.helpers.hotkey');
 lib.plugins.features.bold.strip_auto_replace_triggers = (function lib$plugins$features$bold$strip_auto_replace_triggers(matched_text){
-return cljs.core.subs.cljs$core$IFn$_invoke$arity$3(lib.plugins.features.bold.text,(2),(cljs.core.count(matched_text) - (1)));
+return cljs.core.subs.cljs$core$IFn$_invoke$arity$3(matched_text,(2),(cljs.core.count(matched_text) - (1)));
 });
 lib.plugins.features.bold.transform = (function lib$plugins$features$bold$transform(change,event,matches){
 if(cljs.core.truth_(matches)){
@@ -12,9 +12,7 @@ var text = cljs.core.first(matches.before);
 var clean_text = lib.plugins.features.bold.strip_auto_replace_triggers(text);
 return change.insertText(clean_text,cljs.core.clj__GT_js(new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, ["bold"], null)));
 } else {
-change.toggleMark("bold");
-
-return change.collapseToEnd();
+return change.toggleMark("bold");
 }
 });
 lib.plugins.features.bold.render_mark = (function lib$plugins$features$bold$render_mark(props){
@@ -28,8 +26,8 @@ return null;
  * Adds bold support to editor
  */
 lib.plugins.features.bold.bold = (function lib$plugins$features$bold$bold(var_args){
-var G__26620 = arguments.length;
-switch (G__26620) {
+var G__26650 = arguments.length;
+switch (G__26650) {
 case 1:
 return lib.plugins.features.bold.bold.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
 
