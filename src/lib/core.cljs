@@ -3,7 +3,8 @@
             [utils.slate :as slate]
             [lib.plugins.features.blockquote :refer [blockquote]]
             [lib.plugins.collapse-on-escape :refer [collapse-on-escape]]
-            [lib.plugins.trailing-block :refer [trailing-block]]))
+            [lib.plugins.trailing-block :refer [trailing-block]]
+            [lib.plugins.backspace :refer [backspace]]))
 
 (def editor-style {:border "1px solid #ddd" :padding 10 :margin 20})
 
@@ -31,6 +32,7 @@
 
 (def plugins (clj->js
               (concat
+               [(backspace)]
                (:plugins (blockquote))
                [(collapse-on-escape)
                 (trailing-block)])))
