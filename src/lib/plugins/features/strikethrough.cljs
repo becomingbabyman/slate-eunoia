@@ -28,10 +28,6 @@
        {:trigger #"\~"
         :before #"(\~\~.+\~)"
         :transform transform})
-      (auto-replace
-       {:trigger "-"
-        :before #"(--.+-)"
-        :transform transform})
       (hotkey
        {:key "cmd+opt+s"
         :transform transform})

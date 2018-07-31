@@ -25,10 +25,6 @@
    {:plugins
     (clj->js
      [(auto-replace
-       {:trigger #"\*"
-        :before #"(\*.+)"
-        :transform transform})
-      (auto-replace
        {:trigger #"\_"
         :before #"(\_.+)"
         :transform transform})

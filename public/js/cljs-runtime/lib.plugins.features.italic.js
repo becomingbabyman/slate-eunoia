@@ -26,8 +26,8 @@ return null;
  * Adds italic support to editor
  */
 lib.plugins.features.italic.italic = (function lib$plugins$features$italic$italic(var_args){
-var G__26997 = arguments.length;
-switch (G__26997) {
+var G__27021 = arguments.length;
+switch (G__27021) {
 case 1:
 return lib.plugins.features.italic.italic.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
 
@@ -43,7 +43,7 @@ throw (new Error(["Invalid arity: ",cljs.core.str.cljs$core$IFn$_invoke$arity$1(
 });
 
 lib.plugins.features.italic.italic.cljs$core$IFn$_invoke$arity$1 = (function (options){
-return new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"plugins","plugins",1900073717),cljs.core.clj__GT_js(new cljs.core.PersistentVector(null, 4, 5, cljs.core.PersistentVector.EMPTY_NODE, [lib.plugins.helpers.auto_replace.auto_replace(new cljs.core.PersistentArrayMap(null, 3, [new cljs.core.Keyword(null,"trigger","trigger",103466139),/\*/,new cljs.core.Keyword(null,"before","before",-1633692388),/(\*.+)/,new cljs.core.Keyword(null,"transform","transform",1381301764),lib.plugins.features.italic.transform], null)),lib.plugins.helpers.auto_replace.auto_replace(new cljs.core.PersistentArrayMap(null, 3, [new cljs.core.Keyword(null,"trigger","trigger",103466139),/\_/,new cljs.core.Keyword(null,"before","before",-1633692388),/(\_.+)/,new cljs.core.Keyword(null,"transform","transform",1381301764),lib.plugins.features.italic.transform], null)),lib.plugins.helpers.hotkey.hotkey(new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null,"key","key",-1516042587),"cmd+i",new cljs.core.Keyword(null,"transform","transform",1381301764),lib.plugins.features.italic.transform], null)),new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"renderMark","renderMark",742196658),lib.plugins.features.italic.render_mark], null)], null))], null);
+return new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"plugins","plugins",1900073717),cljs.core.clj__GT_js(new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [lib.plugins.helpers.auto_replace.auto_replace(new cljs.core.PersistentArrayMap(null, 3, [new cljs.core.Keyword(null,"trigger","trigger",103466139),/\_/,new cljs.core.Keyword(null,"before","before",-1633692388),/(\_.+)/,new cljs.core.Keyword(null,"transform","transform",1381301764),lib.plugins.features.italic.transform], null)),lib.plugins.helpers.hotkey.hotkey(new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null,"key","key",-1516042587),"cmd+i",new cljs.core.Keyword(null,"transform","transform",1381301764),lib.plugins.features.italic.transform], null)),new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"renderMark","renderMark",742196658),lib.plugins.features.italic.render_mark], null)], null))], null);
 });
 
 lib.plugins.features.italic.italic.cljs$core$IFn$_invoke$arity$0 = (function (){

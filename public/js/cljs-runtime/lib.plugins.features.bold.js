@@ -26,8 +26,8 @@ return null;
  * Adds bold support to editor
  */
 lib.plugins.features.bold.bold = (function lib$plugins$features$bold$bold(var_args){
-var G__26991 = arguments.length;
-switch (G__26991) {
+var G__27027 = arguments.length;
+switch (G__27027) {
 case 1:
 return lib.plugins.features.bold.bold.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
 
@@ -43,7 +43,7 @@ throw (new Error(["Invalid arity: ",cljs.core.str.cljs$core$IFn$_invoke$arity$1(
 });
 
 lib.plugins.features.bold.bold.cljs$core$IFn$_invoke$arity$1 = (function (options){
-return new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"plugins","plugins",1900073717),cljs.core.clj__GT_js(new cljs.core.PersistentVector(null, 4, 5, cljs.core.PersistentVector.EMPTY_NODE, [lib.plugins.helpers.auto_replace.auto_replace(new cljs.core.PersistentArrayMap(null, 3, [new cljs.core.Keyword(null,"trigger","trigger",103466139),/\*/,new cljs.core.Keyword(null,"before","before",-1633692388),/(\*\*.+\*)/,new cljs.core.Keyword(null,"transform","transform",1381301764),lib.plugins.features.bold.transform], null)),lib.plugins.helpers.auto_replace.auto_replace(new cljs.core.PersistentArrayMap(null, 3, [new cljs.core.Keyword(null,"trigger","trigger",103466139),/\_/,new cljs.core.Keyword(null,"before","before",-1633692388),/(\_\_.+\_)/,new cljs.core.Keyword(null,"transform","transform",1381301764),lib.plugins.features.bold.transform], null)),lib.plugins.helpers.hotkey.hotkey(new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null,"key","key",-1516042587),"cmd+b",new cljs.core.Keyword(null,"transform","transform",1381301764),lib.plugins.features.bold.transform], null)),new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"renderMark","renderMark",742196658),lib.plugins.features.bold.render_mark], null)], null))], null);
+return new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"plugins","plugins",1900073717),cljs.core.clj__GT_js(new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [lib.plugins.helpers.auto_replace.auto_replace(new cljs.core.PersistentArrayMap(null, 3, [new cljs.core.Keyword(null,"trigger","trigger",103466139),/\*/,new cljs.core.Keyword(null,"before","before",-1633692388),/(\*\*.+\*)/,new cljs.core.Keyword(null,"transform","transform",1381301764),lib.plugins.features.bold.transform], null)),lib.plugins.helpers.hotkey.hotkey(new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null,"key","key",-1516042587),"cmd+b",new cljs.core.Keyword(null,"transform","transform",1381301764),lib.plugins.features.bold.transform], null)),new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"renderMark","renderMark",742196658),lib.plugins.features.bold.render_mark], null)], null))], null);
 });
 
 lib.plugins.features.bold.bold.cljs$core$IFn$_invoke$arity$0 = (function (){
