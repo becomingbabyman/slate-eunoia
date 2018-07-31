@@ -4,8 +4,8 @@
             [lib.plugins.helpers.hotkey :refer [hotkey]]))
 
 (defn transform [change]
-  (.setBlock change
-             (clj->js {:type "blockquote"})))
+  (.setBlocks change
+              (clj->js {:type "blockquote"})))
 
 (defn render-node [props]
   (when (= "blockquote" props.node.type)
