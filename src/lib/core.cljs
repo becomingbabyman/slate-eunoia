@@ -2,6 +2,7 @@
   (:require [reagent.core :as r]
             [utils.slate :as slate]
             [lib.plugins.features.blockquote :refer [blockquote]]
+            [lib.plugins.features.bold :refer [bold]]
             [lib.plugins.collapse-on-escape :refer [collapse-on-escape]]
             [lib.plugins.trailing-block :refer [trailing-block]]
             [lib.plugins.backspace :refer [backspace]]))
@@ -33,6 +34,7 @@
 (def plugins (clj->js
               (concat
                [(backspace)]
+               (:plugins (bold))
                (:plugins (blockquote))
                [(collapse-on-escape)
                 (trailing-block)])))
