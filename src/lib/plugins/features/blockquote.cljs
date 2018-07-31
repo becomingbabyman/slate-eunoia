@@ -5,7 +5,9 @@
 
 (defn transform [change]
   (.setBlocks change
-              (clj->js {:type "blockquote"})))
+              (clj->js (if (= "blockquote" change.value.anchorBlock.type)
+                         {:type "paragraph"}
+                         {:type "blockquote"}))))
 
 (defn render-node [props]
   (when (= "blockquote" props.node.type)
