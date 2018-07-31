@@ -26,8 +26,8 @@ return null;
  * Adds italic support to editor
  */
 lib.plugins.features.italic.italic = (function lib$plugins$features$italic$italic(var_args){
-var G__26653 = arguments.length;
-switch (G__26653) {
+var G__26997 = arguments.length;
+switch (G__26997) {
 case 1:
 return lib.plugins.features.italic.italic.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
 

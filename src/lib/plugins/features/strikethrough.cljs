@@ -1,4 +1,4 @@
-(ns lib.plugins.features.bold
+(ns lib.plugins.features.strikethrough
   (:require [reagent.core :as r]
             [lib.plugins.helpers.auto-replace :refer [auto-replace]]
             [lib.plugins.helpers.hotkey :refer [hotkey]]))
@@ -10,31 +10,31 @@
   (if matches
     (let [text (first matches.before)
           clean-text (strip-auto-replace-triggers text)]
-      (.insertText change clean-text (clj->js ["bold"])))
-    (.toggleMark change "bold")))
+      (.insertText change clean-text (clj->js ["strikethrough"])))
+    (.toggleMark change "strikethrough")))
 
 (defn render-mark [props]
-  (when (= "bold" props.mark.type)
-    (r/create-element "b"
+  (when (= "strikethrough" props.mark.type)
+    (r/create-element "del"
                       props.attributes
                       props.children)))
 
-(defn bold
-  "Adds bold support to editor"
+(defn strikethrough
+  "Adds strikethrough support to editor"
   ([options]
    {:plugins
     (clj->js
      [(auto-replace
-       {:trigger #"\*"
-        :before #"(\*\*.+\*)"
+       {:trigger #"\~"
+        :before #"(\~\~.+\~)"
         :transform transform})
       (auto-replace
-       {:trigger #"\_"
-        :before #"(\_\_.+\_)"
+       {:trigger "-"
+        :before #"(--.+-)"
         :transform transform})
       (hotkey
-       {:key "cmd+b"
+       {:key "cmd+opt+s"
         :transform transform})
       {:renderMark render-mark}])})
   ([]
-   (bold {})))
+   (strikethrough {})))

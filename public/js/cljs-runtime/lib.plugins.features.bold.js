@@ -26,8 +26,8 @@ return null;
  * Adds bold support to editor
  */
 lib.plugins.features.bold.bold = (function lib$plugins$features$bold$bold(var_args){
-var G__26650 = arguments.length;
-switch (G__26650) {
+var G__26991 = arguments.length;
+switch (G__26991) {
 case 1:
 return lib.plugins.features.bold.bold.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
 

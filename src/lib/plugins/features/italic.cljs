@@ -8,12 +8,10 @@
 
 (defn transform [change event matches]
   (if matches
-    (do
-      (let [text (first matches.before)
-            clean-text (strip-auto-replace-triggers text)]
-        (.insertText change clean-text (clj->js ["italic"]))))
-    (do
-      (.toggleMark change "italic"))))
+    (let [text (first matches.before)
+          clean-text (strip-auto-replace-triggers text)]
+      (.insertText change clean-text (clj->js ["italic"])))
+    (.toggleMark change "italic")))
 
 (defn render-mark [props]
   (when (= "italic" props.mark.type)

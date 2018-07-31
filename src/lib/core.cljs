@@ -4,6 +4,7 @@
             [lib.plugins.features.blockquote :refer [blockquote]]
             [lib.plugins.features.bold :refer [bold]]
             [lib.plugins.features.italic :refer [italic]]
+            [lib.plugins.features.strikethrough :refer [strikethrough]]
             [lib.plugins.collapse-on-escape :refer [collapse-on-escape]]
             [lib.plugins.trailing-block :refer [trailing-block]]
             [lib.plugins.backspace :refer [backspace]]))
@@ -37,6 +38,7 @@
                [(backspace)]
                (:plugins (bold))
                (:plugins (italic))
+               (:plugins (strikethrough))
                (:plugins (blockquote))
                [(collapse-on-escape)
                 (trailing-block)])))
