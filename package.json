@@ -9,9 +9,11 @@
   "dependencies": {
     "create-react-class": "15.6.3",
     "immutable": "3.8.2",
+    "is-hotkey": "0.1.2",
     "react": "16.4.1",
     "react-dom": "16.4.1",
     "slate": "0.34.6",
-    "slate-react": "0.13.3"
+    "slate-react": "0.13.3",
+    "slate-auto-replace": "0.9.1"
   }
 }

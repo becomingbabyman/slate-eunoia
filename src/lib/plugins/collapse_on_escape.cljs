@@ -1,9 +1,11 @@
 (ns lib.plugins.collapse-on-escape)
 
+; taken from https://github.com/ianstormtaylor/slate-plugins/blob/master/packages/slate-collapse-on-escape/src/index.js
+
 (defn on-key-down [event change]
   (when (and
-          (= event.key "Escape")
-          (not change.value.isCollapsed))
+         (= event.key "Escape")
+         (not change.value.isCollapsed))
     (.collapseToStart change)))
 
 (defn collapse-on-escape

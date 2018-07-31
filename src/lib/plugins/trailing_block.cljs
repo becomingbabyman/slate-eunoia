@@ -1,12 +1,14 @@
 (ns lib.plugins.trailing-block
   (:require ["slate" :as slate]))
 
+; taken from https://github.com/GitbookIO/slate-trailing-block/blob/master/lib/index.js
+
 (def trailing-block-type "paragraph")
 
 (defn make-trailing-block []
   (.create slate/Block
-    (clj->js {:type trailing-block-type
-              :nodes [(.create slate/Text)]})))
+           (clj->js {:type trailing-block-type
+                     :nodes [(.create slate/Text)]})))
 
 (defn trailing-block-inserter [node]
   (let [last-index (.count node.nodes)
@@ -30,10 +32,10 @@
 
 (defn validate-node [node]
   (when (and
-          (document? node)
-          (not (and
-                 (ends-in-trailing-block? node)
-                 (ends-in-empty-block? node))))
+         (document? node)
+         (not (and
+               (ends-in-trailing-block? node)
+               (ends-in-empty-block? node))))
     (trailing-block-inserter node)))
 
 (defn trailing-block

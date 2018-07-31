@@ -7,5 +7,5 @@
 
 ```
 $ npm install
-$ ./s & open http://localhost:8020
+$ ./s
 ```

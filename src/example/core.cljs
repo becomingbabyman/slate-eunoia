@@ -1,5 +1,5 @@
 (ns example.core
-  (:require [reagent.core :as reagent]
+  (:require [reagent.core :as r]
             [lib.core :as lib]))
 
 (defn root-component []
@@ -8,8 +8,8 @@
    [lib/eunoia-editor]])
 
 (defn mount-on-dom []
-  (reagent/render [root-component]
-                  (js/document.getElementById "root")))
+  (r/render [root-component]
+    (js/document.getElementById "root")))
 
 (defn stop []
   (js/console.log "Stopping..."))

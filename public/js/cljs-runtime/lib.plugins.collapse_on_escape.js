@@ -11,8 +11,8 @@ return null;
  * Moves the cursor to the start of the selected text when the escape key is pressed.
  */
 lib.plugins.collapse_on_escape.collapse_on_escape = (function lib$plugins$collapse_on_escape$collapse_on_escape(var_args){
-var G__32795 = arguments.length;
-switch (G__32795) {
+var G__27877 = arguments.length;
+switch (G__27877) {
 case 1:
 return lib.plugins.collapse_on_escape.collapse_on_escape.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
 
