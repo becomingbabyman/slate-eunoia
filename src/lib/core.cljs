@@ -1,6 +1,7 @@
 (ns lib.core
   (:require [reagent.core :as r]
             [utils.slate :as slate]
+            [lib.components.core :as c]
             [lib.plugins.features.header :refer [header]]
             [lib.plugins.features.bold :refer [bold]]
             [lib.plugins.features.italic :refer [italic]]
@@ -10,11 +11,27 @@
             [lib.plugins.trailing-block :refer [trailing-block]]
             [lib.plugins.backspace :refer [backspace]]))
 
-(def editor-style {:border "1px solid #ddd" :padding 10 :margin 20})
-
 (def sample-value-TODO:-rm {:document
                             {:nodes
                              [{:object "block"
+                               :type "header1"
+                               :nodes
+                               [{:object "text"
+                                 :leaves
+                                 [{:text "Header1"}]}]}
+                              {:object "block"
+                               :type "header2"
+                               :nodes
+                               [{:object "text"
+                                 :leaves
+                                 [{:text "Header2"}]}]}
+                              {:object "block"
+                               :type "header3"
+                               :nodes
+                               [{:object "text"
+                                 :leaves
+                                 [{:text "Header3"}]}]}
+                              {:object "block"
                                :type "paragraph"
                                :nodes
                                [{:object "text"
@@ -63,7 +80,7 @@
      :blockquote {:marks [""]}}}))
 
 (defn eunoia-editor []
-  [slate/editor {:style editor-style
+  [slate/editor {:class (c/editor-style)
                  :value @slate-value
                  :plugins plugins
                  :schema schema

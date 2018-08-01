@@ -1,6 +1,7 @@
 (ns lib.plugins.features.header
   (:require [reagent.core :as r]
             [lib.plugins.helpers.auto-replace :refer [auto-replace]]
+            [lib.components.core :as c]
             [lib.plugins.helpers.hotkey :refer [hotkey]]))
 
 (defn transform
@@ -22,11 +23,15 @@
      (transform change n))))
 
 (defn render-node [props]
-  (let [matches (re-matches #"header(1|2|3)" props.node.type)]
-    (when matches
-      (r/create-element (str "h" (last matches))
-                        props.attributes
-                        props.children))))
+  (let [render (fn [h-component]
+                 (apply h-component
+                        (js->clj props.attributes)
+                        props.children))]
+    (case props.node.type
+      "header1" (render c/h1)
+      "header2" (render c/h2)
+      "header3" (render c/h3)
+      nil)))
 
 (defn header
   "Adds header support to editor"
