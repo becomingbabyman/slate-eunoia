@@ -4,8 +4,8 @@ goog.require('reagent.core');
 goog.require('lib.plugins.helpers.auto_replace');
 goog.require('lib.plugins.helpers.hotkey');
 lib.plugins.features.header.transform = (function lib$plugins$features$header$transform(var_args){
-var G__27098 = arguments.length;
-switch (G__27098) {
+var G__27110 = arguments.length;
+switch (G__27110) {
 case 2:
 return lib.plugins.features.header.transform.cljs$core$IFn$_invoke$arity$2((arguments[(0)]),(arguments[(1)]));
 
@@ -25,17 +25,20 @@ throw (new Error(["Invalid arity: ",cljs.core.str.cljs$core$IFn$_invoke$arity$1(
 });
 
 lib.plugins.features.header.transform.cljs$core$IFn$_invoke$arity$2 = (function (change,n){
+
 var type = ["header",cljs.core.str.cljs$core$IFn$_invoke$arity$1(n)].join('');
 return change.setBlocks(cljs.core.clj__GT_js(((cljs.core._EQ_.cljs$core$IFn$_invoke$arity$2(type,change.value.anchorBlock.type))?new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"type","type",1174270348),"paragraph"], null):new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"type","type",1174270348),type], null))));
 });
 
 lib.plugins.features.header.transform.cljs$core$IFn$_invoke$arity$4 = (function (change,event,matches,editor){
+
 var hashes = cljs.core.first(matches.before);
 var n = cljs.core.count(hashes);
 return lib.plugins.features.header.transform.cljs$core$IFn$_invoke$arity$2(change,n);
 });
 
 lib.plugins.features.header.transform.cljs$core$IFn$_invoke$arity$1 = (function (n){
+
 return (function (change){
 return lib.plugins.features.header.transform.cljs$core$IFn$_invoke$arity$2(change,n);
 });
@@ -55,8 +58,8 @@ return null;
  * Adds header support to editor
  */
 lib.plugins.features.header.header = (function lib$plugins$features$header$header(var_args){
-var G__27101 = arguments.length;
-switch (G__27101) {
+var G__27113 = arguments.length;
+switch (G__27113) {
 case 1:
 return lib.plugins.features.header.header.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
 

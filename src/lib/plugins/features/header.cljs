@@ -5,16 +5,19 @@
 
 (defn transform
   ([change n]
+   "Contextually Transfrom between header(1-3) and paragraph"
    (let [type (str "header" n)]
      (.setBlocks change
                  (clj->js (if (= type change.value.anchorBlock.type)
                             {:type "paragraph"}
                             {:type type})))))
   ([change event matches editor]
+   "Handle auto-replace events"
    (let [hashes (first matches.before)
          n (count hashes)]
      (transform change n)))
   ([n]
+   "Functor for generating a change handler with a predefined n level"
    (fn [change]
      (transform change n))))
 
