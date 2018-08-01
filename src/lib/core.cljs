@@ -1,10 +1,11 @@
 (ns lib.core
   (:require [reagent.core :as r]
             [utils.slate :as slate]
-            [lib.plugins.features.blockquote :refer [blockquote]]
+            [lib.plugins.features.header :refer [header]]
             [lib.plugins.features.bold :refer [bold]]
             [lib.plugins.features.italic :refer [italic]]
             [lib.plugins.features.strikethrough :refer [strikethrough]]
+            [lib.plugins.features.blockquote :refer [blockquote]]
             [lib.plugins.collapse-on-escape :refer [collapse-on-escape]]
             [lib.plugins.trailing-block :refer [trailing-block]]
             [lib.plugins.backspace :refer [backspace]]))
@@ -36,6 +37,7 @@
 (def plugins (clj->js
               (concat
                [(backspace)]
+               (:plugins (header))
                (:plugins (bold))
                (:plugins (italic))
                (:plugins (strikethrough))
@@ -49,10 +51,16 @@
     {:nodes
      [{:types
        [:paragraph
+        :header1
+        :header2
+        :header3
         :blockquote]
        :min 1}]}
     :blocks
-    {:blockquote {:marks [""]}}}))
+    {:header1 {:marks [""]}
+     :header2 {:marks [""]}
+     :header3 {:marks [""]}
+     :blockquote {:marks [""]}}}))
 
 (defn eunoia-editor []
   [slate/editor {:style editor-style
