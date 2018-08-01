@@ -9,6 +9,7 @@
 (aset js/window "React" react)
 
 (def transparent "rgba(0,0,0,0)")
+(def pitch-black "#1b2733")
 (def black "#1b2733")
 (def blue "#0070e0")
 (def grey "#637282")
@@ -19,9 +20,22 @@
            {:padding "10px"
             :color black
             :font-family "-apple-system, BlinkMacSystemFont, San Francisco, sans-serif"
+            :font-size "16px"
+            :font-weight "400"
+            :line-height "26px"
             :-webkit-font-smoothing "antialiased"
             :-webkit-print-color-adjust "exact"
             :-webkit-tap-highlight-color transparent})
+
+(defstyled b :b
+           {:font-weight "700"})
+(defstyled i :i
+           {})
+(defstyled del :del
+           {:text-decoration-color pitch-black})
+
+(defstyled a :a
+           {:color blue})
 
 (defstyled h1 :h1
            {:font-size "30px"
@@ -38,8 +52,17 @@
             :margin-top "18px"
             :margin-bottom "6px"})
 (defstyled h3 :h3
-           {:font-size "14px"
+           {:font-size "16px"
             :line-height "22px"
             :font-weight "700"
-            :margin-top "0px"
-            :margin-bottom "0px"})
+            :margin-top "9px"
+            :margin-bottom "3px"
+            :border-bottom (str "1px solid " light-grey)})
+
+(defstyled blockquote :blockquote
+           {:margin "0px"
+            :padding-left "23px"
+            :border-left (str "1px solid " grey)})
+
+(defstyled img :img
+           {})

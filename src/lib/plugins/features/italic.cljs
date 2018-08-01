@@ -1,5 +1,6 @@
 (ns lib.plugins.features.italic
   (:require [reagent.core :as r]
+            [lib.components.core :as c]
             [lib.plugins.helpers.auto-replace :refer [auto-replace]]
             [lib.plugins.helpers.hotkey :refer [hotkey]]))
 
@@ -15,9 +16,9 @@
 
 (defn render-mark [props]
   (when (= "italic" props.mark.type)
-    (r/create-element "i"
-                      props.attributes
-                      props.children)))
+    (c/i
+     (js->clj props.attributes)
+     props.children)))
 
 (defn italic
   "Adds italic support to editor"

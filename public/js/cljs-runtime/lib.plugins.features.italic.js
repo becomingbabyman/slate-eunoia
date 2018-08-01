@@ -1,6 +1,7 @@
 goog.provide('lib.plugins.features.italic');
 goog.require('cljs.core');
 goog.require('reagent.core');
+goog.require('lib.components.core');
 goog.require('lib.plugins.helpers.auto_replace');
 goog.require('lib.plugins.helpers.hotkey');
 lib.plugins.features.italic.strip_auto_replace_triggers = (function lib$plugins$features$italic$strip_auto_replace_triggers(matched_text){
@@ -17,7 +18,9 @@ return change.toggleMark("italic");
 });
 lib.plugins.features.italic.render_mark = (function lib$plugins$features$italic$render_mark(props){
 if(cljs.core._EQ_.cljs$core$IFn$_invoke$arity$2("italic",props.mark.type)){
-return reagent.core.create_element.cljs$core$IFn$_invoke$arity$3("i",props.attributes,props.children);
+var G__32466 = cljs.core.js__GT_clj.cljs$core$IFn$_invoke$arity$1(props.attributes);
+var G__32467 = props.children;
+return (lib.components.core.i.cljs$core$IFn$_invoke$arity$2 ? lib.components.core.i.cljs$core$IFn$_invoke$arity$2(G__32466,G__32467) : lib.components.core.i.call(null,G__32466,G__32467));
 } else {
 return null;
 }
@@ -26,8 +29,8 @@ return null;
  * Adds italic support to editor
  */
 lib.plugins.features.italic.italic = (function lib$plugins$features$italic$italic(var_args){
-var G__27021 = arguments.length;
-switch (G__27021) {
+var G__32473 = arguments.length;
+switch (G__32473) {
 case 1:
 return lib.plugins.features.italic.italic.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
 

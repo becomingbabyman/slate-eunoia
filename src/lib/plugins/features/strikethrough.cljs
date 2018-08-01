@@ -1,5 +1,6 @@
 (ns lib.plugins.features.strikethrough
   (:require [reagent.core :as r]
+            [lib.components.core :as c]
             [lib.plugins.helpers.auto-replace :refer [auto-replace]]
             [lib.plugins.helpers.hotkey :refer [hotkey]]))
 
@@ -15,9 +16,9 @@
 
 (defn render-mark [props]
   (when (= "strikethrough" props.mark.type)
-    (r/create-element "del"
-                      props.attributes
-                      props.children)))
+    (c/del
+     (js->clj props.attributes)
+     props.children)))
 
 (defn strikethrough
   "Adds strikethrough support to editor"

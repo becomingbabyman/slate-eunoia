@@ -1,12 +1,12 @@
 goog.provide('lib.plugins.features.header');
 goog.require('cljs.core');
 goog.require('reagent.core');
-goog.require('lib.plugins.helpers.auto_replace');
 goog.require('lib.components.core');
+goog.require('lib.plugins.helpers.auto_replace');
 goog.require('lib.plugins.helpers.hotkey');
 lib.plugins.features.header.transform = (function lib$plugins$features$header$transform(var_args){
-var G__30854 = arguments.length;
-switch (G__30854) {
+var G__32459 = arguments.length;
+switch (G__32459) {
 case 2:
 return lib.plugins.features.header.transform.cljs$core$IFn$_invoke$arity$2((arguments[(0)]),(arguments[(1)]));
 
@@ -51,8 +51,8 @@ lib.plugins.features.header.render_node = (function lib$plugins$features$header$
 var render = (function (h_component){
 return cljs.core.apply.cljs$core$IFn$_invoke$arity$3(h_component,cljs.core.js__GT_clj.cljs$core$IFn$_invoke$arity$1(props.attributes),props.children);
 });
-var G__30856 = props.node.type;
-switch (G__30856) {
+var G__32476 = props.node.type;
+switch (G__32476) {
 case "header1":
 return render(lib.components.core.h1);
 
@@ -74,8 +74,8 @@ return null;
  * Adds header support to editor
  */
 lib.plugins.features.header.header = (function lib$plugins$features$header$header(var_args){
-var G__30859 = arguments.length;
-switch (G__30859) {
+var G__32483 = arguments.length;
+switch (G__32483) {
 case 1:
 return lib.plugins.features.header.header.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
 

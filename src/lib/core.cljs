@@ -72,12 +72,7 @@
         :header2
         :header3
         :blockquote]
-       :min 1}]}
-    :blocks
-    {:header1 {:marks [""]}
-     :header2 {:marks [""]}
-     :header3 {:marks [""]}
-     :blockquote {:marks [""]}}}))
+       :min 1}]}}))
 
 (defn eunoia-editor []
   [slate/editor {:class (c/editor-style)

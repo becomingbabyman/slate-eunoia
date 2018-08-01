@@ -1,6 +1,7 @@
 goog.provide('lib.plugins.features.blockquote');
 goog.require('cljs.core');
 goog.require('reagent.core');
+goog.require('lib.components.core');
 goog.require('lib.plugins.helpers.auto_replace');
 goog.require('lib.plugins.helpers.hotkey');
 lib.plugins.features.blockquote.transform = (function lib$plugins$features$blockquote$transform(change){
@@ -8,7 +9,9 @@ return change.setBlocks(cljs.core.clj__GT_js(((cljs.core._EQ_.cljs$core$IFn$_inv
 });
 lib.plugins.features.blockquote.render_node = (function lib$plugins$features$blockquote$render_node(props){
 if(cljs.core._EQ_.cljs$core$IFn$_invoke$arity$2("blockquote",props.node.type)){
-return reagent.core.create_element.cljs$core$IFn$_invoke$arity$3("blockquote",props.attributes,props.children);
+var G__32460 = cljs.core.js__GT_clj.cljs$core$IFn$_invoke$arity$1(props.attributes);
+var G__32461 = props.children;
+return (lib.components.core.blockquote.cljs$core$IFn$_invoke$arity$2 ? lib.components.core.blockquote.cljs$core$IFn$_invoke$arity$2(G__32460,G__32461) : lib.components.core.blockquote.call(null,G__32460,G__32461));
 } else {
 return null;
 }
@@ -17,8 +20,8 @@ return null;
  * Adds blockquote support to editor
  */
 lib.plugins.features.blockquote.blockquote = (function lib$plugins$features$blockquote$blockquote(var_args){
-var G__26994 = arguments.length;
-switch (G__26994) {
+var G__32468 = arguments.length;
+switch (G__32468) {
 case 1:
 return lib.plugins.features.blockquote.blockquote.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
 

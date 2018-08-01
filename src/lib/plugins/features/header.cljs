@@ -1,7 +1,7 @@
 (ns lib.plugins.features.header
   (:require [reagent.core :as r]
-            [lib.plugins.helpers.auto-replace :refer [auto-replace]]
             [lib.components.core :as c]
+            [lib.plugins.helpers.auto-replace :refer [auto-replace]]
             [lib.plugins.helpers.hotkey :refer [hotkey]]))
 
 (defn transform

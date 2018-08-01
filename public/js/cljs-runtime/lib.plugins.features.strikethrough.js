@@ -1,6 +1,7 @@
 goog.provide('lib.plugins.features.strikethrough');
 goog.require('cljs.core');
 goog.require('reagent.core');
+goog.require('lib.components.core');
 goog.require('lib.plugins.helpers.auto_replace');
 goog.require('lib.plugins.helpers.hotkey');
 lib.plugins.features.strikethrough.strip_auto_replace_triggers = (function lib$plugins$features$strikethrough$strip_auto_replace_triggers(matched_text){
@@ -17,7 +18,9 @@ return change.toggleMark("strikethrough");
 });
 lib.plugins.features.strikethrough.render_mark = (function lib$plugins$features$strikethrough$render_mark(props){
 if(cljs.core._EQ_.cljs$core$IFn$_invoke$arity$2("strikethrough",props.mark.type)){
-return reagent.core.create_element.cljs$core$IFn$_invoke$arity$3("del",props.attributes,props.children);
+var G__32462 = cljs.core.js__GT_clj.cljs$core$IFn$_invoke$arity$1(props.attributes);
+var G__32463 = props.children;
+return (lib.components.core.del.cljs$core$IFn$_invoke$arity$2 ? lib.components.core.del.cljs$core$IFn$_invoke$arity$2(G__32462,G__32463) : lib.components.core.del.call(null,G__32462,G__32463));
 } else {
 return null;
 }
@@ -26,8 +29,8 @@ return null;
  * Adds strikethrough support to editor
  */
 lib.plugins.features.strikethrough.strikethrough = (function lib$plugins$features$strikethrough$strikethrough(var_args){
-var G__27024 = arguments.length;
-switch (G__27024) {
+var G__32470 = arguments.length;
+switch (G__32470) {
 case 1:
 return lib.plugins.features.strikethrough.strikethrough.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
 

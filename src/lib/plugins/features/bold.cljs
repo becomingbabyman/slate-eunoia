@@ -1,5 +1,6 @@
 (ns lib.plugins.features.bold
   (:require [reagent.core :as r]
+            [lib.components.core :as c]
             [lib.plugins.helpers.auto-replace :refer [auto-replace]]
             [lib.plugins.helpers.hotkey :refer [hotkey]]))
 
@@ -15,9 +16,9 @@
 
 (defn render-mark [props]
   (when (= "bold" props.mark.type)
-    (r/create-element "b"
-                      props.attributes
-                      props.children)))
+    (c/b
+     (js->clj props.attributes)
+     props.children)))
 
 (defn bold
   "Adds bold support to editor"

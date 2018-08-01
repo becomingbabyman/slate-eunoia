@@ -1,5 +1,6 @@
 (ns lib.plugins.features.blockquote
   (:require [reagent.core :as r]
+            [lib.components.core :as c]
             [lib.plugins.helpers.auto-replace :refer [auto-replace]]
             [lib.plugins.helpers.hotkey :refer [hotkey]]))
 
@@ -11,9 +12,9 @@
 
 (defn render-node [props]
   (when (= "blockquote" props.node.type)
-    (r/create-element "blockquote"
-                      props.attributes
-                      props.children)))
+    (c/blockquote
+     (js->clj props.attributes)
+     props.children)))
 
 (defn blockquote
   "Adds blockquote support to editor"
