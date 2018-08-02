@@ -43,21 +43,24 @@
             :font-weight "600"
             :word-spacing "1px"
             :margin-top "30px"
-            :margin-bottom "12px"})
+            :margin-bottom "12px"
+            "b" {:font-weight "800"}})
 (defstyled h2 :h2
            {:font-size "21px"
             :line-height "28px"
             :font-weight "600"
             :word-spacing "0.5px"
             :margin-top "18px"
-            :margin-bottom "6px"})
+            :margin-bottom "6px"
+            "b" {:font-weight "800"}})
 (defstyled h3 :h3
            {:font-size "16px"
             :line-height "22px"
             :font-weight "700"
             :margin-top "9px"
             :margin-bottom "3px"
-            :border-bottom (str "1px solid " light-grey)})
+            :border-bottom (str "2px solid " light-grey)
+            "b" {:font-weight "800"}})
 
 (defstyled blockquote :blockquote
            {:margin "0px"
