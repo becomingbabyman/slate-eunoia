@@ -71,7 +71,8 @@
 (defstyled blockquote :blockquote
            {:margin "0px"
             :padding-left "23px"
-            :border-left (str "1px solid " grey)})
+            :border-left (str "1px solid " grey)
+            :font-style "italic"})
 
 (defstyled img :img
            {})

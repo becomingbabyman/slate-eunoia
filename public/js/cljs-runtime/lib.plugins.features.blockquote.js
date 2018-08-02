@@ -9,9 +9,9 @@ return change.setBlocks(cljs.core.clj__GT_js(((cljs.core._EQ_.cljs$core$IFn$_inv
 });
 lib.plugins.features.blockquote.render_node = (function lib$plugins$features$blockquote$render_node(props){
 if(cljs.core._EQ_.cljs$core$IFn$_invoke$arity$2("blockquote",props.node.type)){
-var G__28964 = cljs.core.js__GT_clj.cljs$core$IFn$_invoke$arity$1(props.attributes);
-var G__28965 = props.children;
-return (lib.components.core.blockquote.cljs$core$IFn$_invoke$arity$2 ? lib.components.core.blockquote.cljs$core$IFn$_invoke$arity$2(G__28964,G__28965) : lib.components.core.blockquote.call(null,G__28964,G__28965));
+var G__29045 = cljs.core.js__GT_clj.cljs$core$IFn$_invoke$arity$1(props.attributes);
+var G__29046 = props.children;
+return (lib.components.core.blockquote.cljs$core$IFn$_invoke$arity$2 ? lib.components.core.blockquote.cljs$core$IFn$_invoke$arity$2(G__29045,G__29046) : lib.components.core.blockquote.call(null,G__29045,G__29046));
 } else {
 return null;
 }
@@ -20,8 +20,8 @@ return null;
  * Adds blockquote support to editor
  */
 lib.plugins.features.blockquote.blockquote = (function lib$plugins$features$blockquote$blockquote(var_args){
-var G__28971 = arguments.length;
-switch (G__28971) {
+var G__29057 = arguments.length;
+switch (G__29057) {
 case 1:
 return lib.plugins.features.blockquote.blockquote.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
 
