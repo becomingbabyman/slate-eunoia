@@ -1,4 +1,4 @@
-(ns utils.slate
+(ns util.slate
   (:require [reagent.core :as reagent]
             ["slate" :as slate]
             ["slate-react" :refer (Editor)]))

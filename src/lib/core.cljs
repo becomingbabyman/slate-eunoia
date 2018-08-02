@@ -1,6 +1,6 @@
 (ns lib.core
   (:require [reagent.core :as r]
-            [utils.slate :as slate]
+            [util.slate :as slate]
             [lib.components.core :as c]
             [lib.plugins.features.header :refer [header]]
             [lib.plugins.features.bold :refer [bold]]
