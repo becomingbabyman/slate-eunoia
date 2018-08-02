@@ -6,6 +6,7 @@
             [lib.plugins.features.bold :refer [bold]]
             [lib.plugins.features.italic :refer [italic]]
             [lib.plugins.features.strikethrough :refer [strikethrough]]
+            [lib.plugins.features.highlight :refer [highlight]]
             [lib.plugins.features.blockquote :refer [blockquote]]
             [lib.plugins.collapse-on-escape :refer [collapse-on-escape]]
             [lib.plugins.trailing-block :refer [trailing-block]]
@@ -58,6 +59,7 @@
                (:plugins (bold))
                (:plugins (italic))
                (:plugins (strikethrough))
+               (:plugins (highlight))
                (:plugins (blockquote))
                [(collapse-on-escape)
                 (trailing-block)])))

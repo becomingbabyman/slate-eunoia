@@ -12,6 +12,7 @@
 (def pitch-black "#1b2733")
 (def black "#1b2733")
 (def blue "#0070e0")
+(def light-blue "#d6e8fa")
 (def grey "#637282")
 (def mid-grey "#e6e8eb")
 (def light-grey "#f7f9fa")
@@ -33,6 +34,11 @@
            {})
 (defstyled del :del
            {:text-decoration-color pitch-black})
+(defstyled mark :mark
+           {:color black
+            :background-color light-blue
+            :padding-top "0.1em"
+            :padding-bottom "0.1em"})
 
 (defstyled a :a
            {:color blue})
