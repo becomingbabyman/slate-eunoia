@@ -1,13 +1,17 @@
 (ns lib.components.core
   (:require [reagent.core :as r]
             ["react" :as react]
-            [cljss.core :as css :refer-macros [defstyles]]
+            ["feather-icons" :as feather]
+            [cljss.core :as css :refer-macros [defstyles defkeyframes]]
             [cljss.reagent :refer-macros [defstyled]]))
 
 ; make sure js/React is set because cljss.reagent/defstyled expects it
 ; https://github.com/roman01la/cljss/issues/45
 (aset js/window "React" react)
 
+;; Variables
+
+; Colors
 (def transparent "rgba(0,0,0,0)")
 (def pitch-black "#1b2733")
 (def black "#1b2733")
@@ -16,6 +20,14 @@
 (def grey "#637282")
 (def mid-grey "#e6e8eb")
 (def light-grey "#f7f9fa")
+
+;; Animations
+
+(defkeyframes fade-in [from-opacity to-opacity]
+              {:from {:opacity from-opacity}
+               :to   {:opacity to-opacity}})
+
+;; Composable Styles
 
 (defstyles editor-style []
            {:padding "10px"
@@ -27,6 +39,19 @@
             :-webkit-font-smoothing "antialiased"
             :-webkit-print-color-adjust "exact"
             :-webkit-tap-highlight-color transparent})
+
+;; Global Styles
+
+(css/inject-global
+ {"*" {:padding 0
+       :margin 0}
+  "button" {:background "none"
+            :border "none"
+            :cursor "pointer"
+            :outline "none"}
+  "button:active" {:position "relative" :top "1px"}})
+
+;; Core HTML Components
 
 (defstyled b :b
            {:font-weight "700"})
@@ -76,3 +101,35 @@
 
 (defstyled img :img
            {})
+
+(defn icon
+  "feather svg icon
+  names: https://feathericons.com/
+  svg-attrs: https://github.com/feathericons/feather#parameters"
+  ([name svg-attrs]
+   ; TODO: find a way to render the SVG without wrapping it in a superfluous span
+   [:span {:style {:display "flex"}
+           :dangerouslySetInnerHTML
+           {:__html (.toSvg (aget feather/icons name)
+                            (clj->js svg-attrs))}}])
+  ([name]
+   (icon name {:color black
+               :stroke-width 2})))
+
+;; Custom Components
+
+(defstyled block-placeholder-bar :span
+           {:position "absolute"
+            :right 0
+            :heith "100%"
+            :display "flex"
+            :align-items "center"
+            :justify-content "center"})
+(defstyled block-placeholder-button :button
+           {:padding-left "5px"
+            :padding-right "5px"
+            :heith "100%"
+            :opacity 0.3
+            :animation (str (fade-in 0 0.3) " 0.3s ease")
+            :transition "opacity 0.2s"
+            "&:hover" {:opacity 0.6}})

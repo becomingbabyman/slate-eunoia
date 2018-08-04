@@ -3,8 +3,9 @@
 
 ; references: https://docs.slatejs.org/guides/plugins#helper-plugins
 
-(defn hotkey [{:keys [key transform]}]
+(defn hotkey
   "Takes a key combo and applies the transform function with a change param to the selection"
+  [{:keys [key transform]}]
   (let [key? (isCodeHotkey key)] ; NOTE: this curries the function so it is only parsed once, improving perf
     {:onKeyDown
      (fn [event change editor]

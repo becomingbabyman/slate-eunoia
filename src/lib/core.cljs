@@ -2,6 +2,7 @@
   (:require [reagent.core :as r]
             [util.slate :as slate]
             [lib.components.core :as c]
+            [lib.placeholder :refer [render-placeholder]]
             [lib.plugins.features.header :refer [header]]
             [lib.plugins.features.bold :refer [bold]]
             [lib.plugins.features.italic :refer [italic]]
@@ -76,9 +77,22 @@
         :blockquote]
        :min 1}]}}))
 
+; (defn render-placeholder [props]
+;   (when (and
+;          props.isFocused
+;          (= props.node.object "block")
+;          (= props.node.type "paragraph")
+;          (= props.node.text ""))
+;     (c/block-placeholder-bar
+;      {:content-editable false}
+;      (c/block-placeholder-button "TODO:")
+;      (c/block-placeholder-button "Another TODO:"))))
+
 (defn eunoia-editor []
-  [slate/editor {:class (c/editor-style)
+  [slate/editor {:class (clojure.string/join
+                         " " ["eunoia-editor" (c/editor-style)])
                  :value @slate-value
                  :plugins plugins
                  :schema schema
+                 :render-placeholder render-placeholder
                  :on-change on-slate-change}])
