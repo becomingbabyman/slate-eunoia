@@ -18,9 +18,9 @@ return change.toggleMark("italic");
 });
 lib.plugins.features.italic.render_mark = (function lib$plugins$features$italic$render_mark(props){
 if(cljs.core._EQ_.cljs$core$IFn$_invoke$arity$2("italic",props.mark.type)){
-var G__35830 = cljs.core.js__GT_clj.cljs$core$IFn$_invoke$arity$1(props.attributes);
-var G__35831 = props.children;
-return (lib.components.core.i.cljs$core$IFn$_invoke$arity$2 ? lib.components.core.i.cljs$core$IFn$_invoke$arity$2(G__35830,G__35831) : lib.components.core.i.call(null,G__35830,G__35831));
+var G__36725 = cljs.core.js__GT_clj.cljs$core$IFn$_invoke$arity$1(props.attributes);
+var G__36726 = props.children;
+return (lib.components.core.i.cljs$core$IFn$_invoke$arity$2 ? lib.components.core.i.cljs$core$IFn$_invoke$arity$2(G__36725,G__36726) : lib.components.core.i.call(null,G__36725,G__36726));
 } else {
 return null;
 }
@@ -29,8 +29,8 @@ return null;
  * Adds italic support to editor
  */
 lib.plugins.features.italic.italic = (function lib$plugins$features$italic$italic(var_args){
-var G__35839 = arguments.length;
-switch (G__35839) {
+var G__36735 = arguments.length;
+switch (G__36735) {
 case 1:
 return lib.plugins.features.italic.italic.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
 

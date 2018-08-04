@@ -27,7 +27,7 @@
               {:from {:opacity from-opacity}
                :to   {:opacity to-opacity}})
 
-;; Composable Styles
+;; Styles
 
 (defstyles editor-style []
            {:padding "10px"
@@ -38,18 +38,14 @@
             :line-height "26px"
             :-webkit-font-smoothing "antialiased"
             :-webkit-print-color-adjust "exact"
-            :-webkit-tap-highlight-color transparent})
-
-;; Global Styles
-
-(css/inject-global
- {"*" {:padding 0
-       :margin 0}
-  "button" {:background "none"
-            :border "none"
-            :cursor "pointer"
-            :outline "none"}
-  "button:active" {:position "relative" :top "1px"}})
+            :-webkit-tap-highlight-color transparent
+            "*" {:padding 0
+                 :margin 0}
+            "button" {:background "none"
+                      :border "none"
+                      :cursor "pointer"
+                      :outline "none"}
+            "button:active" {:position "relative" :top "1px"}})
 
 ;; Core HTML Components
 
@@ -128,7 +124,7 @@
 (defstyled block-placeholder-button :button
            {:padding-left "5px"
             :padding-right "5px"
-            :heith "100%"
+            :height "100%"
             :opacity 0.3
             :animation (str (fade-in 0 0.3) " 0.3s ease")
             :transition "opacity 0.2s"
