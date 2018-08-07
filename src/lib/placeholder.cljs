@@ -14,25 +14,24 @@
 
 (defn render-placeholder [props]
   (when (render-block-placeholder-bar? props)
-    (js/console.log props)
     (c/block-placeholder-bar
-     {:content-editable false}
+    ;  {:content-editable false}
+    ;  (c/block-placeholder-button
+    ;   {:title "embed a link"}
+    ;   (c/icon "youtube"))
+    ;  (c/block-placeholder-button
+    ;   {:title "upload an image"}
+    ;   (c/icon "image"))
+    ;  (c/block-placeholder-button
+    ;   {:title "make a list"}
+    ;   (c/icon "list"))
+    ;  (c/block-placeholder-button
+    ;   {:title "make a check list"}
+    ;   (c/icon "check-square"))
+    ;  (c/block-placeholder-button
+    ;   {:title "make a code block"}
+    ;   (c/icon "code"))
      (c/block-placeholder-button
-      {:title "TODO: embed a link"}
-      (c/icon "youtube"))
-     (c/block-placeholder-button
-      {:title "TODO: upload an image"}
-      (c/icon "image"))
-     (c/block-placeholder-button
-      {:title "TODO: make a list"}
-      (c/icon "list"))
-     (c/block-placeholder-button
-      {:title "TODO: make a check list"}
-      (c/icon "check-square"))
-     (c/block-placeholder-button
-      {:title "TODO: make a code block"}
-      (c/icon "code"))
-     (c/block-placeholder-button
-      {:title "TODO: REMOVE: make a blockquote"
+      {:title "make a blockquote"
        :on-click #(.change props.editor blockquote/transform)}
       (c/icon "chevron-right")))))
