@@ -4,7 +4,7 @@
             [lib.plugins.features.blockquote :as blockquote]))
 
 (defn render-block-placeholder-bar?
-  "Should the bar of icons that shows up in an empty focused paragraph be shown"
+  "Should the bar of icons that shows up in an `empty focused paragraph` be shown?"
   [props]
   (and
    props.isFocused

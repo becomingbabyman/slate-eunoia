@@ -7,9 +7,9 @@ return change.toggleMark("highlight");
 });
 lib.plugins.features.highlight.render_mark = (function lib$plugins$features$highlight$render_mark(props){
 if(cljs.core._EQ_.cljs$core$IFn$_invoke$arity$2("highlight",props.mark.type)){
-var G__36714 = cljs.core.js__GT_clj.cljs$core$IFn$_invoke$arity$1(props.attributes);
-var G__36715 = props.children;
-return (lib.components.core.mark.cljs$core$IFn$_invoke$arity$2 ? lib.components.core.mark.cljs$core$IFn$_invoke$arity$2(G__36714,G__36715) : lib.components.core.mark.call(null,G__36714,G__36715));
+var G__28571 = cljs.core.js__GT_clj.cljs$core$IFn$_invoke$arity$1(props.attributes);
+var G__28572 = props.children;
+return (lib.components.core.mark.cljs$core$IFn$_invoke$arity$2 ? lib.components.core.mark.cljs$core$IFn$_invoke$arity$2(G__28571,G__28572) : lib.components.core.mark.call(null,G__28571,G__28572));
 } else {
 return null;
 }
@@ -18,8 +18,8 @@ return null;
  * Adds highlight support to editor
  */
 lib.plugins.features.highlight.highlight = (function lib$plugins$features$highlight$highlight(var_args){
-var G__36729 = arguments.length;
-switch (G__36729) {
+var G__28575 = arguments.length;
+switch (G__28575) {
 case 1:
 return lib.plugins.features.highlight.highlight.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
 

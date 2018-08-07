@@ -98,6 +98,8 @@
 (defstyled img :img
            {})
 
+;; Common Helpers
+
 (defn icon
   "feather svg icon
   names: https://feathericons.com/

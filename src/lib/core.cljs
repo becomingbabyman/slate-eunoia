@@ -77,17 +77,6 @@
         :blockquote]
        :min 1}]}}))
 
-; (defn render-placeholder [props]
-;   (when (and
-;          props.isFocused
-;          (= props.node.object "block")
-;          (= props.node.type "paragraph")
-;          (= props.node.text ""))
-;     (c/block-placeholder-bar
-;      {:content-editable false}
-;      (c/block-placeholder-button "TODO:")
-;      (c/block-placeholder-button "Another TODO:"))))
-
 (defn eunoia-editor []
   [slate/editor {:class (clojure.string/join
                          " " ["eunoia-editor" (c/editor-style)])
