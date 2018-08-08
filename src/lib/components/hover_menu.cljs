@@ -58,6 +58,9 @@
      :top (str top "px")
      :left (str left "px")}))
 
+(defn active-mark? [value mark-type]
+  (.some value.activeMarks #(= (aget %1 "type") mark-type)))
+
 (def ref (atom nil))
 
 (defn click-handler-handler [value on-change]
@@ -76,21 +79,26 @@
     (menu {:ref #(reset! ref %1)
            :style active-style}
           (button
-            {:on-mouse-down (click-handler bold/transform)}
+            {:on-mouse-down (click-handler bold/transform)
+             :style {:color (when (active-mark? value "bold") c/white)}}
             (icon "bold"))
           (button
-            {:on-mouse-down (click-handler strikethrough/transform)}
+            {:on-mouse-down (click-handler strikethrough/transform)
+             :style {:color (when (active-mark? value "strikethrough") c/white)}}
             (icon "minus"))
           (button
-            {:on-mouse-down (click-handler highlight/transform)}
+            {:on-mouse-down (click-handler highlight/transform)
+             :style {:color (when (active-mark? value "highlight") c/white)}}
             (icon "edit-3"))
           ; (button (icon "link"))
           (divider)
           (button
-            {:on-mouse-down (click-handler (header/transform 1))}
+            {:on-mouse-down (click-handler (header/transform 1))
+             :style {:color (when (= value.anchorBlock.type "header1") c/white)}}
             "H" (small "1"))
           (button
-            {:on-mouse-down (click-handler (header/transform 2))}
+            {:on-mouse-down (click-handler (header/transform 2))
+             :style {:color (when (= value.anchorBlock.type "header2") c/white)}}
             (small "H2"))
           ; (button (icon "list"))
           ; (button (icon "check-square"))

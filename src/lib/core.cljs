@@ -70,13 +70,13 @@
   (clj->js
    {:document
     {:nodes
-     [{:types
-       [:paragraph
-        :header1
-        :header2
-        :header3
-        :blockquote]
-       :min 1}]}}))
+     [{:min 1
+       :match
+       [{:type :paragraph}
+        {:type :header1}
+        {:type :header2}
+        {:type :header3}
+        {:type :blockquote}]}]}}))
 
 (defn eunoia-editor
   ([passed-in-props]
