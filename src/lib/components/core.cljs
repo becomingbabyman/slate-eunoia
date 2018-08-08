@@ -62,6 +62,10 @@
             :background-color light-blue
             :padding-top "0.1em"
             :padding-bottom "0.1em"})
+(defstyled code :code
+           {:background dark-white
+            :border (str "1px solid " light-grey)
+            :font-family "Hasklig, SourceCodePro, monospace"})
 
 (defstyled a :a
            {:color blue})
