@@ -2,6 +2,7 @@
   (:require [reagent.core :as r]
             [util.slate :as slate]
             [lib.components.core :as c]
+            [lib.components.hover-menu :refer [hover-menu]]
             [lib.placeholder :refer [render-placeholder]]
             [lib.plugins.features.header :refer [header]]
             [lib.plugins.features.bold :refer [bold]]
@@ -84,7 +85,9 @@
                         :schema schema
                         :render-placeholder render-placeholder
                         :on-change on-slate-change}
-         props (merge initial-props passed-in-props)]
+         editor-props (merge initial-props passed-in-props)
+         hover-menu-props (select-keys editor-props [:value :on-change])]
      (c/top-level-component
-      [slate/editor props])))
+      [slate/editor editor-props]
+      [hover-menu hover-menu-props])))
   ([] (eunoia-editor {})))

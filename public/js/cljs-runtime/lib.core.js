@@ -3,6 +3,7 @@ goog.require('cljs.core');
 goog.require('reagent.core');
 goog.require('util.slate');
 goog.require('lib.components.core');
+goog.require('lib.components.hover_menu');
 goog.require('lib.placeholder');
 goog.require('lib.plugins.features.header');
 goog.require('lib.plugins.features.bold');
@@ -21,8 +22,8 @@ return cljs.core.reset_BANG_(lib.core.slate_value,change.value);
 lib.core.plugins = cljs.core.clj__GT_js(cljs.core.concat.cljs$core$IFn$_invoke$arity$variadic(new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [lib.plugins.backspace.backspace.cljs$core$IFn$_invoke$arity$0()], null),new cljs.core.Keyword(null,"plugins","plugins",1900073717).cljs$core$IFn$_invoke$arity$1(lib.plugins.features.header.header.cljs$core$IFn$_invoke$arity$0()),cljs.core.prim_seq.cljs$core$IFn$_invoke$arity$2([new cljs.core.Keyword(null,"plugins","plugins",1900073717).cljs$core$IFn$_invoke$arity$1(lib.plugins.features.bold.bold.cljs$core$IFn$_invoke$arity$0()),new cljs.core.Keyword(null,"plugins","plugins",1900073717).cljs$core$IFn$_invoke$arity$1(lib.plugins.features.italic.italic.cljs$core$IFn$_invoke$arity$0()),new cljs.core.Keyword(null,"plugins","plugins",1900073717).cljs$core$IFn$_invoke$arity$1(lib.plugins.features.strikethrough.strikethrough.cljs$core$IFn$_invoke$arity$0()),new cljs.core.Keyword(null,"plugins","plugins",1900073717).cljs$core$IFn$_invoke$arity$1(lib.plugins.features.highlight.highlight.cljs$core$IFn$_invoke$arity$0()),new cljs.core.Keyword(null,"plugins","plugins",1900073717).cljs$core$IFn$_invoke$arity$1(lib.plugins.features.blockquote.blockquote.cljs$core$IFn$_invoke$arity$0()),new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [lib.plugins.collapse_on_escape.collapse_on_escape.cljs$core$IFn$_invoke$arity$0(),lib.plugins.trailing_block.trailing_block.cljs$core$IFn$_invoke$arity$0()], null)], 0)));
 lib.core.schema = cljs.core.clj__GT_js(new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"document","document",-1329188687),new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"nodes","nodes",-2099585805),new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null,"types","types",590030639),new cljs.core.PersistentVector(null, 5, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"paragraph","paragraph",296707709),new cljs.core.Keyword(null,"header1","header1",201145393),new cljs.core.Keyword(null,"header2","header2",-1154262713),new cljs.core.Keyword(null,"header3","header3",323824015),new cljs.core.Keyword(null,"blockquote","blockquote",372264190)], null),new cljs.core.Keyword(null,"min","min",444991522),(1)], null)], null)], null)], null));
 lib.core.eunoia_editor = (function lib$core$eunoia_editor(var_args){
-var G__29261 = arguments.length;
-switch (G__29261) {
+var G__34208 = arguments.length;
+switch (G__34208) {
 case 1:
 return lib.core.eunoia_editor.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
 
@@ -39,9 +40,11 @@ throw (new Error(["Invalid arity: ",cljs.core.str.cljs$core$IFn$_invoke$arity$1(
 
 lib.core.eunoia_editor.cljs$core$IFn$_invoke$arity$1 = (function (passed_in_props){
 var initial_props = new cljs.core.PersistentArrayMap(null, 5, [new cljs.core.Keyword(null,"value","value",305978217),cljs.core.deref(lib.core.slate_value),new cljs.core.Keyword(null,"plugins","plugins",1900073717),lib.core.plugins,new cljs.core.Keyword(null,"schema","schema",-1582001791),lib.core.schema,new cljs.core.Keyword(null,"render-placeholder","render-placeholder",829324561),lib.placeholder.render_placeholder,new cljs.core.Keyword(null,"on-change","on-change",-732046149),lib.core.on_slate_change], null);
-var props = cljs.core.merge.cljs$core$IFn$_invoke$arity$variadic(cljs.core.prim_seq.cljs$core$IFn$_invoke$arity$2([initial_props,passed_in_props], 0));
-var G__29262 = new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [util.slate.editor,props], null);
-return (lib.components.core.top_level_component.cljs$core$IFn$_invoke$arity$1 ? lib.components.core.top_level_component.cljs$core$IFn$_invoke$arity$1(G__29262) : lib.components.core.top_level_component.call(null,G__29262));
+var editor_props = cljs.core.merge.cljs$core$IFn$_invoke$arity$variadic(cljs.core.prim_seq.cljs$core$IFn$_invoke$arity$2([initial_props,passed_in_props], 0));
+var hover_menu_props = cljs.core.select_keys(editor_props,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"value","value",305978217),new cljs.core.Keyword(null,"on-change","on-change",-732046149)], null));
+var G__34209 = new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [util.slate.editor,editor_props], null);
+var G__34210 = new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [lib.components.hover_menu.hover_menu,hover_menu_props], null);
+return (lib.components.core.top_level_component.cljs$core$IFn$_invoke$arity$2 ? lib.components.core.top_level_component.cljs$core$IFn$_invoke$arity$2(G__34209,G__34210) : lib.components.core.top_level_component.call(null,G__34209,G__34210));
 });
 
 lib.core.eunoia_editor.cljs$core$IFn$_invoke$arity$0 = (function (){

@@ -13,13 +13,15 @@
 
 ; Colors
 (def transparent "rgba(0,0,0,0)")
-(def pitch-black "#1b2733")
+(def pitch-black "#000000")
 (def black "#1b2733")
+(def white "#ffffff")
+(def dark-white "#f7f9fa")
+(def light-grey "#e6e8eb")
+(def mid-grey "#c1c7cd")
+(def grey "#637282")
 (def blue "#0070e0")
 (def light-blue "#d6e8fa")
-(def grey "#637282")
-(def mid-grey "#e6e8eb")
-(def light-grey "#f7f9fa")
 
 ;; Animations
 
@@ -30,8 +32,7 @@
 ;; Top Level Component
 
 (defstyled top-level-component :div
-           {:position "relative"
-            :color black
+           {:color black
             :font-family "-apple-system, BlinkMacSystemFont, San Francisco, sans-serif"
             :font-size "16px"
             :font-weight "400"
@@ -87,7 +88,7 @@
             :font-weight "700"
             :margin-top "9px"
             :margin-bottom "3px"
-            :border-bottom (str "2px solid " light-grey)
+            :border-bottom (str "2px solid " dark-white)
             "b" {:font-weight "800"}})
 
 (defstyled blockquote :blockquote

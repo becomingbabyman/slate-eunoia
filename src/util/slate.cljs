@@ -5,4 +5,7 @@
 
 (def editor (reagent/adapt-react-class Editor))
 
-(defn edn->slate [edn-slate-document] (slate/Value.fromJSON (clj->js edn-slate-document)))
+(defn edn->slate [edn-slate-document]
+  (-> edn-slate-document
+      (clj->js)
+      (slate/Value.fromJSON)))

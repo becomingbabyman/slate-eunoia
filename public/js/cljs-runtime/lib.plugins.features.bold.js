@@ -18,9 +18,9 @@ return change.toggleMark("bold");
 });
 lib.plugins.features.bold.render_mark = (function lib$plugins$features$bold$render_mark(props){
 if(cljs.core._EQ_.cljs$core$IFn$_invoke$arity$2("bold",props.mark.type)){
-var G__29239 = cljs.core.js__GT_clj.cljs$core$IFn$_invoke$arity$1(props.attributes);
-var G__29240 = props.children;
-return (lib.components.core.b.cljs$core$IFn$_invoke$arity$2 ? lib.components.core.b.cljs$core$IFn$_invoke$arity$2(G__29239,G__29240) : lib.components.core.b.call(null,G__29239,G__29240));
+var G__31279 = cljs.core.js__GT_clj.cljs$core$IFn$_invoke$arity$1(props.attributes);
+var G__31280 = props.children;
+return (lib.components.core.b.cljs$core$IFn$_invoke$arity$2 ? lib.components.core.b.cljs$core$IFn$_invoke$arity$2(G__31279,G__31280) : lib.components.core.b.call(null,G__31279,G__31280));
 } else {
 return null;
 }
@@ -29,8 +29,8 @@ return null;
  * Adds bold support to editor
  */
 lib.plugins.features.bold.bold = (function lib$plugins$features$bold$bold(var_args){
-var G__29249 = arguments.length;
-switch (G__29249) {
+var G__31292 = arguments.length;
+switch (G__31292) {
 case 1:
 return lib.plugins.features.bold.bold.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
 
