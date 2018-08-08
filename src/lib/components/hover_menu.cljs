@@ -50,13 +50,19 @@
                  (.getSelection)
                  (.getRangeAt 0)
                  (.getBoundingClientRect))
-        top (- rect.top js/window.pageYOffset
-               menu.offsetHeight)
-        left (- (+ rect.left js/window.pageXOffset (/ rect.width  2))
-                (/ menu.offsetWidth 2))]
-    {:opacity 1
-     :top (str top "px")
-     :left (str left "px")}))
+        top (+ js/window.pageYOffset
+               (- rect.top
+                  menu.offsetHeight))
+        left (min (- js/window.innerWidth menu.offsetWidth 5)
+                  (max 5
+                       (- (+ rect.left js/window.pageXOffset (/ rect.width  2))
+                          (/ menu.offsetWidth 2))))
+        style  {:opacity 1
+                :top (str top "px")
+                :left (str left "px")}]
+    (if (< top 11)
+      (merge style {:top (str (+ rect.bottom 11) "px")})
+      style)))
 
 (defn active-mark? [value mark-type]
   (.some value.activeMarks #(= (aget %1 "type") mark-type)))
