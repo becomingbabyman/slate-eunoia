@@ -77,11 +77,14 @@
         :blockquote]
        :min 1}]}}))
 
-(defn eunoia-editor []
-  [slate/editor {:class (clojure.string/join
-                         " " ["eunoia-editor" (c/editor-style)])
-                 :value @slate-value
-                 :plugins plugins
-                 :schema schema
-                 :render-placeholder render-placeholder
-                 :on-change on-slate-change}])
+(defn eunoia-editor
+  ([passed-in-props]
+   (let [initial-props {:value @slate-value
+                        :plugins plugins
+                        :schema schema
+                        :render-placeholder render-placeholder
+                        :on-change on-slate-change}
+         props (merge initial-props passed-in-props)]
+     (c/top-level-component
+      [slate/editor props])))
+  ([] (eunoia-editor {})))

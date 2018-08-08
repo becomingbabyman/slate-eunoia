@@ -27,10 +27,10 @@
               {:from {:opacity from-opacity}
                :to   {:opacity to-opacity}})
 
-;; Styles
+;; Top Level Component
 
-(defstyles editor-style []
-           {:padding "10px"
+(defstyled top-level-component :div
+           {:position "relative"
             :color black
             :font-family "-apple-system, BlinkMacSystemFont, San Francisco, sans-serif"
             :font-size "16px"
@@ -38,7 +38,8 @@
             :line-height "26px"
             :-webkit-font-smoothing "antialiased"
             :-webkit-print-color-adjust "exact"
-            :-webkit-tap-highlight-color transparent
+            :-webkit-tap-highlight-color "transparent"
+            ; reset css
             "*" {:padding 0
                  :margin 0}
             "button" {:background "none"

@@ -7,7 +7,7 @@
   [:div {:style {:margin 20}}
    [:h3 "slate-eunoia editor example"]
    [:div {:style {:border "1px solid #ddd"}}
-    [lib/eunoia-editor]]])
+    [lib/eunoia-editor {:style {:padding "10px"}}]]])
 
 (defn mount-on-dom []
   (r/render [root-component]
