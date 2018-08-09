@@ -86,6 +86,7 @@
 (defn eunoia-editor
   ([passed-in-props]
    (let [initial-props {:value @slate-value
+                        :placeholder "Write something..."
                         :plugins plugins
                         :schema schema
                         :render-placeholder render-placeholder
