@@ -22,8 +22,8 @@
    {:plugins
     (clj->js
      [(auto-replace
-       {:trigger "space"
-        :before #"^(\`\`\`)$"
+       {:trigger "`"
+        :before #"^(\`\`)$"
         :transform transform})
       {:renderNode render-node}])})
   ([]
