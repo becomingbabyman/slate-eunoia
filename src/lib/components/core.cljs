@@ -66,6 +66,12 @@
            {:background dark-white
             :border (str "1px solid " light-grey)
             :font-family "Hasklig, SourceCodePro, monospace"})
+(defstyled code-block :pre
+           {:background dark-white
+            :border (str "1px solid " light-grey)
+            :font-family "Hasklig, SourceCodePro, monospace"
+            :padding "5px"
+            :border-radius "2px"})
 
 (defstyled a :a
            {:color blue})

@@ -26,7 +26,7 @@
     (clj->js
      [(auto-replace
        {:trigger #"\`"
-        :before #"(\`.+)"
+        :before #"(\`[^\`].*)"
         :transform transform})
       {:renderMark render-mark}])})
   ([]

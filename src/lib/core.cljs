@@ -10,6 +10,7 @@
             [lib.plugins.features.strikethrough :refer [strikethrough]]
             [lib.plugins.features.highlight :refer [highlight]]
             [lib.plugins.features.code :refer [code]]
+            [lib.plugins.features.code-block :refer [code-block]]
             [lib.plugins.features.blockquote :refer [blockquote]]
             [lib.plugins.collapse-on-escape :refer [collapse-on-escape]]
             [lib.plugins.trailing-block :refer [trailing-block]]
@@ -64,6 +65,7 @@
                (:plugins (strikethrough))
                (:plugins (highlight))
                (:plugins (code))
+               (:plugins (code-block))
                (:plugins (blockquote))
                [(collapse-on-escape)
                 (trailing-block)])))
@@ -78,6 +80,7 @@
         {:type :header1}
         {:type :header2}
         {:type :header3}
+        {:type :code-block}
         {:type :blockquote}]}]}}))
 
 (defn eunoia-editor
