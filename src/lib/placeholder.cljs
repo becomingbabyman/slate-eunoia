@@ -1,7 +1,7 @@
 (ns lib.placeholder
   (:require [reagent.core :as r]
             [lib.components.core :as c]
-            [lib.plugins.features.blockquote :as blockquote]))
+            [lib.plugins.features.code-block :as code-block]))
 
 (defn render-block-placeholder-bar?
   "Should the bar of icons that shows up in an `empty focused paragraph` be shown?"
@@ -28,10 +28,7 @@
     ;  (c/block-placeholder-button
     ;   {:title "make a check list"}
     ;   (c/icon "check-square"))
-    ;  (c/block-placeholder-button
-    ;   {:title "make a code block"}
-    ;   (c/icon "code"))
      (c/block-placeholder-button
-      {:title "make a blockquote"
-       :on-click #(.change props.editor blockquote/transform)}
-      (c/icon "chevron-right")))))
+      {:title "make a code block"
+       :on-click #(.change props.editor code-block/transform)}
+      (c/icon "code")))))
