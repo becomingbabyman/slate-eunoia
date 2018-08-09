@@ -18,9 +18,9 @@ return change.toggleMark("strikethrough");
 });
 lib.plugins.features.strikethrough.render_mark = (function lib$plugins$features$strikethrough$render_mark(props){
 if(cljs.core._EQ_.cljs$core$IFn$_invoke$arity$2("strikethrough",props.mark.type)){
-var G__38245 = cljs.core.js__GT_clj.cljs$core$IFn$_invoke$arity$1(props.attributes);
-var G__38246 = props.children;
-return (lib.components.core.del.cljs$core$IFn$_invoke$arity$2 ? lib.components.core.del.cljs$core$IFn$_invoke$arity$2(G__38245,G__38246) : lib.components.core.del.call(null,G__38245,G__38246));
+var G__29396 = cljs.core.js__GT_clj.cljs$core$IFn$_invoke$arity$1(props.attributes);
+var G__29397 = props.children;
+return (lib.components.core.del.cljs$core$IFn$_invoke$arity$2 ? lib.components.core.del.cljs$core$IFn$_invoke$arity$2(G__29396,G__29397) : lib.components.core.del.call(null,G__29396,G__29397));
 } else {
 return null;
 }
@@ -29,8 +29,8 @@ return null;
  * Adds strikethrough support to editor
  */
 lib.plugins.features.strikethrough.strikethrough = (function lib$plugins$features$strikethrough$strikethrough(var_args){
-var G__38256 = arguments.length;
-switch (G__38256) {
+var G__29406 = arguments.length;
+switch (G__29406) {
 case 1:
 return lib.plugins.features.strikethrough.strikethrough.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
 

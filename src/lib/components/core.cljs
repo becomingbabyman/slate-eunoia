@@ -66,7 +66,7 @@
            {:background dark-white
             :border (str "1px solid " light-grey)
             :font-family "Hasklig, SourceCodePro, monospace"})
-(defstyled code-block :pre
+(defstyled pre :pre
            {:background dark-white
             :border (str "1px solid " light-grey)
             :font-family "Hasklig, SourceCodePro, monospace"

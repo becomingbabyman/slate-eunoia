@@ -12,9 +12,9 @@
 
 (defn render-node [props]
   (when (= "code-block" props.node.type)
-    (c/code-block
-     (js->clj props.attributes)
-     props.children)))
+    (c/pre
+      (js->clj props.attributes)
+      props.children)))
 
 (defn code-block
   "Adds code-block support to editor"
@@ -25,6 +25,8 @@
        {:trigger "`"
         :before #"^(\`\`)$"
         :transform transform})
+      ; TODO: write something like this https://github.com/GitbookIO/slate-edit-code
+      ; TODO: write something like this https://github.com/GitbookIO/slate-prism
       {:renderNode render-node}])})
   ([]
    (code-block {})))
