@@ -1,4 +1,9 @@
 {
+  "name": "slate-eunoia",
+  "version": "0.0.1",
+  "description": "The eunoia document editor powered by SlateJS",
+  "repository": "github:smothers/slate-eunoia",
+  "license": "UNLICENSED",
   "scripts": {
     "dev": "shadow-cljs watch example",
     "test": "shadow-cljs compile test",
