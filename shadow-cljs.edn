@@ -8,11 +8,23 @@
          :middleware []}
 
  :builds
- {:example  {:target     :browser
-             :output-dir "public/js"
-             :asset-path "js"
-             :modules {:main {:entries [example.core]}}
-             :devtools {:before-load example.core/stop
-                        :after-load example.core/start
-                        :http-root "public"
-                        :http-port 8020}}}}
+ {:example
+  {:target     :browser
+   :output-dir "public/js"
+   :asset-path "js"
+   :modules {:main {:entries [example.core]}}
+   :devtools {:before-load example.core/stop
+              :after-load example.core/start
+              :http-root "public"
+              :http-port 8020}}
+  :test
+  {:target    :node-test
+   :output-to "out/node-test.js"
+   :ns-regexp "-test$"
+   :autorun   true}
+  :browser-test
+  {:target :browser-test
+   :test-dir "out/browser-test"
+   :ns-regexp "-test$"
+   :devtools {:http-root "out/browser-test"
+              :http-port 8021}}}}
