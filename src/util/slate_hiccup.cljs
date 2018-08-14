@@ -1,6 +1,6 @@
 (ns util.slate-hiccup
-  (:require [clojure.spec.alpha :as s]
-            [util.slate :as slate]))
+  (:require [clojure.spec.alpha :as s]))
+            ; [util.slate :as slate]))
 
 ; high level spec https://docs.slatejs.org/guides/data-model#documents-and-nodes
 
@@ -30,21 +30,50 @@
          :attrs (s/? map?)
          :nodes (s/* ::slate)))
 
+; TODO: reduce nested text, inline, mark nodes into
+;  flat vectors of leaves with all syntax
 ; TODO: spec nesting rules
-;  marks cannot wrap blocks
-;  blocks cannot wrap documents...
-(s/def ::slate (s/or :text  string?
+;  texts cannot wrap inlines or marks
+;  only documents and other blocks can wrap blocks
+(s/def ::slate (s/or :text string?
+                     :text number?
                      :mark (node marks)
                      :inline (node inlines)
                      :block (node blocks)
                      :document (node #{:document})))
 
+(s/conform ::slate example)
+
+(defmulti slate first)
+
+(defmethod slate :document [[_ data]]
+  {:document (slate [:node data])})
+
+(defmethod slate :node [[_ {:keys [type attrs nodes]}]]
+  {:nodes (vec (map slate nodes))})
+
+(defmethod slate :block [[_ data]]
+  (slate [:node data]))
+
+(defmethod slate :inline [[_ data]]
+  (slate [:node data]))
+
+(defmethod slate :mark [[_ data]]
+  (slate [:node data]))
+
+(defmethod slate :text [[_ text]]
+  (str text))
+
 (def example [:document
               [:p]
-              [:p "some " [:b [:i "text"]]]
-              [:hr]])
-
+              [:p
+               "some "
+               [:a {:src "http://npr.org"} "linked"]
+               [:b [:i " text and the number "]]
+               3]
+              [:hr {:color "red"}]])
 (s/conform ::slate example)
+(slate (s/conform ::slate example))
 
 (defn slateify-leaf
   ([leaves-acc leaf]
@@ -81,7 +110,7 @@
   (println :ast hiccup-ast)
   (let [[type node] hiccup-ast]
     (case type
-      (:mark :text) (slateify-leaf node)
+      (:mark :text :inline) (slateify-leaf node)
       :document {:document (slateify-node nil
                                           (dissoc node :type))}
       (slateify-node type node))))
@@ -107,41 +136,55 @@
 (s/conform ::slate ex)
 
 (hiccup->slate-edn ex)
+(hiccup->slate-edn example)
 (hiccup->slate-edn [:document [:p "foo" "bar"]])
 
-(slate/edn->slate (hiccup->slate-edn ex))
+; (slate/edn->slate (hiccup->slate-edn ex))
 
 ; ;
 ; ; ; ; ; ; ; ; ; ; ; ; ; ; ;
 ;
 [:document
  [:p]
- [:p "some " [:b [:i "text"]]]
- [:hr]]
+ [:p
+  "some "
+  [:a {:src "http://npr.org"} "linked"]
+  [:b [:i " text and the number "]]
+  3]
+ [:hr {:color "red"}]]
 ;
 ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ;
 ;
 {:document
- {:nodes
-  [{:object "block"
-    :type "p"}
-   {:object "block"
-    :type "p"
-    :nodes
-    [{:object "text"
-      :leaves
-      [{:object "leaf"
-        :text "some "
-        :marks []}
-       {:object "leaf"
-        :text "text"
-        :marks
-        [{:object "mark"
-          :type "bold"}
-         {:object "mark"
-          :type "italic"}]}]}]}
-   {:object "block"}]}}
-;     :type "hr"}]}}
+ {:nodes [{:object "block"
+           :type "p"}
+          {:object "block"
+           :type "p"
+           :nodes [{:object "text"
+                    :leaves [{:object "leaf"
+                              :text "some "
+                              :marks []}]}
+                   {:object "inline"
+                    :type "a"
+                    :src "http://npr.org"
+                    :nodes [{:object "text"
+                             :leaves [{:object "leaf"
+                                       :text "linked"
+                                       :marks []}]}]}
+                   {:object "text"
+                    :leaves [{:object "leaf"
+                              :text "text and the number"
+                              :marks [{:object "mark"
+                                       :type "b"}
+                                      {:object "mark"
+                                       :type "i"}]}]}
+                   {:object "text"
+                    :leaves [{:object "leaf"
+                              :text "3"
+                              :marks []}]}]}
+          {:object "block"
+           :type "hr"
+           :color "red"}]}}
 ;
 ; ; ; ; ; ; ; ; ; ; ; ; ; ; ;
 ; ;
