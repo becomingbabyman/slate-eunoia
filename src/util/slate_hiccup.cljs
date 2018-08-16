@@ -28,6 +28,7 @@
                      :document (node #{:document})))
 
 (declare ast->slate-edn)
+(declare slateify-mark)
 
 (defn slateify-text
   ([node marks _]
@@ -42,67 +43,87 @@
 
 (def initial-mark-result {:leaves [] :marks []})
 
+(defn slateify-mark-child-nodes [nodes result]
+  (reduce
+   (fn [acc node]
+     (let [{:keys [leaves marks]} (slateify-mark node result)]
+       {:leaves (vec (concat (:leaves acc) leaves))
+        :marks (vec (concat (:marks acc) marks))}))
+   initial-mark-result
+   nodes))
+
 (defn slateify-mark
-  ([_ result nodes]
-   (if (nil? nodes)
-     result
-     (let [new-result
-           (reduce
-            (fn [acc node]
-              (let [iterim-result (slateify-mark node result)]
-                {:leaves (vec (concat (:leaves acc) (:leaves iterim-result)))
-                 :marks (vec (concat (:marks acc) (:marks iterim-result)))}))
-            initial-mark-result
-            nodes)]
-       new-result)))
+  "Marks provide text with style. In the AST marks can wrap
+  text and other marks. In SlateJS that relationship is inverted
+  and a vector of marks can be added to text. This function walks
+  each branch of a :mark tree node, storing the marks it sees and
+  finally applying them the the child text nodes which are then
+  returned."
   ([ast result]
    (if (nil? ast)
      result
      (let [[object node] ast
+           {:keys [marks leaves]} result
            {:keys [type attrs nodes]} node
-           marks (if (= :mark object)
-                   (vec (conj (:marks result) {:object :mark
-                                               :type type}))
-                   (:marks result))
-           leaves (if (= :text object)
-                    (vec (conj (:leaves result) (slateify-text node (:marks result))))
-                    (:leaves result))
-           new-result {:leaves leaves :marks marks}]
-       (slateify-mark nil new-result nodes))))
-  ([ast]
-   (let [result (slateify-mark ast initial-mark-result)]
+           new-marks (if (= :mark object)
+                       (vec (conj marks (merge (if attrs attrs {})
+                                               {:object :mark
+                                                :type type})))
+                       marks)
+           new-leaves (if (= :text object)
+                        (vec (conj leaves (slateify-text node marks)))
+                        leaves)
+           new-result {:leaves new-leaves :marks new-marks}]
+       (if nodes
+         (slateify-mark-child-nodes nodes new-result)
+         new-result))))
+  ([node]
+   (let [ast [:mark node]
+         result (slateify-mark ast initial-mark-result)]
      {:object :text
       :leaves (:leaves result)})))
 
-(defn slateify-block [object node]
-  (let [{:keys [type attrs nodes]} node]
-    (merge (when (some? object) {:object object})
-           (when (some? type) {:type type})
-           (when (some? attrs) attrs)
-           (when (vector? nodes)
-             {:nodes (->> nodes
-                          (map ast->slate-edn)
-                          (vec))}))))
+(defn slateify-block
+  "Blocks tend to be higher up in the AST and typically
+  contain children nodes. They also map directly to nodes
+  in the AST so they do not need to be reduced or trickle
+  down any values to their children."
+  ([object node]
+   (let [{:keys [type attrs nodes]} node]
+     (merge (when (some? object) {:object object})
+            (when (some? type) {:type type})
+            (when (some? attrs) attrs)
+            (when (vector? nodes)
+              {:nodes (vec (map ast->slate-edn nodes))}))))
+  ([node]
+   (slateify-block :block node)))
 
-(defn ast->slate-edn [hiccup-ast]
+(defn ast->slate-edn
+  "Consumes a hiccup based AST and transforms each node
+  into a SlateJS compatible node."
+  [hiccup-ast]
   (let [[object node] hiccup-ast]
     (case object
       :text (slateify-text node)
-      :mark (slateify-mark hiccup-ast) ;; TODO: switch slateify-mark to accepting a node instead of an ast
+      :mark (slateify-mark node)
       ; :inline (slateify-inline node))))
-      :block (slateify-block :block node)
+      :block (slateify-block node)
       :document {:document (slateify-block nil (dissoc node :type))}
       nil)))
 
 (defn make-ast [hiccup]
+  "Conforms hiccup to an AST based on SlateJS documents and
+  the element mapping implemented by slate-eunoia."
   (let [parsed-hiccup (s/conform ::slate hiccup)]
     (if (= ::s/invalid parsed-hiccup)
       (throw (js/Error. (expound/expound ::slate hiccup)))
       parsed-hiccup)))
 
 (defn hiccup->slate
-  "Takes a slate-hiccup vector with reagent-like syntax
-  and spits out a Slate Value in edn."
+  "Takes a slate-hiccup vector with hiccup-like syntax
+  and spits out a SlateJS Value ready to be consumed
+  by a SlateJS editor. The mapping of node types is
+  specific to the elements implemented by slate-eunoia."
   [hiccup]
   (-> hiccup
       (make-ast)

@@ -7,7 +7,7 @@
          (slate-hiccup/ast->slate-edn
           (slate-hiccup/make-ast hiccup)))))
 
-(deftest a-simple-test
+(deftest hiccup->slate-edn--simple
   (test-hiccup->slate-edn
    {:hiccup [:document
              [:paragraph "some text"]]
@@ -20,16 +20,16 @@
                      :leaves
                      [{:object :leaf, :text "some text", :marks []}]}]}]}}}))
 
-(deftest test-mark-slateification
+(deftest slateify-mark
   ; NOTE: expected and actual are switched in test result
   (is (= (slate-hiccup/slateify-mark
-          (slate-hiccup/make-ast
-           [:bold "bold text"
-            [:italic "bold and italic"
-             "   "
-             [:highlight "bold and strikethrough and highlight"]
-             "   "]
-            [:strikethrough "bold and strikethrough"]]))
+          (last (slate-hiccup/make-ast
+                 [:bold "bold text"
+                  [:italic "bold and italic"
+                   "   "
+                   [:highlight "bold and strikethrough and highlight"]
+                   "   "]
+                  [:strikethrough "bold and strikethrough"]])))
          {:object :text
           :leaves
           [{:object :leaf
@@ -62,7 +62,7 @@
             [{:object :mark, :type :bold}
              {:object :mark, :type :strikethrough}]}]})))
 
-(deftest a-complex-test
+(deftest hiccup->slate-edn--complex
   (test-hiccup->slate-edn
    {:hiccup [:document
              [:header1 "Header 1"]
