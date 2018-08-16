@@ -1,7 +1,6 @@
 (ns util.slate-hiccup-test
   (:require [cljs.test :refer-macros (deftest is)]
-            [util.slate-hiccup :as slate-hiccup]
-            [clojure.string :as string]))
+            [util.slate-hiccup :as slate-hiccup]))
 
 (defn test-hiccup->slate-edn [{:keys [hiccup slate-edn]}]
   (is (= slate-edn
