@@ -1,6 +1,8 @@
 (ns lib.core
   (:require [reagent.core :as r]
             [util.slate :as slate]
+            [util.slate-hiccup :refer [hiccup->slate]]
+            [clojure.string :as string]
             [lib.components.core :as c]
             [lib.components.hover-menu :refer [hover-menu]]
             [lib.placeholder :refer [render-placeholder]]
@@ -16,42 +18,7 @@
             [lib.plugins.trailing-block :refer [trailing-block]]
             [lib.plugins.backspace :refer [backspace]]))
 
-(def sample-value-TODO:-rm {:document
-                            {:nodes
-                             [{:object "block"
-                               :type "header1"
-                               :nodes
-                               [{:object "text"
-                                 :leaves
-                                 [{:text "Header1"}]}]}
-                              {:object "block"
-                               :type "header2"
-                               :nodes
-                               [{:object "text"
-                                 :leaves
-                                 [{:text "Header2"}]}]}
-                              {:object "block"
-                               :type "header3"
-                               :nodes
-                               [{:object "text"
-                                 :leaves
-                                 [{:text "Header3"}]}]}
-                              {:object "block"
-                               :type "paragraph"
-                               :nodes
-                               [{:object "text"
-                                 :leaves
-                                 [{:text "paragraph example block"}]}]}
-                              {:object "block"
-                               :type "paragraph"}
-                              {:object "block"
-                               :type "blockquote"
-                               :nodes
-                               [{:object "text"
-                                 :leaves
-                                 [{:text "blockquote example block"}]}]}]}})
-
-(def slate-value (r/atom (slate/edn->slate sample-value-TODO:-rm)))
+(def slate-value (r/atom (hiccup->slate [:document [:paragraph ""]])))
 
 (defn on-slate-change [change]
   (reset! slate-value change.value))
