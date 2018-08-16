@@ -7,13 +7,14 @@
 ;  https://docs.slatejs.org/guides/data-model#documents-and-nodes
 
 
-(def marks #{:bold :italic :strikethrough :highlight})
+(def marks #{:bold :italic :strikethrough :highlight :code})
 
 (def inlines #{:link :emoji :mention :tag})
 
 (def blocks #{:paragraph :header1 :header2 :header3
               :image :horizontal-rule :blockquote
-              :ordered-list :unordered-list :list-item})
+              :ordered-list :unordered-list :list-item
+              :code-block})
 
 (defn node [types]
   (s/cat :type (s/and keyword? #(types %))
