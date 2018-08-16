@@ -6,7 +6,6 @@
 ; high level SlateJS spec:
 ;  https://docs.slatejs.org/guides/data-model#documents-and-nodes
 
-
 (def marks #{:bold :italic :strikethrough :highlight :code})
 
 (def inlines #{:link :emoji :mention :tag})
@@ -51,8 +50,8 @@
            (reduce
             (fn [acc node]
               (let [iterim-result (slateify-mark node result)]
-                {:leaves (concat (:leaves acc) (:leaves iterim-result))
-                 :marks (concat (:marks acc) (:marks iterim-result))}))
+                {:leaves (vec (concat (:leaves acc) (:leaves iterim-result)))
+                 :marks (vec (concat (:marks acc) (:marks iterim-result)))}))
             initial-mark-result
             nodes)]
        new-result)))
@@ -62,11 +61,11 @@
      (let [[object node] ast
            {:keys [type attrs nodes]} node
            marks (if (= :mark object)
-                   (conj (:marks result) {:object :mark
-                                          :type type})
+                   (vec (conj (:marks result) {:object :mark
+                                               :type type}))
                    (:marks result))
            leaves (if (= :text object)
-                    (conj (:leaves result) (slateify-text node (:marks result)))
+                    (vec (conj (:leaves result) (slateify-text node (:marks result))))
                     (:leaves result))
            new-result {:leaves leaves :marks marks}]
        (slateify-mark nil new-result nodes))))
@@ -109,104 +108,3 @@
       (make-ast)
       (ast->slate-edn)
       (slate/edn->slate)))
-
-; ;
-; ; ; ; ; ; ; ; ; ; ; ; ; ; ;
-;
-(def example-hiccup
-  [:document
-   [:paragraph]
-   [:paragraph
-    "some "
-    [:bold
-     [:link {:src "http://npr.org"} "linked"]
-     [:italic " text and the number "]]
-    3]
-   [:horizontal-rule {:color "red"}]])
-;
-; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ;
-;
-(def example-hiccup-ast
-  [:document
-   {:type :document
-    :nodes [[:block {:type :paragraph}]
-            [:block
-             {:type :paragraph
-              :nodes [[:text "some "]
-                      [:mark
-                       {:type :bold
-                        :nodes [[:inline
-                                 {:type :link
-                                  :nodes [[:text "linked"]]
-                                  :attrs {:src "http://npr.org"}}]
-                                [:mark
-                                 {:type :italic
-                                  :nodes [[:text
-                                           " text and the number "]]}]]}]
-                      [:text 3]]}]
-            [:block {:type :horizontal-rule, :attrs {:color "red"}}]]}])
-;
-; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ;
-;
-(def example-slate-edn
-  {:document
-   {:nodes [{:object "block"
-             :type "paragraph"}
-            {:object "block"
-             :type "paragraph"
-             :nodes [{:object "text"
-                      :leaves [{:object "leaf"
-                                :text "some "
-                                :marks []}]}
-                     {:object "inline"
-                      :type "link"
-                      :src "http://npr.org"
-                      :nodes [{:object "text"
-                               :leaves [{:object "leaf"
-                                         :text "linked"
-                                         :marks [{:object "mark"
-                                                  :type "bold"}]}]}]}
-                     {:object "text"
-                      :leaves [{:object "leaf"
-                                :text "text and the number"
-                                :marks [{:object "mark"
-                                         :type "bold"}
-                                        {:object "mark"
-                                         :type "italic"}]}]}
-                     {:object "text"
-                      :leaves [{:object "leaf"
-                                :text "3"
-                                :marks []}]}]}
-            {:object "block"
-             :type "horizontal-rule"
-             :color "red"}]}})
-;
-; ; ; ; ; ; ; ; ; ; ; ; ; ; ;
-; ;
-
-;;;
-;;; REPL Testing
-;;;
-
-; (shadow.cljs.devtools.api/nrepl-select :example)
-
-(ast->slate-edn (make-ast [:document [:paragraph "foo" "bar"]]))
-
-(s/conform ::slate example-hiccup)
-(= (ast->slate-edn (make-ast example-hiccup))
-   example-slate-edn)
-(hiccup->slate example-hiccup)
-
-(def example-mark
-  [:mark
-   {:type :b
-    :nodes [[:text
-             "just bold"]
-            [:mark
-             {:type :i
-              :nodes [[:text
-                       "bold and italic"]]}]
-            [:text
-             "more bold"]]}])
-
-(slateify-mark example-mark)
