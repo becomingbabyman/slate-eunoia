@@ -27,7 +27,7 @@
                  [:bold "bold text"
                   [:italic "bold and italic"
                    "   "
-                   [:highlight "bold and strikethrough and highlight"]
+                   [:highlight "bold and italic and highlight"]
                    "   "]
                   [:strikethrough "bold and strikethrough"]])))
          {:object :text
@@ -46,7 +46,7 @@
             [{:object :mark, :type :bold}
              {:object :mark, :type :italic}]}
            {:object :leaf
-            :text "bold and strikethrough and highlight"
+            :text "bold and italic and highlight"
             :marks
             [{:object :mark, :type :bold}
              {:object :mark, :type :italic}
