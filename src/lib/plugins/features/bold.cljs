@@ -31,7 +31,7 @@
         :transform transform})
       (auto-replace
        {:trigger #"\_"
-        :before #"(\_\_.+\*)"
+        :before #"(\_\_.+\_)"
         :transform transform})
       (hotkey
        {:key "cmd+b"
