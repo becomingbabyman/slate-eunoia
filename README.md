@@ -1,6 +1,6 @@
 
 ---
-### WIP (DON'T USE)
+### WIP (Don't Use)
 ---
 
 # slate-eunoia

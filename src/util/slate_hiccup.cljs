@@ -1,25 +1,15 @@
 (ns util.slate-hiccup
-  (:require [clojure.spec.alpha :as s]))
-            ; [util.slate :as slate]))
+  (:require [clojure.spec.alpha :as s]
+            [expound.alpha :as expound]
+            [util.slate :as slate]))
 
-; high level spec https://docs.slatejs.org/guides/data-model#documents-and-nodes
-
-; inspired by https://github.com/reagent-project/reagent/blob/master/src/reagent/impl/component.cljs
-; also inspired by https://github.com/ianstormtaylor/slate/blob/master/packages/slate-hyperscript/src/index.js
-; mostly by https://gist.github.com/plexus/0f105f590e6bbfa3332e7b4580eeaedb clojure.spec parsing
-; and https://gist.github.com/boogie666/8bc464a4b8aa8c3df46b3083edad3333 more hiccup parsing with spec
-
-; TODO: consider switching to use https://github.com/nathanmarz/specter
+; high level SlateJS spec:
+;  https://docs.slatejs.org/guides/data-model#documents-and-nodes
 
 
-;;;
-;;;
-
-(declare slateify-hiccup)
+(def marks #{:b :i :del :highlight})
 
 (def inlines #{:a :emoji :mention :tag})
-
-(def marks #{:b :i :del})
 
 (def blocks #{:p :h1 :h2 :h3
               :img :hr :blockquote
@@ -30,11 +20,6 @@
          :attrs (s/? map?)
          :nodes (s/* ::slate)))
 
-; TODO: reduce nested text, inline, mark nodes into
-;  flat vectors of leaves with all syntax
-; TODO: spec nesting rules
-;  texts cannot wrap inlines or marks
-;  only documents and other blocks can wrap blocks
 (s/def ::slate (s/or :text string?
                      :text number?
                      :mark (node marks)
@@ -42,149 +27,185 @@
                      :block (node blocks)
                      :document (node #{:document})))
 
-(s/conform ::slate example)
+(declare ast->slate-edn)
 
-(defmulti slate first)
-
-(defmethod slate :document [[_ data]]
-  {:document (slate [:node data])})
-
-(defmethod slate :node [[_ {:keys [type attrs nodes]}]]
-  {:nodes (vec (map slate nodes))})
-
-(defmethod slate :block [[_ data]]
-  (slate [:node data]))
-
-(defmethod slate :inline [[_ data]]
-  (slate [:node data]))
-
-(defmethod slate :mark [[_ data]]
-  (slate [:node data]))
-
-(defmethod slate :text [[_ text]]
-  (str text))
-
-(def example [:document
-              [:p]
-              [:p
-               "some "
-               [:a {:src "http://npr.org"} "linked"]
-               [:b [:i " text and the number "]]
-               3]
-              [:hr {:color "red"}]])
-(s/conform ::slate example)
-(slate (s/conform ::slate example))
-
-(defn slateify-leaf
-  ([leaves-acc leaf]
-   (println :leaf2 leaf)
-   (if (or (string? leaf) (number? leaf))
-     (conj leaves-acc {:object :leaf
-                       :marks []
-                       :text (str leaf)})
-     (if (:nodes leaf)
-       (reduce slateify-leaf leaves-acc (:nodes leaf))
-       leaves-acc)))
-  ([leaf]
-   (println :leaf leaf)
+(defn slateify-text
+  ([node marks _]
    {:object :text
-    :leaves (reduce slateify-leaf [] [leaf])}))
+    :leaves [(slateify-text node marks)]})
+  ([node marks]
+   {:object :leaf
+    :text (str node)
+    :marks marks})
+  ([node]
+   (slateify-text node [] _)))
 
-(defn merge-leaves [nodes]
-  (if (:leaves (first nodes))
-    [{:object :text
-      :leaves (reduce #(concat %1 (:leaves %2)) [] nodes)}]
-    nodes))
+(def initial-mark-result {:leaves [] :marks []})
 
-(defn slateify-node [type node]
-  (let [{:keys [nodes]} node]
-    (merge (when (map? node) node)
-           (when (some? type) {:object type})
+(defn slateify-mark
+  ([_ result nodes]
+   (if (nil? nodes)
+     result
+     (let [new-result
+           (reduce
+            (fn [acc node]
+              (let [iterim-result (slateify-mark node result)]
+                {:leaves (concat (:leaves acc) (:leaves iterim-result))
+                 :marks (concat (:marks acc) (:marks iterim-result))}))
+            initial-mark-result
+            nodes)]
+       new-result)))
+  ([ast result]
+   (if (nil? ast)
+     result
+     (let [[object node] ast
+           {:keys [type attrs nodes]} node
+           marks (if (= :mark object)
+                   (conj (:marks result) {:object :mark
+                                          :type type})
+                   (:marks result))
+           leaves (if (= :text object)
+                    (conj (:leaves result) (slateify-text node (:marks result)))
+                    (:leaves result))
+           new-result {:leaves leaves :marks marks}]
+       (slateify-mark _ new-result nodes))))
+  ([ast]
+   (let [result (slateify-mark ast initial-mark-result)]
+     {:object :text
+      :leaves (:leaves result)})))
+
+(defn slateify-block [object node]
+  (let [{:keys [type attrs nodes]} node]
+    (merge (when (some? object) {:object object})
+           (when (some? type) {:type type})
+           (when (some? attrs) attrs)
            (when (vector? nodes)
              {:nodes (->> nodes
-                          (map slateify-hiccup)
-                          (merge-leaves)
+                          (map ast->slate-edn)
                           (vec))}))))
 
-(defn slateify-hiccup [hiccup-ast]
-  (println :ast hiccup-ast)
-  (let [[type node] hiccup-ast]
-    (case type
-      (:mark :text :inline) (slateify-leaf node)
-      :document {:document (slateify-node nil
-                                          (dissoc node :type))}
-      (slateify-node type node))))
+(defn ast->slate-edn [hiccup-ast]
+  (let [[object node] hiccup-ast]
+    (case object
+      :text (slateify-text node)
+      :mark (slateify-mark hiccup-ast) ;; TODO: switch slateify-mark to accepting a node instead of an ast
+      ; :inline (slateify-inline node))))
+      :block (slateify-block :block node)
+      :document {:document (slateify-block nil (dissoc node :type))}
+      nil)))
 
-(defn hiccup->slate-edn
+(defn make-ast [hiccup]
+  (let [parsed-hiccup (s/conform ::slate hiccup)]
+    (if (= ::s/invalid parsed-hiccup)
+      (throw (js/Error. (expound/expound ::slate hiccup)))
+      parsed-hiccup)))
+
+(defn hiccup->slate
   "Takes a slate-hiccup vector with reagent-like syntax
   and spits out a Slate Value in edn."
   [hiccup]
-  (let [parsed-hiccup (s/conform ::slate hiccup)]
-    (if (= ::s/invalid parsed-hiccup)
-      (throw (js/Error. (s/explain-str ::slate hiccup)))
-      (slateify-hiccup parsed-hiccup))))
-
-;;;
-;;;
-;;;
-
-(def ex [:document
-         [:p]
-         [:p "some " [:b [:i "text"]]]
-         [:hr]])
-
-(s/conform ::slate ex)
-
-(hiccup->slate-edn ex)
-(hiccup->slate-edn example)
-(hiccup->slate-edn [:document [:p "foo" "bar"]])
-
-; (slate/edn->slate (hiccup->slate-edn ex))
+  (-> hiccup
+      (make-ast)
+      (ast->slate-edn)
+      (slate/edn->slate)))
 
 ; ;
 ; ; ; ; ; ; ; ; ; ; ; ; ; ; ;
 ;
-[:document
- [:p]
- [:p
-  "some "
-  [:a {:src "http://npr.org"} "linked"]
-  [:b [:i " text and the number "]]
-  3]
- [:hr {:color "red"}]]
+(def example-hiccup
+  [:document
+   [:p]
+   [:p
+    "some "
+    [:b
+     [:a {:src "http://npr.org"} "linked"]
+     [:i " text and the number "]]
+    3]
+   [:hr {:color "red"}]])
 ;
 ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ;
 ;
-{:document
- {:nodes [{:object "block"
-           :type "p"}
-          {:object "block"
-           :type "p"
-           :nodes [{:object "text"
-                    :leaves [{:object "leaf"
-                              :text "some "
-                              :marks []}]}
-                   {:object "inline"
-                    :type "a"
-                    :src "http://npr.org"
-                    :nodes [{:object "text"
-                             :leaves [{:object "leaf"
-                                       :text "linked"
-                                       :marks []}]}]}
-                   {:object "text"
-                    :leaves [{:object "leaf"
-                              :text "text and the number"
-                              :marks [{:object "mark"
-                                       :type "b"}
-                                      {:object "mark"
-                                       :type "i"}]}]}
-                   {:object "text"
-                    :leaves [{:object "leaf"
-                              :text "3"
-                              :marks []}]}]}
-          {:object "block"
-           :type "hr"
-           :color "red"}]}}
+(def example-hiccup-ast
+  [:document
+   {:type :document
+    :nodes [[:block {:type :p}]
+            [:block
+             {:type :p
+              :nodes [[:text "some "]
+                      [:mark
+                       {:type :b
+                        :nodes [[:inline
+                                 {:type :a
+                                  :nodes [[:text "linked"]]
+                                  :attrs {:src "http://npr.org"}}]
+                                [:mark
+                                 {:type :i
+                                  :nodes [[:text
+                                           " text and the number "]]}]]}]
+                      [:text 3]]}]
+            [:block {:type :hr, :attrs {:color "red"}}]]}])
+;
+; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ;
+;
+(def example-slate-edn
+  {:document
+   {:nodes [{:object "block"
+             :type "p"}
+            {:object "block"
+             :type "p"
+             :nodes [{:object "text"
+                      :leaves [{:object "leaf"
+                                :text "some "
+                                :marks []}]}
+                     {:object "inline"
+                      :type "a"
+                      :src "http://npr.org"
+                      :nodes [{:object "text"
+                               :leaves [{:object "leaf"
+                                         :text "linked"
+                                         :marks [{:object "mark"
+                                                  :type "b"}]}]}]}
+                     {:object "text"
+                      :leaves [{:object "leaf"
+                                :text "text and the number"
+                                :marks [{:object "mark"
+                                         :type "b"}
+                                        {:object "mark"
+                                         :type "i"}]}]}
+                     {:object "text"
+                      :leaves [{:object "leaf"
+                                :text "3"
+                                :marks []}]}]}
+            {:object "block"
+             :type "hr"
+             :color "red"}]}})
 ;
 ; ; ; ; ; ; ; ; ; ; ; ; ; ; ;
 ; ;
+
+;;;
+;;; REPL Testing
+;;;
+
+(shadow.cljs.devtools.api/nrepl-select :example)
+
+(ast->slate-edn (make-ast [:document [:p "foo" "bar"]]))
+
+(s/conform ::slate example-hiccup)
+(= (ast->slate-edn (make-ast example-hiccup))
+   example-slate-edn)
+(hiccup->slate example-hiccup)
+
+(def example-mark
+  [:mark
+   {:type :b
+    :nodes [[:text
+             "just bold"]
+            [:mark
+             {:type :i
+              :nodes [[:text
+                       "bold and italic"]]}]
+            [:text
+             "more bold"]]}])
+
+(slateify-mark example-mark)

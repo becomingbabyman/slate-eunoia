@@ -2,6 +2,7 @@
 
  :dependencies [[reagent "0.8.1"]
                 [proto-repl "0.3.1"]
+                [expound "0.7.1"]
                 [org.roman01la/cljss "1.6.3"]]
 
  :nrepl {:port 3333
