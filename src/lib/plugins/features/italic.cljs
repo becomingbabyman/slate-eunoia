@@ -27,11 +27,11 @@
     (clj->js
      [(auto-replace
        {:trigger #"\_"
-        :before #"[^\_](\_[^\_].*)"
+        :before #"[^\_](\_[^\_].*)" ; TODO: FIX: this does not work at the start of a newline
         :transform transform})
       (auto-replace
        {:trigger #"\*"
-        :before #"[^\*](\*[^\*].*)"
+        :before #"[^\*](\*[^\*].*)" ; TODO: FIX: this does not work at the start of a newline
         :transform transform})
       (hotkey
        {:key "cmd+i"
