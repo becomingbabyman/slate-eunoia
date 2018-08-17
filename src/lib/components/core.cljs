@@ -121,44 +121,72 @@
 (defstyled img :img
            {})
 
-;; Shared Components
+;; Shared Helpers
 
 (defn icon
   "feather svg icon
   names: https://feathericons.com/
   svg-attrs: https://github.com/feathericons/feather#parameters"
-  ([name svg-attrs]
+  ([name svg-attrs style]
    ; TODO: find a way to render the SVG without wrapping it in a superfluous span
-   [:span {:style {:display "flex"}
+   [:span {:style (merge {:display "flex"} style)
            :dangerouslySetInnerHTML
            {:__html (.toSvg (aget feather/icons name)
                             (clj->js svg-attrs))}}])
+  ([name svg-attrs]
+   (icon name svg-attrs {}))
   ([name]
    (icon name {:color black
                :stroke-width 2})))
 
-; TODO: DELETE ME:
-(defstyled tooltip :span
-           {:display "none"
-            :opacity 0
-            :position "absolute"
-            :top "-100%"
-            :left 0
-            :background "white"
-            :border-radius "5px"
-            :box-shadow light-box-shadow
-            :white-space "nowrap"
-            :z-index 1
-            :max-width "300px"
-            :transition "opacity 0.3s"})
+;; Shared Components
 
-; TODO: DELETE ME:
 ; NOTE: expects a tooltip to be the first child of this element
 (defstyled tooltip-wrap :span
            {:position "relative"
             :display "inline-block"
-            "&:hover :first-child" {:display "flex"
-                                    :opacity 1}})
+            "&:hover :first-child" {:opacity 1
+                                    :visibility "visible"
+                                    :top "100%"
+                                    :left 0}})
+(defstyled tooltip :span
+           {:display "flex"
+            :flex-direction "column"
+            :align-items "center"
+            :justify-content "center"
+            :max-width "300px"
+            :z-index 1
+            :margin-top "5px"
+            :position "absolute"
+            :opacity 0
+            :visibility "hidden"
+            :top "-10000px"
+            :left "-10000px"
+            :color white
+            :background black
+            :padding "6px 12px"
+            :border-radius "3px"
+            ; :box-shadow dark-box-shadow
+            :white-space "nowrap"
+            :transition "opacity 0.2s 0.8s"})
+(defstyled tooltip-title :span
+           {:display "flex"
+            :flex-direction "row"
+            :align-items "center"
+            :justify-content "center"
+            :font-size "14px"
+            :font-weight 600
+            :line-height "16px"})
+(defstyled tooltip-sub-title :span
+           {:display "flex"
+            :flex-direction "row"
+            :align-items "center"
+            :justify-content "center"
+            :font-size "14px"
+            :font-weight 200
+            :font-style "italic"
+            :line-height "16px"
+            :margin-top "4px"})
 
 ;; Custom Components
 
