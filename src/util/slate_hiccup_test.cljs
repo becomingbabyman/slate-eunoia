@@ -2,15 +2,22 @@
   (:require [cljs.test :refer-macros (deftest is)]
             [util.slate-hiccup :as slate-hiccup]))
 
+(defn is=
+  "Flips the parameter order so the actual result can be
+  stated before the expectation when writing tests."
+  [actual expected]
+  (is (= expected actual)))
+
 (defn test-hiccup->slate-edn [{:keys [hiccup slate-edn]}]
-  (is (= slate-edn
-         (slate-hiccup/ast->slate-edn
-          (slate-hiccup/make-ast hiccup)))))
+  (is= (slate-hiccup/ast->slate-edn
+        (slate-hiccup/make-ast hiccup))
+       slate-edn))
 
 (deftest hiccup->slate-edn--simple
   (test-hiccup->slate-edn
    {:hiccup [:document
              [:paragraph "some text"]]
+
     :slate-edn {:document
                 {:nodes
                  [{:object :block
@@ -21,46 +28,75 @@
                      [{:object :leaf, :text "some text", :marks []}]}]}]}}}))
 
 (deftest slateify-mark
-  ; NOTE: expected and actual are switched in test result
-  (is (= (slate-hiccup/slateify-mark
-          (last (slate-hiccup/make-ast
-                 [:bold "bold text"
-                  [:italic "bold and italic"
-                   "   "
-                   [:highlight "bold and italic and highlight"]
-                   "   "]
-                  [:strikethrough "bold and strikethrough"]])))
-         {:object :text
+  (is= (slate-hiccup/slateify-mark
+        (last (slate-hiccup/make-ast
+               [:bold "bold text"
+                [:italic "bold and italic"
+                 "   "
+                 [:highlight "bold and italic and highlight"]
+                 "   "]
+                [:strikethrough "bold and strikethrough"]
+                "   "
+                [:link {:url "https://google.com"} "a bold link"]])))
+
+       {:object :inline
+        :type :mark-wrapper
+        :nodes
+        [{:object :text
           :leaves
           [{:object :leaf
             :text "bold text"
-            :marks [{:object :mark, :type :bold}]}
-           {:object :leaf
+            :marks [{:object :mark, :type :bold}]}]}
+         {:object :text
+          :leaves
+          [{:object :leaf
             :text "bold and italic"
             :marks
             [{:object :mark, :type :bold}
-             {:object :mark, :type :italic}]}
-           {:object :leaf
+             {:object :mark, :type :italic}]}]}
+         {:object :text
+          :leaves
+          [{:object :leaf
             :text "   "
             :marks
             [{:object :mark, :type :bold}
-             {:object :mark, :type :italic}]}
-           {:object :leaf
+             {:object :mark, :type :italic}]}]}
+         {:object :text
+          :leaves
+          [{:object :leaf
             :text "bold and italic and highlight"
             :marks
             [{:object :mark, :type :bold}
              {:object :mark, :type :italic}
-             {:object :mark, :type :highlight}]}
-           {:object :leaf
+             {:object :mark, :type :highlight}]}]}
+         {:object :text
+          :leaves
+          [{:object :leaf
             :text "   "
             :marks
             [{:object :mark, :type :bold}
-             {:object :mark, :type :italic}]}
-           {:object :leaf
+             {:object :mark, :type :italic}]}]}
+         {:object :text
+          :leaves
+          [{:object :leaf
             :text "bold and strikethrough"
             :marks
             [{:object :mark, :type :bold}
-             {:object :mark, :type :strikethrough}]}]})))
+             {:object :mark, :type :strikethrough}]}]}
+         {:object :text
+          :leaves
+          [{:object :leaf
+            :text "   "
+            :marks [{:object :mark, :type :bold}]}]}
+         {:object :inline
+          :type :link
+          :data {:url "https://google.com"}
+          :nodes
+          [{:object :text
+            :leaves
+            [{:object :leaf
+              :text "a bold link"
+              :marks [{:object :mark, :type :bold}]}]}]}]}))
 
 (deftest hiccup->slate-edn--complex
   (test-hiccup->slate-edn
@@ -70,7 +106,9 @@
              [:header3 "Header 3"]
              [:paragraph "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sagittis elit augue, vitae tempus elit accumsan ac. Cras tempus metus mi, ut laoreet nisl aliquam sit amet. Nullam in purus id felis vulputate efficitur. Vestibulum eget libero lectus. Maecenas vestibulum sapien at dolor lobortis varius. Aenean consequat augue ipsum, vitae blandit lorem euismod vel. Cras eu porta purus, sit amet hendrerit mi."]
              [:paragraph]
-             [:blockquote "blockquote example block"]
+             [:blockquote
+              "blockquote example block with a "
+              [:link {:url "https://google.com"} "link"]]
              [:paragraph]
              [:paragraph
               [:bold "bold"]
@@ -83,19 +121,22 @@
               "   "
               [:highlight " highlight "]
               "\n\n"
-              [:bold [:italic [:strikethrough [:highlight [:code "all the marks!!!"]]]]]]
+              [:bold [:italic [:strikethrough [:highlight [:code "all the marks!!!"
+                                                           "   "
+                                                           [:link {:url "https://google.com"} "and a link"]]]]]]]
              [:paragraph]
              [:code-block "(def slate-value
-           (r/atom
-            (hiccup->slate
-             [:document
-              [:header1 \"Header 1\"]
-              [:header2 \"Header 2\"]
-              [:header3 \"Header 3\"]
-              [:paragraph
-               (string/replace
-                \"Lorem ipsum dol..."]
+          (r/atom
+           (hiccup->slate
+            [:document
+             [:header1 \"Header 1\"]
+             [:header2 \"Header 2\"]
+             [:header3 \"Header 3\"]
+             [:paragraph
+              (string/replace
+               \"Lorem ipsum dol..."]
              [:paragraph]]
+
     :slate-edn {:document
                 {:nodes
                  [{:object :block
@@ -132,57 +173,106 @@
                    [{:object :text
                      :leaves
                      [{:object :leaf
-                       :text "blockquote example block"
-                       :marks []}]}]}
+                       :text "blockquote example block with a "
+                       :marks []}]}
+                    {:object :inline
+                     :type :link
+                     :data {:url "https://google.com"}
+                     :nodes
+                     [{:object :text
+                       :leaves
+                       [{:object :leaf, :text "link", :marks []}]}]}]}
                   {:object :block, :type :paragraph}
                   {:object :block
                    :type :paragraph
                    :nodes
-                   [{:object :text
-                     :leaves
-                     [{:object :leaf
-                       :text "bold"
-                       :marks [{:object :mark, :type :bold}]}]}
+                   [{:object :inline
+                     :type :mark-wrapper
+                     :nodes
+                     [{:object :text
+                       :leaves
+                       [{:object :leaf
+                         :text "bold"
+                         :marks [{:object :mark, :type :bold}]}]}]}
                     {:object :text
                      :leaves [{:object :leaf, :text "   ", :marks []}]}
-                    {:object :text
-                     :leaves
-                     [{:object :leaf
-                       :text "italic"
-                       :marks [{:object :mark, :type :italic}]}]}
-                    {:object :text
-                     :leaves [{:object :leaf, :text "   ", :marks []}]}
-                    {:object :text
-                     :leaves
-                     [{:object :leaf
-                       :text " code "
-                       :marks [{:object :mark, :type :code}]}]}
+                    {:object :inline
+                     :type :mark-wrapper
+                     :nodes
+                     [{:object :text
+                       :leaves
+                       [{:object :leaf
+                         :text "italic"
+                         :marks [{:object :mark, :type :italic}]}]}]}
                     {:object :text
                      :leaves [{:object :leaf, :text "   ", :marks []}]}
-                    {:object :text
-                     :leaves
-                     [{:object :leaf
-                       :text " strikethrough "
-                       :marks [{:object :mark, :type :strikethrough}]}]}
+                    {:object :inline
+                     :type :mark-wrapper
+                     :nodes
+                     [{:object :text
+                       :leaves
+                       [{:object :leaf
+                         :text " code "
+                         :marks [{:object :mark, :type :code}]}]}]}
                     {:object :text
                      :leaves [{:object :leaf, :text "   ", :marks []}]}
+                    {:object :inline
+                     :type :mark-wrapper
+                     :nodes
+                     [{:object :text
+                       :leaves
+                       [{:object :leaf
+                         :text " strikethrough "
+                         :marks [{:object :mark, :type :strikethrough}]}]}]}
                     {:object :text
-                     :leaves
-                     [{:object :leaf
-                       :text " highlight "
-                       :marks [{:object :mark, :type :highlight}]}]}
+                     :leaves [{:object :leaf, :text "   ", :marks []}]}
+                    {:object :inline
+                     :type :mark-wrapper
+                     :nodes
+                     [{:object :text
+                       :leaves
+                       [{:object :leaf
+                         :text " highlight "
+                         :marks [{:object :mark, :type :highlight}]}]}]}
                     {:object :text
                      :leaves [{:object :leaf, :text "\n\n", :marks []}]}
-                    {:object :text
-                     :leaves
-                     [{:object :leaf
-                       :text "all the marks!!!"
-                       :marks
-                       [{:object :mark, :type :bold}
-                        {:object :mark, :type :italic}
-                        {:object :mark, :type :strikethrough}
-                        {:object :mark, :type :highlight}
-                        {:object :mark, :type :code}]}]}]}
+                    {:object :inline
+                     :type :mark-wrapper
+                     :nodes
+                     [{:object :text
+                       :leaves
+                       [{:object :leaf
+                         :text "all the marks!!!"
+                         :marks
+                         [{:object :mark, :type :bold}
+                          {:object :mark, :type :italic}
+                          {:object :mark, :type :strikethrough}
+                          {:object :mark, :type :highlight}
+                          {:object :mark, :type :code}]}]}
+                      {:object :text
+                       :leaves
+                       [{:object :leaf
+                         :text "   "
+                         :marks
+                         [{:object :mark, :type :bold}
+                          {:object :mark, :type :italic}
+                          {:object :mark, :type :strikethrough}
+                          {:object :mark, :type :highlight}
+                          {:object :mark, :type :code}]}]}
+                      {:object :inline
+                       :type :link
+                       :data {:url "https://google.com"}
+                       :nodes
+                       [{:object :text
+                         :leaves
+                         [{:object :leaf
+                           :text "and a link"
+                           :marks
+                           [{:object :mark, :type :bold}
+                            {:object :mark, :type :italic}
+                            {:object :mark, :type :strikethrough}
+                            {:object :mark, :type :highlight}
+                            {:object :mark, :type :code}]}]}]}]}]}
                   {:object :block, :type :paragraph}
                   {:object :block
                    :type :code-block
@@ -191,6 +281,6 @@
                      :leaves
                      [{:object :leaf
                        :text
-                       "(def slate-value\n           (r/atom\n            (hiccup->slate\n             [:document\n              [:header1 \"Header 1\"]\n              [:header2 \"Header 2\"]\n              [:header3 \"Header 3\"]\n              [:paragraph\n               (string/replace\n                \"Lorem ipsum dol..."
+                       "(def slate-value\n          (r/atom\n           (hiccup->slate\n            [:document\n             [:header1 \"Header 1\"]\n             [:header2 \"Header 2\"]\n             [:header3 \"Header 3\"]\n             [:paragraph\n              (string/replace\n               \"Lorem ipsum dol..."
                        :marks []}]}]}
                   {:object :block, :type :paragraph}]}}}))
