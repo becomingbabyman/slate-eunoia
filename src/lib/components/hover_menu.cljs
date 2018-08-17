@@ -22,7 +22,9 @@
             :background c/black
             :border (str "1px solid " c/pitch-black)
             :border-radius "4px"
-            :transition "opacity 0.3s"})
+            :transition "opacity 0.3s"
+            :white-space "nowrap"
+            :box-shadow c/dark-box-shadow})
 
 (defstyled divider :span
            {:background c/pitch-black

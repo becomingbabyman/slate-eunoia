@@ -22,6 +22,11 @@
 (def grey "#637282")
 (def blue "#0070e0")
 (def light-blue "#d6e8fa")
+(def yellow "#ffc726")
+(def light-yellow "#ffe28f")
+
+(def dark-box-shadow "0 0 0 1px #000, 0 8px 16px rgba(27,39,51,0.16)")
+(def light-box-shadow "0 0 0 1px rgba(99,114,130,0.16), 0 8px 16px rgba(27,39,51,0.08)")
 
 ;; Animations
 
@@ -42,7 +47,10 @@
             :-webkit-tap-highlight-color "transparent"
             ; reset css
             "*" {:padding 0
-                 :margin 0}
+                 :margin 0
+                 :-webkit-tap-highlight-color "rgba(0,0,0,0)"
+                 :-webkit-font-smoothing "antialiased"
+                 :-moz-osx-font-smoothing "grayscale"}
             "button" {:background "none"
                       :border "none"
                       :cursor "pointer"
@@ -59,7 +67,7 @@
            {:text-decoration-color pitch-black})
 (defstyled mark :mark
            {:color black
-            :background-color light-blue
+            :background-color light-yellow
             :padding-top "0.1em"
             :padding-bottom "0.1em"})
 (defstyled code :code
@@ -74,7 +82,10 @@
             :border-radius "2px"})
 
 (defstyled a :a
-           {:color blue})
+           {:color blue
+            :cursor "pointer"
+            :text-decoration "none"
+            "&:hover" {:text-decoration "underline"}})
 
 (defstyled h1 :h1
            {:font-size "30px"
@@ -110,7 +121,7 @@
 (defstyled img :img
            {})
 
-;; Common Helpers
+;; Shared Components
 
 (defn icon
   "feather svg icon
@@ -125,6 +136,29 @@
   ([name]
    (icon name {:color black
                :stroke-width 2})))
+
+; TODO: DELETE ME:
+(defstyled tooltip :span
+           {:display "none"
+            :opacity 0
+            :position "absolute"
+            :top "-100%"
+            :left 0
+            :background "white"
+            :border-radius "5px"
+            :box-shadow light-box-shadow
+            :white-space "nowrap"
+            :z-index 1
+            :max-width "300px"
+            :transition "opacity 0.3s"})
+
+; TODO: DELETE ME:
+; NOTE: expects a tooltip to be the first child of this element
+(defstyled tooltip-wrap :span
+           {:position "relative"
+            :display "inline-block"
+            "&:hover :first-child" {:display "flex"
+                                    :opacity 1}})
 
 ;; Custom Components
 

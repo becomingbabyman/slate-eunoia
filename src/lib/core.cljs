@@ -7,6 +7,7 @@
             [lib.components.hover-menu :refer [hover-menu]]
             [lib.placeholder :refer [render-placeholder]]
             [lib.plugins.features.header :refer [header]]
+            [lib.plugins.features.link :refer [link]]
             [lib.plugins.features.bold :refer [bold]]
             [lib.plugins.features.italic :refer [italic]]
             [lib.plugins.features.strikethrough :refer [strikethrough]]
@@ -27,6 +28,7 @@
               (concat
                [(backspace)]
                (:plugins (header))
+               (:plugins (link))
                (:plugins (bold))
                (:plugins (italic))
                (:plugins (strikethrough))

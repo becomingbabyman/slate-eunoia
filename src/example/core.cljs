@@ -23,20 +23,24 @@
         Cras eu porta purus, sit amet hendrerit mi."
        #"\s\s" "")]
      [:paragraph]
-     [:blockquote "blockquote example block"]
+     [:blockquote
+      "blockquote with a "
+      [:link {:url "https://google.com"} "link"]]
      [:paragraph]
      [:paragraph
-      [:bold "bold"]
+      [:bold "bold " [:link {:url "https://google.com"} "link"]]
       "   "
-      [:italic "italic"]
+      [:italic "italic " [:link {:url "https://google.com"} "link"]]
       "   "
-      [:code " code "]
+      [:code " code " [:link {:url "https://google.com"} "link"]]
       "   "
-      [:strikethrough " strikethrough "]
+      [:strikethrough " strikethrough " [:link {:url "https://google.com"} "link"]]
       "   "
-      [:highlight " highlight "]
+      [:highlight " highlight " [:link {:url "https://google.com"} "link"]]
       "\n\n"
-      [:bold [:italic [:strikethrough [:highlight [:code "all the marks!!!"]]]]]]
+      [:bold [:italic [:strikethrough [:highlight [:code "all the marks!!!"
+                                                   "   "
+                                                   [:link {:url "https://google.com"} "and a link"]]]]]]]
      [:paragraph]
      [:code-block "(def slate-value
   (r/atom
