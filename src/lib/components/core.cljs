@@ -34,6 +34,10 @@
               {:from {:opacity from-opacity}
                :to   {:opacity to-opacity}})
 
+(defkeyframes slide [from to]
+              {:from {:transform (str "translate(" from ")")}
+               :to   {:transform (str "translate(" to ")")}})
+
 ;; Top Level Component
 
 (defstyled top-level-component :div
@@ -67,7 +71,7 @@
            {:text-decoration-color pitch-black})
 (defstyled mark :mark
            {:color black
-            :background-color light-yellow
+            :background light-yellow
             :padding-top "0.1em"
             :padding-bottom "0.1em"})
 (defstyled code :code
@@ -145,30 +149,40 @@
 (defstyled tooltip-wrap :span
            {:position "relative"
             :display "inline-block"
-            "&:hover :first-child" {:opacity 1
-                                    :visibility "visible"
-                                    :top "100%"
-                                    :left 0}})
+            "&:hover>:first-child" {:opacity 1
+                                    :top "-8px"
+                                    :left "50%"
+                                    :animation (str (slide "-50%, -85%" "-50%, -100%") " 0.3s ease 0.9s")
+                                    :transition "opacity 0.3s 0.9s"}})
 (defstyled tooltip :span
            {:display "flex"
+            :transform "translate(-50%, -100%)"
             :flex-direction "column"
             :align-items "center"
             :justify-content "center"
             :max-width "300px"
             :z-index 1
-            :margin-top "5px"
             :position "absolute"
             :opacity 0
-            :visibility "hidden"
             :top "-10000px"
             :left "-10000px"
             :color white
-            :background black
+            :background pitch-black
             :padding "6px 12px"
             :border-radius "3px"
-            ; :box-shadow dark-box-shadow
             :white-space "nowrap"
-            :transition "opacity 0.2s 0.8s"})
+            :animation (str (slide "-50%, -100%" "-50%, -85%") " 0.15s ease 0s")
+            :transition "opacity 0.15s 0s, top 0s 0.15s, left 0s 0.15s, visible 0s 0.15s"
+            "&::after" {:content " "
+                        :position "absolute"
+                        :top "100%"
+                        :left "50%"
+                        :transform "translateX(-50%)"
+                        :width 0
+                        :height 0
+                        :border-width "5px"
+                        :border-style "solid"
+                        :border-color (str pitch-black " transparent transparent transparent")}})
 (defstyled tooltip-title :span
            {:display "flex"
             :flex-direction "row"
