@@ -1,6 +1,5 @@
 (ns lib.plugins.features.header
-  (:require [reagent.core :as r]
-            [lib.components.core :as c]
+  (:require [lib.components.core :as c]
             [lib.plugins.helpers.auto-replace :refer [auto-replace]]
             [lib.plugins.helpers.hotkey :refer [hotkey]]))
 
@@ -9,12 +8,12 @@
    "Contextually Transfrom between header(1-3) and paragraph"
    (let [type (str "header" n)]
      (.setBlocks change
-                 (clj->js (if (= type change.value.anchorBlock.type)
+                 (clj->js (if (= type (.. change -value -anchorBlock -type))
                             {:type "paragraph"}
                             {:type type})))))
   ([change event matches editor]
    "Handle auto-replace events"
-   (let [hashes (first matches.before)
+   (let [hashes (first (.. matches -before))
          n (count hashes)]
      (transform change n)))
   ([n]
@@ -25,9 +24,9 @@
 (defn render-node [props]
   (let [render (fn [h-component]
                  (apply h-component
-                        (js->clj props.attributes)
-                        props.children))]
-    (case props.node.type
+                        (js->clj (.. props -attributes))
+                        (.. props -children)))]
+    (case (.. props -node -type)
       "header1" (render c/h1)
       "header2" (render c/h2)
       "header3" (render c/h3)

@@ -1,6 +1,6 @@
 (ns example.markdown)
 
-(def short [] "
+(def short-sample "
 # Short markdown sample
 ============
 

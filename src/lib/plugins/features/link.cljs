@@ -1,13 +1,11 @@
 (ns lib.plugins.features.link
-  (:require [reagent.core :as r]
-            [lib.components.core :as c]
-            [lib.plugins.helpers.auto-replace :refer [auto-replace]]))
+  (:require [lib.components.core :as c]))
 
 (defn show-hover-menu [props]
   (fn [event]
-    (.change props.editor
+    (.change (.. props -editor)
              #(.setNodeByKey %
-                             props.node.key
+                             (.. props -node -key)
                              (clj->js
                               {:data {:hovered true
                                       :url "http://npr.org"}})))
@@ -23,18 +21,18 @@
                                   :data {:url url}}))))
 
 (defn render-node [props]
-  (when (= "link" props.node.type)
+  (when (= "link" (.. props -node -type))
     (js/console.log props)
-    (let [url (.get props.node.data "url")]
+    (let [url (.get (.. props -node -data) "url")]
       ; (c/tooltip-wrap ; TODO: see if the hover-menu can be used instead of rendering a hidden tooltip with every link.
       ;  (c/tooltip "TODO: ... " url)
-      (c/a (merge (js->clj props.attributes)
+      (c/a (merge (js->clj (.. props -attributes))
                   {:href url
                    :target "_blank"
                    :on-click #(.open js/window url "_blank")})
                    ; :on-mouse-over (show-hover-menu props)
                    ; :on-mouse-out (hide-hover-menu props)})
-           props.children))))
+           (.. props -children)))))
 
 (defn link
   "Adds link support to editor"

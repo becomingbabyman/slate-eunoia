@@ -2,7 +2,7 @@
   "generic browser test runner"
   (:require [shadow.test :as st]
             [shadow.dom :as dom]
-            [pjstadig.humane-test-output])) ; NOTE: just requiring this package pretty prints the test output
+            [pjstadig.humane-test-output])) ; NOTE: DO NOT DELETE: just requiring this package pretty prints the test output
 
 ;;;;;;;;;
 ; NOTE: this file is coppied almost verbatim from

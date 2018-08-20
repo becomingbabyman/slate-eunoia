@@ -2,7 +2,6 @@
   (:require [reagent.core :as r]
             [util.slate :as slate]
             [util.slate-hiccup :refer [hiccup->slate]]
-            [clojure.string :as string]
             [lib.components.core :as c]
             [lib.components.hover-menu :refer [hover-menu]]
             [lib.placeholder :refer [render-placeholder]]
@@ -22,7 +21,7 @@
 (def slate-value (r/atom (hiccup->slate [:document [:paragraph ""]])))
 
 (defn on-slate-change [change]
-  (reset! slate-value change.value))
+  (reset! slate-value (.. change -value)))
 
 (def plugins (clj->js
               (concat

@@ -104,36 +104,27 @@
   (if @focused-on-link?
     @last-selection-style
     (when menu
-      (let [rect (-> js/window
-                     (.getSelection)
+      (let [rect (-> (.getSelection js/window)
                      (.getRangeAt 0)
                      (.getBoundingClientRect))
             top (+ js/window.pageYOffset
-                   (- rect.top
-                      menu.offsetHeight))
-            left (min (- js/window.innerWidth menu.offsetWidth 5)
+                   (- (.. rect -top)
+                      (.. menu -offsetHeight)))
+            left (min (- (.. js/window -innerWidth) (.. menu -offsetWidth) 5)
                       (max 5
-                           (- (+ rect.left js/window.pageXOffset (/ rect.width  2))
-                              (/ menu.offsetWidth 2))))
+                           (- (+ (.. rect -left) (.. js/window -pageXOffset) (/ (.. rect -width)  2))
+                              (/ (.. menu -offsetWidth) 2))))
             style  {:opacity 1
                     :top (str top "px")
                     :left (str left "px")}
             final-style (if (< top 11)
-                          (merge style {:top (str (+ rect.bottom 11) "px")})
+                          (merge style {:top (str (+ (.. rect -bottom) 11) "px")})
                           style)]
         (reset! last-selection-style final-style)
         final-style))))
 
 (defn active-mark? [value mark-type]
-  (.some value.activeMarks #(= (aget %1 "type") mark-type)))
-
-(defn transform-handler-handler [value on-change]
-  (fn [transform]
-    (fn [event]
-      (.preventDefault event)
-      (-> (.change value) ; Get a new change object
-          (transform) ; Perform the curried transformation
-          (on-change))))) ; Makes sure to callback to the on-change handler of the editor to propagate the changes
+  (.some (.. value -activeMarks) #(= (aget %1 "type") mark-type)))
 
 (defn focus-on-link [event transform-handler]
   (.preventDefault event)
@@ -143,17 +134,26 @@
 (defn on-submit-url [event]
   (.preventDefault event)
   ((@link-transform-handler (link/transform @url)) event)
-  (reset! url ""))
+  (reset! url "")
+  (.setTimeout js/window #(.empty (.getSelection js/window))))
 
 (defn remove-link [event]
   (.preventDefault event)
   (print "TODO: >>>>>>"))
 
+(defn transform-handler-handler [value on-change]
+  (fn [transform]
+    (fn [event]
+      (.preventDefault event)
+      (-> (.change value) ; Get a new change object
+          (transform) ; Perform the curried transformation
+          (on-change))))) ; Makes sure to callback to the on-change handler of the editor to propagate the changes
+
 (defn hover-menu [props]
   (let [value (get props :value)
-        blurred? value.isBlurred
-        empty? (try value.isEmpty (catch :default e false))
-        link? (try (= "link" value.anchorInline.type) (catch :default e false))
+        blurred? (.. value -isBlurred)
+        empty? (try (.. value -isEmpty) (catch :default e false))
+        link? (try (= "link" (.. value -anchorInline -type)) (catch :default e false))
         active-style (if (or (and (not blurred?) (not empty?))
                              @focused-on-link?)
                        (selection-style @menu-ref) {})
@@ -173,9 +173,9 @@
                       :default-value @url
                       :on-change (fn [e] (reset! url (.. e -target -value)))
                       :on-focus #(reset! focused-on-link? true)
-                      :on-blur #(reset! focused-on-link? false)})]]
-             ; (x-button {:on-click remove-link}
-             ;           (icon "x"))]
+                      :on-blur #(reset! focused-on-link? false)})]
+             (x-button {:on-click remove-link}
+                       (icon "x"))]
             [:<>
              (tooltip "Bold" "⌘ + B"
                       (button
@@ -200,12 +200,12 @@
              (tooltip "Large Header" "# Space"
                       (button
                         {:on-mouse-down (transform-handler (header/transform 1))
-                         :style {:color (when (= value.anchorBlock.type "header1") c/white)}}
+                         :style {:color (when (= (.. value -anchorBlock -type) "header1") c/white)}}
                         "H" (small "1")))
              (tooltip "Small Header" "## Space"
                       (button
                         {:on-mouse-down (transform-handler (header/transform 2))
-                         :style {:color (when (= value.anchorBlock.type "header2") c/white)}}
+                         :style {:color (when (= (.. value -anchorBlock -type) "header2") c/white)}}
                         (small "H2")))
              (tooltip "TODO:" "..."
                       (button (icon "list")))

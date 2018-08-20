@@ -11,22 +11,22 @@
                      :nodes [(.create slate/Text)]})))
 
 (defn trailing-block-inserter [node]
-  (let [last-index (.count node.nodes)
+  (let [last-index (.count (.. node -nodes))
         block (make-trailing-block)]
     (fn [change]
-      (.insertNodeByKey change node.key last-index block))))
+      (.insertNodeByKey change (.. node -key) last-index block))))
 
 (defn document? [node]
-  (= node.object "document"))
+  (= (.. node -object) "document"))
 
 (defn ends-in-trailing-block? [node]
-  (some-> node.nodes
+  (some-> (.. node -nodes)
           (.last)
           (aget "type")
           (= trailing-block-type)))
 
 (defn ends-in-empty-block? [node]
-  (some-> node.nodes
+  (some-> (.. node -nodes)
           (.last)
           (aget "isEmpty")))
 

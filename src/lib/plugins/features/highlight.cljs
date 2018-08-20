@@ -6,10 +6,10 @@
   (.toggleMark change "highlight"))
 
 (defn render-mark [props]
-  (when (= "highlight" props.mark.type)
+  (when (= "highlight" (.. props -mark -type))
     (c/mark
-     (js->clj props.attributes)
-     props.children)))
+     (js->clj (.. props -attributes))
+     (.. props -children))))
 
 (defn highlight
   "Adds highlight support to editor"

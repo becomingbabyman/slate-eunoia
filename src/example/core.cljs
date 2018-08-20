@@ -55,7 +55,7 @@
      [:paragraph]])))
 
 (defn on-slate-change [change]
-  (reset! slate-value change.value))
+  (reset! slate-value (.. change -value)))
 
 (defn root-component []
   [:div {:style {:margin 20}}

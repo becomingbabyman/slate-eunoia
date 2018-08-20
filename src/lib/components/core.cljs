@@ -1,6 +1,5 @@
 (ns lib.components.core
-  (:require [reagent.core :as r]
-            ["react" :as react]
+  (:require ["react" :as react]
             ["feather-icons" :as feather]
             [cljss.core :as css :refer-macros [defstyles defkeyframes]]
             [cljss.reagent :refer-macros [defstyled]]))
@@ -25,6 +24,7 @@
 (def yellow "#ffc726")
 (def light-yellow "#ffe28f")
 
+; Shadows
 (def dark-box-shadow "0 0 0 1px #000, 0 8px 16px rgba(27,39,51,0.16)")
 (def light-box-shadow "0 0 0 1px rgba(99,114,130,0.16), 0 8px 16px rgba(27,39,51,0.08)")
 
@@ -132,7 +132,7 @@
   names: https://feathericons.com/
   svg-attrs: https://github.com/feathericons/feather#parameters"
   ([name svg-attrs style]
-   ; TODO: find a way to render the SVG without wrapping it in a superfluous span
+   ; TODO: MAYBE: find a way to render the SVG without wrapping it in a superfluous span
    [:span {:style (merge {:display "flex"} style)
            :dangerouslySetInnerHTML
            {:__html (.toSvg (aget feather/icons name)

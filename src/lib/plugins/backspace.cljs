@@ -1,13 +1,13 @@
 (ns lib.plugins.backspace)
 
 (defn start-of-block? [change]
-  (= 0 change.value.startOffset))
+  (= 0 (.. change -value -startOffset)))
 
 (defn paragraph? [change]
-  (= "paragraph" change.value.startBlock.type))
+  (= "paragraph" (.. change -value -startBlock -type)))
 
 (defn on-key-down [event change]
-  (when (= event.key "Backspace")
+  (when (= (.. event -key) "Backspace")
     (when (and (start-of-block? change)
                (not (paragraph? change)))
       (.preventDefault event)
