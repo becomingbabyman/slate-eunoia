@@ -76,6 +76,8 @@
   (let [focused? (r/atom false)
         hovered? (r/atom false)
         timeout (r/atom nil)
+        style (r/atom {})
+        ref (r/atom nil)
         after-timeout
         (fn [ms callback]
           (fn []
@@ -92,11 +94,20 @@
                                 (reset! focused? false)
                                 (reset! hovered? false))})
        (if (or @focused? @hovered?)
-         ; TODO: make this stay on the screen if too close to the left or right
-         ; (link-tooltip {:style {:left "calc(50% - 50px)"}
-         ;                :component-did-mount #(aset js/window "tt" (r/dom-node %))}
-         ;               (:tooltip props))
-         (link-tooltip (:tooltip props))
+         (link-tooltip {:style @style
+                        :ref (fn [comp]
+                               (reset! ref comp)
+                               (when comp
+                                 (let [rect (.getBoundingClientRect comp)
+                                       x (.. rect -x)
+                                       width (.. rect -width)
+                                       window-width (.. js/window -innerWidth)
+                                       right (- (- window-width 10) (+ x width))]
+                                   (when (< x 10)
+                                     (reset! style {:left (str "calc(50% + " (Math/abs x) "px + 10px )")}))
+                                   (when (< right 10)
+                                     (reset! style {:left (str "calc(50% - " (Math/abs right) "px - 10px)")})))))}
+                       (:tooltip props))
          [:span])
        child))))
 

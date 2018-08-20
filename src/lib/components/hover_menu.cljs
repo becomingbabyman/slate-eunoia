@@ -19,6 +19,7 @@
            {:position "absolute"
             :display "flex"
             :flex-direction "row"
+            :z-index 2
 
             :opacity 0
             :left "-10000px"
@@ -171,7 +172,9 @@
                         (icon "edit-3")))
              (tooltip "Create Link" "⌘ + K"
                       (button
-                        {:on-mouse-down #(focus-on-link % transform-handler)}
+                        {:on-mouse-down #(focus-on-link % transform-handler)
+                         :style {:color (when link? c/white)}
+                         :disabled link?} ; TODO: instead of disabling when the selection is already a link, this should open the link edit tooltip.
                         (icon "link")))
              (divider)
              (tooltip "Large Header" "# Space"
