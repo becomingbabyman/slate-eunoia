@@ -13,7 +13,7 @@
 (def focused-on-link? (r/atom false))
 (def last-selection-style (atom {}))
 (def link-transform-handler (atom nil))
-(def url (r/atom ""))
+(def url (atom ""))
 
 (defstyled menu :div
            {:position "absolute"
@@ -21,8 +21,8 @@
             :flex-direction "row"
 
             :opacity 0
-            :left "-1000px"
-            :top "-1000px"
+            :left "-10000px"
+            :top "-10000px"
             ; :opacity 1
             ; :left "100px"
             ; :top "100px"
@@ -63,32 +63,18 @@
             :outline "none"
             :padding-top "10px"
             :padding-left "12px"
+            :padding-right "12px"
             :padding-bottom "11px"
             :box-sizing "border-box"
-            :width "300px"
-            :margin-right "38px"
-            :font-weight "400"
+            :width "344px"
             :height "100%"
+            :font-weight "400"
             :line-height "18px"
             :vertical-align "top"
             :background-color "transparent"
             :border 0
             :color c/blue
             :transition "width 100ms ease-in"})
-
-(defstyled x-button :button
-           {:position "absolute"
-            :top 0
-            :right 0
-            :color c/black
-            :background "#e6e8eb !important"
-            :font-size "20px"
-            :line-height "20px"
-            :font-weight "500"
-            :height "38px"
-            :width "38px"
-            :padding "9px"
-            "&:hover" {:background "#c1c7cd !important"}})
 
 (defn icon [name]
   (c/icon name {:height 18 :width 18 :stroke-width 3}))
@@ -137,10 +123,6 @@
   (reset! url "")
   (.setTimeout js/window #(.empty (.getSelection js/window))))
 
-(defn remove-link [event]
-  (.preventDefault event)
-  (print "TODO: >>>>>>"))
-
 (defn transform-handler-handler [value on-change]
   (fn [transform]
     (fn [event]
@@ -159,8 +141,6 @@
                        (selection-style @menu-ref) {})
         transform-handler (transform-handler-handler value (get props :on-change))]
 
-    (js/console.log @focused-on-link? blurred? empty? link? props)
-
     (menu {:ref #(reset! menu-ref %1)
            :class (if @focused-on-link? (menu-light) (menu-dark))
            :style active-style}
@@ -170,12 +150,9 @@
               (input {:type "url"
                       :placeholder "Enter link URL"
                       :auto-focus true
-                      :default-value @url
                       :on-change (fn [e] (reset! url (.. e -target -value)))
                       :on-focus #(reset! focused-on-link? true)
-                      :on-blur #(reset! focused-on-link? false)})]
-             (x-button {:on-click remove-link}
-                       (icon "x"))]
+                      :on-blur #(reset! focused-on-link? false)})]]
             [:<>
              (tooltip "Bold" "⌘ + B"
                       (button

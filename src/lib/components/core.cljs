@@ -172,7 +172,7 @@
             :border-radius "3px"
             :white-space "nowrap"
             :animation (str (slide "-50%, -100%" "-50%, -85%") " 0.15s ease 0s")
-            :transition "opacity 0.15s 0s, top 0s 0.15s, left 0s 0.15s, visible 0s 0.15s"
+            :transition "opacity 0.15s 0s, top 0s 0.15s, left 0s 0.15s"
             "&::after" {:content " "
                         :position "absolute"
                         :top "100%"
