@@ -24,7 +24,7 @@
        {:trigger "`"
         :before #"^(\`\`)$"
         :transform transform})
-      (softbreak {:block-type "code-block"})
+      (softbreak {:type "code-block"})
       ; TODO: write something like this https://github.com/GitbookIO/slate-edit-code
       ; TODO: write something like this https://github.com/GitbookIO/slate-prism
       {:renderNode render-node}])})

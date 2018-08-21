@@ -1,7 +1,8 @@
 (ns lib.plugins.features.link
   (:require [lib.components.core :as c]
             [reagent.core :as r]
-            [cljss.reagent :refer-macros [defstyled]]))
+            [cljss.reagent :refer-macros [defstyled]]
+            [lib.plugins.helpers.paste-linkify :refer [paste-linkify]]))
 
 (defstyled link-tooltip-wrap :span
            {:position "relative"
@@ -161,6 +162,7 @@
   ([options]
    {:plugins
     (clj->js
-     [{:renderNode render-node}])})
+     [(paste-linkify {:type "link" :hrefProperty "url" :collapseTo "end"})
+      {:renderNode render-node}])})
   ([]
    (link {})))
