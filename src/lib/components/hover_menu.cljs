@@ -141,7 +141,6 @@
                              @focused-on-link?)
                        (selection-style @menu-ref) {})
         transform-handler (transform-handler-handler value (get props :on-change))]
-
     (menu {:ref #(reset! menu-ref %1)
            :class (if @focused-on-link? (menu-light) (menu-dark))
            :style active-style}
@@ -170,7 +169,7 @@
                         {:on-mouse-down (transform-handler highlight/transform)
                          :style {:color (when (active-mark? value "highlight") c/white)}}
                         (icon "edit-3")))
-             (tooltip "Create Link" "⌘ + K"
+             (tooltip "Create Link" nil ; "⌘ + K"
                       (button
                         {:on-mouse-down #(focus-on-link % transform-handler)
                          :style {:color (when link? c/white)}
