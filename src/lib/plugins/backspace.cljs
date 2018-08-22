@@ -10,11 +10,11 @@
   (when (= (.. event -key) "Backspace")
     (when (and (start-of-block? change)
                (not (paragraph? change)))
-      (.preventDefault event)
       (.setBlocks change "paragraph"))))
 
 (defn backspace
-  "Handles backspace related tranformations. Mostly converting non paragraph blocks back into paragraphs at the appropriate time."
+  "Handles backspace related tranformations. Mostly converting
+  non paragraph blocks back into paragraphs at the appropriate time."
   ([options]
    {:onKeyDown on-key-down})
   ([]
