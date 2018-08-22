@@ -2,7 +2,8 @@
   (:require [lib.components.core :as c]
             [reagent.core :as r]
             [cljss.reagent :refer-macros [defstyled]]
-            [lib.plugins.helpers.paste-linkify :refer [paste-linkify]]))
+            [lib.plugins.helpers.paste-linkify :refer [paste-linkify]]
+            [lib.plugins.helpers.auto-replace :refer [auto-replace]]))
 
 (defstyled link-tooltip-wrap :span
            {:position "relative"
@@ -131,10 +132,21 @@
                                 {:data {:url @new-url}})))
       (reset! new-url ""))))
 
-(defn transform [url]
-  (fn [change]
-    (.wrapInline change (clj->js {:type "link"
-                                  :data {:url url}}))))
+(defn transform
+  ([change url]
+   (.wrapInline change (clj->js {:type "link"
+                                 :data {:url url}})))
+  ([change event matches editor]
+   (when matches
+     (let [url (first (.. matches -before))]
+       (-> change
+           (.insertText url)
+           (.extend (- (count url)))
+           (transform url)
+           (.collapseToEnd)))))
+  ([url]
+   (fn [change]
+     (transform change url))))
 
 (defn render-node [props]
   (when (= "link" (.. props -node -type))
@@ -162,7 +174,14 @@
   ([options]
    {:plugins
     (clj->js
-     [(paste-linkify {:type "link" :hrefProperty "url" :collapseTo "end"})
+     [(paste-linkify ; TODO: FIX: pasting a link throws an error unless you're already selecting some text
+       {:type "link"
+        :hrefProperty "url"
+        :collapseTo "end"})
+      (auto-replace ; TODO: reimplment this to run after every char. slate-auto-replace does not seem to match partial inline/text
+       {:trigger "space"
+        :before #"(https?://\S*)"
+        :transform transform})
       {:renderNode render-node}])})
   ([]
    (link {})))

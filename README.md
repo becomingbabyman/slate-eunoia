@@ -41,9 +41,18 @@ Open [localhost:8021](http://localhost:8021/) for live test watching.
 
 # TODO
 
-- [ ] express slate documents in hiccup (investigate [hyperscript](https://github.com/ianstormtaylor/slate/blob/master/docs/reference/slate-hyperscript/index.md))
-- [ ] lists (ul, ol, checklist)
+- [x] express slate documents in hiccup (investigate [hyperscript](https://github.com/ianstormtaylor/slate/blob/master/docs/reference/slate-hyperscript/index.md))
+- [x] start links
+- [ ] start schema
+- [ ] start lists (ul, ol, checklist)
 - [ ] start testing
 - [ ] start polishing
 - [ ] make module
 - [ ] publish example to github page
+- [ ] CRDTs
+- [ ] embeds
+- [ ] convert links to embeds
+- [ ] images
+- [ ] autocomplete
+  - [ ] emojis
+  - [ ] tags
