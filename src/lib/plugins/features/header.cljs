@@ -17,7 +17,7 @@
          n (count hashes)]
      (transform change n)))
   ([n]
-   "Functor for generating a change handler with a predefined n level"
+   "Generates a change handler with a predefined n level"
    (fn [change]
      (transform change n))))
 

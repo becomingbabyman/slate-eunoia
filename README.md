@@ -56,3 +56,4 @@ Open [localhost:8021](http://localhost:8021/) for live test watching.
 - [ ] autocomplete
   - [ ] emojis
   - [ ] tags
+- [ ] i18n

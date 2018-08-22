@@ -76,7 +76,8 @@
             :padding-bottom "0.1em"})
 (defstyled code :code
            {:background dark-white
-            :border (str "1px solid " light-grey)
+            :border-top (str "1px solid " light-grey)
+            :border-bottom (str "1px solid " light-grey)
             :font-family "Hasklig, SourceCodePro, monospace"})
 (defstyled pre :pre
            {:background dark-white
