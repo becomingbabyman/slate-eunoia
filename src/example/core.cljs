@@ -57,13 +57,21 @@
 (defn on-slate-change [change]
   (reset! slate-value (.. change -value)))
 
+(def show-json? (r/atom false))
+
 (defn root-component []
   [:div {:style {:margin 20}}
    [:h3 "slate-eunoia editor example"]
+   [:div {:style {:float "right" :margin-top "-38px"}}
+    (if @show-json?
+      [:button {:on-click #(reset! show-json? false)} "Show Editor"]
+      [:button {:on-click #(reset! show-json? true)} "Show JSON"])]
    [:div {:style {:border "1px solid #ddd"}}
-    [eunoia-editor {:style {:padding "10px"}
-                    :value @slate-value
-                    :on-change on-slate-change}]]])
+    (if @show-json?
+      [:div>pre (.stringify js/JSON @slate-value nil 2)]
+      [eunoia-editor {:style {:padding "10px"}
+                      :value @slate-value
+                      :on-change on-slate-change}])]])
 
 (defn mount-on-dom []
   (r/render [root-component]
