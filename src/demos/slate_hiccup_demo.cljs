@@ -1,4 +1,4 @@
-(ns demo.slate-hiccup
+(ns demos.slate-hiccup-demo
   (:require [util.slate-hiccup :as slate-hiccup]))
 
 ; Presented at RC 2018-08-17
