@@ -14,6 +14,7 @@
             [lib.plugins.features.code :refer [code]]
             [lib.plugins.features.code-block :refer [code-block]]
             [lib.plugins.features.blockquote :refer [blockquote]]
+            [lib.plugins.features.divider :refer [divider]]
             [lib.plugins.collapse-on-escape :refer [collapse-on-escape]]
             [lib.plugins.trailing-block :refer [trailing-block]]
             [lib.plugins.backspace :refer [backspace]]))
@@ -35,6 +36,7 @@
                (:plugins (code))
                (:plugins (code-block))
                (:plugins (blockquote))
+               ; (:plugins (divider)) ; TODO: FIX: this is too buggy to use. Often crashes editor when deleted
                [(collapse-on-escape)
                 (trailing-block)])))
 
@@ -49,7 +51,8 @@
         {:type :header2}
         {:type :header3}
         {:type :code-block}
-        {:type :blockquote}]}]}}))
+        {:type :blockquote}
+        {:type :divider}]}]}}))
 
 (defn eunoia-editor
   ([passed-in-props]

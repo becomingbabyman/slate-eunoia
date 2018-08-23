@@ -11,9 +11,8 @@
 (def inlines #{:link :emoji :mention :tag})
 
 (def blocks #{:paragraph :header1 :header2 :header3
-              :image :horizontal-rule :blockquote
-              :ordered-list :unordered-list :list-item
-              :code-block})
+              :image :divider :blockquote :code-block
+              :ordered-list :unordered-list :list-item})
 
 (defn node [types]
   (s/cat :type (s/and keyword? #(types %))

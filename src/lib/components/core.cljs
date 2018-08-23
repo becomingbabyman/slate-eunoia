@@ -123,6 +123,12 @@
             :border-left (str "1px solid " grey)
             :font-style "italic"})
 
+(defstyled hr :hr
+           {:border-top "none"
+            :border-bottom (str "1px solid " mid-grey)
+            :margin-top "12px"
+            :margin-bottom "12px"})
+
 (defstyled img :img
            {})
 
