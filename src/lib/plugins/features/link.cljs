@@ -178,7 +178,7 @@
        {:type "link"
         :hrefProperty "url"
         :collapseTo "end"})
-      (auto-replace ; TODO: reimplment this to run after every char. slate-auto-replace does not seem to match partial inline/text
+      (auto-replace ; TODO: reimplment this to run after every char. slate-auto-replace does not seem to match partial inline/text. Something like this https://github.com/enzoferey/slate-instant-replace/blob/master/examples/urls-example/src/Slate.js
        {:trigger "space"
         :before #"(https?://\S*)"
         :transform transform})
