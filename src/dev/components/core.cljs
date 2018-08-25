@@ -36,6 +36,7 @@
             :color "#555"
             :border-radius "3px"
             :font-size "12px"
+            :line-height 1.4
             :overflow "auto"
             :max-height "400px"
             :font-family "Hasklig, Fira Code, Iosevka Web, SourceCodePro, monospace"})
