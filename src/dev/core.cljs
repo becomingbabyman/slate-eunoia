@@ -1,6 +1,8 @@
 (ns dev.core
   (:require [devcards.core :as dc]
             ; [cljss.core :as css]
+            ; NOTE: Keep all of these imports. 
+            ;  They're needed for devcards.
             [dev.features.todo]
             [dev.features.done]
             [dev.issues.todo]

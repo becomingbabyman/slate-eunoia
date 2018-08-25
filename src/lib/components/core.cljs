@@ -78,11 +78,11 @@
            {:background dark-white
             :border-top (str "1px solid " light-grey)
             :border-bottom (str "1px solid " light-grey)
-            :font-family "Hasklig, SourceCodePro, monospace"})
+            :font-family "Hasklig, Fira Code, Iosevka Web, SourceCodePro, monospace"})
 (defstyled pre :pre
            {:background dark-white
             :border (str "1px solid " light-grey)
-            :font-family "Hasklig, SourceCodePro, monospace"
+            :font-family "Hasklig, Fira Code, Iosevka Web, SourceCodePro, monospace"
             :padding "5px"
             :border-radius "2px"})
 
