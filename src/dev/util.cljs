@@ -5,7 +5,7 @@
             [dev.components.core :as dc]
             ; NOTE: Keep these imports.
             ;  They're used in utl.cljc but must be imported here.
-            [devcards.core]
+            [devcards.core :refer-macros [defcard-rg]]
             [lib.core]))
 
 (defn make-editor-data [hiccup]
