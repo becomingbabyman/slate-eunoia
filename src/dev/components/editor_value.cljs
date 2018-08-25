@@ -1,6 +1,7 @@
 (ns dev.components.editor-value
   (:require [reagent.core :as r]
             [dev.components.core :as dc]
+            [devcards.core :as devcards]
             [cljs.pprint]))
 
 (defn editor-value []
@@ -32,13 +33,15 @@
                       (dc/link-button {:on-click #(swap! state assoc :show :nothing)}
                                       "hide")))
                     (case (:show @state)
-                      :edn (dc/pre {:ref #(swap! meta assoc :pre-ref %)}
-                             (-> (get @props :value)
-                                 (js/JSON.stringify nil 2)
-                                 (js/JSON.parse)
-                                 (js->clj)
-                                 (cljs.pprint/pprint)
-                                 (with-out-str)))
+                      :edn [:div {:ref #(swap! meta assoc :pre-ref %)
+                                  :style {:max-height "400px"
+                                          :overflow "auto"}}
+                            (-> (get @props :value)
+                                (js/JSON.stringify nil 2)
+                                (js/JSON.parse)
+                                (js->clj :keywordize-keys true)
+                                (devcards/mkdn-pprint-code)
+                                (devcards/markdown->react))]
                       :json (dc/pre {:ref #(swap! meta assoc :pre-ref %)}
                               (-> (get @props :value)
                                   (js/JSON.stringify nil 2)))
