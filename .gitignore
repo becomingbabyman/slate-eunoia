@@ -1,5 +1,6 @@
 /.git
 /.shadow-cljs
 /node_modules
-/public/js
-/out
+/out/dev/js
+/out/browser-test/js
+/out/example/js

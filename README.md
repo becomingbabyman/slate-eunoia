@@ -10,14 +10,25 @@
 
 ## Getting Started
 
+### Dev Server
+
+> This is normally what you'll want to develop against.
+
+```
+$ npm install
+$ ./d
+```
+
+Open [localhost:8020](http://localhost:8020/) for live reloading.
+
 ### Example Server
 
 ```
 $ npm install
-$ ./s
+$ ./e
 ```
 
-Open [localhost:8020](http://localhost:8020/) for live reloading
+Open [localhost:8020](http://localhost:8022/) for live reloading.
 
 ### Test Server
 
@@ -43,6 +54,7 @@ Open [localhost:8021](http://localhost:8021/) for live test watching.
 
 - [x] express slate documents in hiccup (investigate [hyperscript](https://github.com/ianstormtaylor/slate/blob/master/docs/reference/slate-hyperscript/index.md))
 - [x] start links
+- [ ] make a better interactive test env to spec and fix edge cases - dev cards
 - [ ] start schema
 - [ ] start lists (ul, ol, checklist)
 - [ ] start testing

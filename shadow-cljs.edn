@@ -5,20 +5,22 @@
                 [expound "0.7.1"]
                 [org.clojure/test.check "0.9.0"]
                 [pjstadig/humane-test-output "0.8.3"]
+                [devcards "0.2.5"]
                 [org.roman01la/cljss "1.6.3"]]
 
  :nrepl {:port 3333
          :middleware []}
 
  :builds
- {:example
+ {:dev
   {:target     :browser
-   :output-dir "public/js"
+   :output-dir "out/dev/js"
    :asset-path "js"
-   :modules {:main {:entries [example.core]}}
-   :devtools {:before-load example.core/stop
-              :after-load example.core/start
-              :http-root "public"
+   :compiler-options {:devcards true}
+   :modules {:main {:entries [dev.core]}}
+   :devtools {:before-load dev.core/stop
+              :after-load dev.core/start
+              :http-root "out/dev"
               :http-port 8020}}
   :test
   {:target    :node-test
@@ -31,4 +33,13 @@
    :ns-regexp "-test$"
    :runner-ns test.browser.core
    :devtools {:http-root "out/browser-test"
-              :http-port 8021}}}}
+              :http-port 8021}}
+  :example
+  {:target     :browser
+   :output-dir "out/example/js"
+   :asset-path "js"
+   :modules {:main {:entries [example.core]}}
+   :devtools {:before-load example.core/stop
+              :after-load example.core/start
+              :http-root "out/example"
+              :http-port 8022}}}}

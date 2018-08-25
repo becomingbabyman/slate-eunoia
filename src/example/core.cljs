@@ -30,7 +30,7 @@
        [:blockquote
         [:code-block
          [:blockquote
-          [:code-block "YOLO"]]]]]]
+          [:code-block "I'm nested way too deep #YOLO #FIXME"]]]]]]
      [:paragraph]
      [:blockquote
       "blockquote with a "
