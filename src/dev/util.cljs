@@ -16,8 +16,8 @@
     data))
 
 (defn render-editor [data]
-  (dc/row
-   (dc/column {:style {:flex 2}}
-              (dc/title "editor")
-              (dc/border [lib.core/eunoia-editor @data]))
-   [editor-value data]))
+  [dc/row
+   [dc/column {:style {:flex 2}}
+    [dc/title "editor"]
+    [dc/border [lib.core/eunoia-editor @data]]]
+   [editor-value data]])

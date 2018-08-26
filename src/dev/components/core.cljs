@@ -30,6 +30,7 @@
 
 (defstyled pre :pre
            {:display "flex"
+            :flex-direction "column"
             :padding "5px"
             :background "#f8f8f8"
             :margin 0
