@@ -9,6 +9,7 @@
             [lib.plugins.features.link :as link]
             [lib.plugins.features.header :as header]))
 
+(def corner-ref (atom nil))
 (def menu-ref (atom nil))
 (def focused-on-link? (r/atom false))
 (def last-selection-style (atom {}))
@@ -91,24 +92,37 @@
   (if @focused-on-link?
     @last-selection-style
     (when menu
-      (let [rect (-> (.getSelection js/window)
-                     (.getRangeAt 0)
-                     (.getBoundingClientRect))
-            top (+ js/window.pageYOffset
-                   (- (.. rect -top)
-                      (.. menu -offsetHeight)))
-            left (min (- (.. js/window -innerWidth) (.. menu -offsetWidth) 5)
-                      (max 5
-                           (- (+ (.. rect -left) (.. js/window -pageXOffset) (/ (.. rect -width)  2))
-                              (/ (.. menu -offsetWidth) 2))))
-            style  {:opacity 1
-                    :top (str top "px")
-                    :left (str left "px")}
-            final-style (if (< top 11)
-                          (merge style {:top (str (+ (.. rect -bottom) 11) "px")})
-                          style)]
-        (reset! last-selection-style final-style)
-        final-style))))
+      (let [selection-rect (-> (.getSelection js/window)
+                               (.getRangeAt 0)
+                               (.getBoundingClientRect))
+            corner-rect (.getBoundingClientRect @corner-ref)
+            top (- (.. selection-rect -top)
+                   (.. menu -offsetHeight)
+                   (.. corner-rect -y))
+            render-below? (> (+ 11 (.. menu -offsetHeight))
+                             (.. selection-rect -top))
+            top-contained (if render-below?
+                            (+ top 11
+                               (.. menu -offsetHeight)
+                               (.. selection-rect -height))
+                            top)
+            left (- (+ (.. selection-rect -left)
+                       (.. js/window -pageXOffset)
+                       (/ (.. selection-rect -width)  2))
+                    (/ (.. menu -offsetWidth) 2)
+                    (.. corner-rect -x))
+            left-contained
+            (min (- (.. js/window -innerWidth) (.. menu -offsetWidth) (.. corner-rect -x) 5)
+                 (max left (- 5 (.. corner-rect -x))))
+            style {:opacity 1
+                   :left (str left-contained "px")
+                   :top (str top-contained "px")}]
+        (js/console.log (.. selection-rect -top)
+                        (.. selection-rect -y)
+                        (.. menu -offsetHeight)
+                        (.. corner-rect -y))
+        (reset! last-selection-style style)
+        style))))
 
 (defn active-mark? [value mark-type]
   (.some (.. value -activeMarks) #(= (aget %1 "type") mark-type)))
@@ -141,55 +155,58 @@
                              @focused-on-link?)
                        (selection-style @menu-ref) {})
         transform-handler (transform-handler-handler value (get props :on-change))]
-    (menu {:ref #(reset! menu-ref %1)
-           :class (if @focused-on-link? (menu-light) (menu-dark))
-           :style active-style}
-          (if @focused-on-link?
-            [:<>
-             [:form {:on-submit on-submit-url}
-              (input {:type "url"
-                      :placeholder "Enter link URL"
-                      :auto-focus true
-                      :on-change (fn [e] (reset! url (.. e -target -value)))
-                      :on-focus #(reset! focused-on-link? true)
-                      :on-blur #(reset! focused-on-link? false)})]]
-            [:<>
-             (tooltip "Bold" "⌘ + B"
-                      (button
-                        {:on-mouse-down (transform-handler bold/transform)
-                         :style {:color (when (active-mark? value "bold") c/white)}}
-                        (icon "bold")))
-             (tooltip "Strikethrough" "⌘ + Opt + S"
-                      (button
-                        {:on-mouse-down (transform-handler strikethrough/transform)
-                         :style {:color (when (active-mark? value "strikethrough") c/white)}}
-                        (icon "minus")))
-             (tooltip "Highlight" "⌘ + E"
-                      (button
-                        {:on-mouse-down (transform-handler highlight/transform)
-                         :style {:color (when (active-mark? value "highlight") c/white)}}
-                        (icon "edit-3")))
-             (tooltip "Create Link" nil ; "⌘ + K"
-                      (button
-                        {:on-mouse-down #(focus-on-link % transform-handler)
-                         :style {:color (when link? c/white)}
-                         :disabled link?} ; TODO: instead of disabling when the selection is already a link, this should open the link edit tooltip.
-                        (icon "link")))
-             (divider)
-             (tooltip "Large Header" "# Space"
-                      (button
-                        {:on-mouse-down (transform-handler (header/transform 1))
-                         :style {:color (when (= (.. value -anchorBlock -type) "header1") c/white)}}
-                        "H" (small "1")))
-             (tooltip "Small Header" "## Space"
-                      (button
-                        {:on-mouse-down (transform-handler (header/transform 2))
-                         :style {:color (when (= (.. value -anchorBlock -type) "header2") c/white)}}
-                        (small "H2")))
-             (tooltip "TODO:" "..."
-                      (button (icon "list")))
-             (tooltip "TODO:" "..."
-                      (button (icon "check-square")))
-             (divider)
-             (tooltip "TODO:" "..."
-                      (button (icon "message-square")))]))))
+    [:<>
+     [:span {:ref #(reset! corner-ref %)
+             :style {:width 0 :height 0 :line-height 0 :font-size 0}}]
+     (menu {:ref #(reset! menu-ref %1)
+            :class (if @focused-on-link? (menu-light) (menu-dark))
+            :style active-style}
+           (if @focused-on-link?
+             [:<>
+              [:form {:on-submit on-submit-url}
+               (input {:type "url"
+                       :placeholder "Enter link URL"
+                       :auto-focus true
+                       :on-change (fn [e] (reset! url (.. e -target -value)))
+                       :on-focus #(reset! focused-on-link? true)
+                       :on-blur #(reset! focused-on-link? false)})]]
+             [:<>
+              (tooltip "Bold" "⌘ + B"
+                       (button
+                         {:on-mouse-down (transform-handler bold/transform)
+                          :style {:color (when (active-mark? value "bold") c/white)}}
+                         (icon "bold")))
+              (tooltip "Strikethrough" "⌘ + Opt + S"
+                       (button
+                         {:on-mouse-down (transform-handler strikethrough/transform)
+                          :style {:color (when (active-mark? value "strikethrough") c/white)}}
+                         (icon "minus")))
+              (tooltip "Highlight" "⌘ + E"
+                       (button
+                         {:on-mouse-down (transform-handler highlight/transform)
+                          :style {:color (when (active-mark? value "highlight") c/white)}}
+                         (icon "edit-3")))
+              (tooltip "Create Link" nil ; "⌘ + K"
+                       (button
+                         {:on-mouse-down #(focus-on-link % transform-handler)
+                          :style {:color (when link? c/white)}
+                          :disabled link?} ; TODO: instead of disabling when the selection is already a link, this should open the link edit tooltip.
+                         (icon "link")))
+              (divider)
+              (tooltip "Large Header" "# Space"
+                       (button
+                         {:on-mouse-down (transform-handler (header/transform 1))
+                          :style {:color (when (= (.. value -anchorBlock -type) "header1") c/white)}}
+                         "H" (small "1")))
+              (tooltip "Small Header" "## Space"
+                       (button
+                         {:on-mouse-down (transform-handler (header/transform 2))
+                          :style {:color (when (= (.. value -anchorBlock -type) "header2") c/white)}}
+                         (small "H2")))
+              (tooltip "TODO:" "..."
+                       (button (icon "list")))
+              (tooltip "TODO:" "..."
+                       (button (icon "check-square")))
+              (divider)
+              (tooltip "TODO:" "..."
+                       (button (icon "message-square")))]))]))

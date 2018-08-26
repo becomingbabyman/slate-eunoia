@@ -65,6 +65,6 @@
          editor-props (merge initial-props passed-in-props)
          hover-menu-props (select-keys editor-props [:value :on-change])]
      (c/top-level-component
-      [slate/editor editor-props]
-      [hover-menu hover-menu-props])))
+      [hover-menu hover-menu-props]
+      [slate/editor editor-props])))
   ([] (eunoia-editor {})))

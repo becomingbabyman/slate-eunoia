@@ -42,6 +42,7 @@
 
 (defstyled top-level-component :div
            {:color black
+            :position "relative"
             :font-family "-apple-system, BlinkMacSystemFont, San Francisco, sans-serif"
             :font-size "16px"
             :font-weight "400"

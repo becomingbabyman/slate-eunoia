@@ -2,13 +2,6 @@
   (:require [dev.util :refer-macros [defeditor]]))
 
 (defeditor
- hover-menu-position-too-low
- "The **hover menu should be right above the selected text**,
- but it's not. You may need to scroll down to see it."
- [:document
-  [:paragraph "select some of this text"]])
-
-(defeditor
  arrow-key-navigation-breaks-on-links
  "Put the cursor at the end of a newline and try going back (arrow <-).
   The **bold link** does not seem to be allowing the left arrow
