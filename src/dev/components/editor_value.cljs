@@ -19,7 +19,7 @@
                          "show editor value"))
         [:<>
          (dc/spacer)
-         (dc/column {:style {:flex 3}}
+         (dc/column {:style {:flex 3 :overflow "hidden"}}
                     (dc/row
                      (dc/title "value")
                      (dc/button-bar
