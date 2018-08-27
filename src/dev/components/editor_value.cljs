@@ -46,10 +46,14 @@
                                 (devcards/mkdn-pprint-code)
                                 (devcards/markdown->react))
                             [:div {:class "bottom"} ""]]
-                      :json (dc/pre {:ref #(swap! meta assoc :pre-ref %)}
-                              (-> (get @props :value)
-                                  (js/JSON.stringify nil 2))
-                              [:div {:class "bottom"} ""])
+                      :json [:div {:ref #(swap! meta assoc :pre-ref %)
+                                   :style {:max-height "400px"
+                                           :overflow "auto"}}
+                             (as-> (get @props :value) v
+                                   (js/JSON.stringify v nil 2)
+                                   (str "```\n" v "\n```")
+                                   (devcards/markdown->react v))
+                             [:div {:class "bottom"} ""]]
                       :hiccup (dc/pre {:ref #(swap! meta assoc :pre-ref %)}
                                 "TODO: make edn->hiccup converter"
                                 [:div {:class "bottom"} ""])
