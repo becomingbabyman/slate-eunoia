@@ -14,6 +14,17 @@
               :image :divider :blockquote :code-block
               :ordered-list :unordered-list :list-item})
 
+(s/def ::text (s/or :string string? :number number?))
+(s/def ::type (s/or :text ::text
+                    :mark marks
+                    :inline inlines
+                    :block blocks
+                    :document #{:document}))
+(s/def ::attr (s/map-of keyword? any? :gen-max 1))
+(s/def ::node (s/spec (s/cat :type ::type
+                             :attrs (s/? ::attr)
+                             :nodes (s/* ::node))))
+
 (defn node [types]
   (s/cat :type (s/and keyword? #(types %))
          :attrs (s/? map?)
