@@ -7,7 +7,9 @@
             [dev.features.done]
             [dev.issues.todo]
             [dev.issues.resolved]
-            [dev.issues.wontfix]))
+            [dev.issues.wontfix]
+            [dev.gen.exercise]
+            [dev.gen.slate-hiccup-examples]))
 
 (defn stop []
   (js/console.log "Stopping..."))

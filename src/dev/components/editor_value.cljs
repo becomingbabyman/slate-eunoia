@@ -12,7 +12,8 @@
                      #(.scrollIntoView
                        (.querySelector (:pre-ref @meta) ".bottom")
                        (clj->js {:behavior "smooth"
-                                 :block "end"}))))
+                                 :block "end"
+                                 :inline "end"}))))
       (if (= :nothing (:show @state))
         (dc/button-bar
          (dc/link-button {:on-click #(swap! state assoc :show :edn)}
