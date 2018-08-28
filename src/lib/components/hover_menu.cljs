@@ -117,10 +117,6 @@
             style {:opacity 1
                    :left (str left-contained "px")
                    :top (str top-contained "px")}]
-        (js/console.log (.. selection-rect -top)
-                        (.. selection-rect -y)
-                        (.. menu -offsetHeight)
-                        (.. corner-rect -y))
         (reset! last-selection-style style)
         style))))
 

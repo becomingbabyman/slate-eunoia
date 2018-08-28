@@ -28,7 +28,7 @@ $ npm install
 $ ./e
 ```
 
-Open [localhost:8020](http://localhost:8022/) for live reloading.
+Open [localhost:8022](http://localhost:8022/) for live reloading.
 
 ### Test Server
 

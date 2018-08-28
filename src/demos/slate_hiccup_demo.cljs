@@ -3,7 +3,7 @@
 
 ; Presented at RC 2018-08-17
 
-(shadow.cljs.devtools.api/nrepl-select :example)
+(shadow.cljs.devtools.api/nrepl-select :dev)
 
 (def example-html-hiccup-AKA-the-inspiration
   [:html {:lang "en"}

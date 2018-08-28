@@ -138,5 +138,5 @@
   "# Tests
   run the tests from util.slate-hiccup-test"
   (slate-hiccup-test/hiccup->slate-edn--simple)
-  (slate-hiccup-test/slateify-mark)
+  (slate-hiccup-test/hiccup->slate-edn--nested-marks)
   (slate-hiccup-test/hiccup->slate-edn--complex))

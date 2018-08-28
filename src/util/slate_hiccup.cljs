@@ -1,30 +1,44 @@
 (ns util.slate-hiccup
   (:require [clojure.spec.alpha :as s]
             [expound.alpha :as expound]
-            [util.slate :as slate]))
+            [util.slate :as slate]
+            [clojure.spec.gen.alpha :as sgen]))
 
 ; high level SlateJS spec:
 ;  https://docs.slatejs.org/guides/data-model#documents-and-nodes
 
 (def marks #{:bold :italic :strikethrough :highlight :code})
 
-(def inlines #{:link :emoji :mention :tag})
+(def inlines #{:link}) ;:emoji :mention :tag})
 
 (def blocks #{:paragraph :header1 :header2 :header3
-              :image :divider :blockquote :code-block
-              :ordered-list :unordered-list :list-item})
+              :blockquote :code-block})
+              ; :ordered-list :unordered-list :list-item :image :divider})
 
-(defn node [types]
-  (s/cat :type (s/and keyword? #(types %))
-         :attrs (s/? map?)
-         :nodes (s/* ::slate)))
+; (s/def ::attrs (s/map-of keyword? any? :gen-max 2))
+(s/def ::attrs (s/map-of #{:url} string? :gen-max 2))
 
-(s/def ::slate (s/or :text string?
-                     :text number?
-                     :mark (node marks)
-                     :inline (node inlines)
-                     :block (node blocks)
-                     :document (node #{:document})))
+(defn hiccup-tuple [types]
+  ; (s/coll-of ::THIS :kind vector? :gen-max 3))
+  (s/cat :type types
+         :attrs (s/? ::attrs)
+         :nodes (s/* ::node)))
+
+(s/def ::mark (hiccup-tuple marks))
+
+(s/def ::inline (hiccup-tuple inlines))
+
+(s/def ::block (hiccup-tuple blocks))
+
+(s/def ::node (s/or :text string?
+                    :text number?
+                    :mark ::mark
+                    :inline ::inline
+                    :block ::block))
+
+(s/def ::document (s/or :document (s/cat :type #{:document}
+                                         :attrs (s/? ::attrs)
+                                         :nodes (s/* (s/or :block ::block)))))
 
 (declare ast->slate-edn)
 (declare slateify-mark)
@@ -118,9 +132,9 @@
 (defn make-ast [hiccup]
   "Conforms hiccup to an AST based on SlateJS documents and
   the element mapping implemented by slate-eunoia."
-  (let [parsed-hiccup (s/conform ::slate hiccup)]
+  (let [parsed-hiccup (s/conform ::document hiccup)]
     (if (= ::s/invalid parsed-hiccup)
-      (throw (js/Error. (expound/expound ::slate hiccup)))
+      (throw (js/Error. (expound/expound ::document hiccup)))
       parsed-hiccup)))
 
 (defn hiccup->slate

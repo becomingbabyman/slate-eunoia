@@ -27,76 +27,82 @@
                      :leaves
                      [{:object :leaf, :text "some text", :marks []}]}]}]}}}))
 
-(deftest slateify-mark
-  (is= (slate-hiccup/slateify-mark
-        (last (slate-hiccup/make-ast
-               [:bold "bold text"
-                [:italic "bold and italic"
-                 "   "
-                 [:highlight "bold and italic and highlight"]
-                 "   "]
-                [:strikethrough "bold and strikethrough"]
+(deftest hiccup->slate-edn--nested-marks
+  (test-hiccup->slate-edn
+   {:hiccup [:document
+             [:paragraph
+              [:bold "bold text"
+               [:italic "bold and italic"
                 "   "
-                [:link {:url "https://google.com"} "a bold link"]])))
+                [:highlight "bold and italic and highlight"]
+                "   "]
+               [:strikethrough "bold and strikethrough"]
+               "   "
+               [:link {:url "https://google.com"} "a bold link"]]]]
 
-       {:object :inline
-        :type :mark-wrapper
-        :nodes
-        [{:object :text
-          :leaves
-          [{:object :leaf
-            :text "bold text"
-            :marks [{:object :mark, :type :bold}]}]}
-         {:object :text
-          :leaves
-          [{:object :leaf
-            :text "bold and italic"
-            :marks
-            [{:object :mark, :type :bold}
-             {:object :mark, :type :italic}]}]}
-         {:object :text
-          :leaves
-          [{:object :leaf
-            :text "   "
-            :marks
-            [{:object :mark, :type :bold}
-             {:object :mark, :type :italic}]}]}
-         {:object :text
-          :leaves
-          [{:object :leaf
-            :text "bold and italic and highlight"
-            :marks
-            [{:object :mark, :type :bold}
-             {:object :mark, :type :italic}
-             {:object :mark, :type :highlight}]}]}
-         {:object :text
-          :leaves
-          [{:object :leaf
-            :text "   "
-            :marks
-            [{:object :mark, :type :bold}
-             {:object :mark, :type :italic}]}]}
-         {:object :text
-          :leaves
-          [{:object :leaf
-            :text "bold and strikethrough"
-            :marks
-            [{:object :mark, :type :bold}
-             {:object :mark, :type :strikethrough}]}]}
-         {:object :text
-          :leaves
-          [{:object :leaf
-            :text "   "
-            :marks [{:object :mark, :type :bold}]}]}
-         {:object :inline
-          :type :link
-          :data {:url "https://google.com"}
-          :nodes
-          [{:object :text
-            :leaves
-            [{:object :leaf
-              :text "a bold link"
-              :marks [{:object :mark, :type :bold}]}]}]}]}))
+    :slate-edn {:document
+                {:nodes
+                 [{:object :block
+                   :type :paragraph
+                   :nodes
+                   [{:object :inline
+                     :type :mark-wrapper
+                     :nodes
+                     [{:object :text
+                       :leaves
+                       [{:object :leaf
+                         :text "bold text"
+                         :marks [{:object :mark, :type :bold}]}]}
+                      {:object :text
+                       :leaves
+                       [{:object :leaf
+                         :text "bold and italic"
+                         :marks
+                         [{:object :mark, :type :bold}
+                          {:object :mark, :type :italic}]}]}
+                      {:object :text
+                       :leaves
+                       [{:object :leaf
+                         :text "   "
+                         :marks
+                         [{:object :mark, :type :bold}
+                          {:object :mark, :type :italic}]}]}
+                      {:object :text
+                       :leaves
+                       [{:object :leaf
+                         :text "bold and italic and highlight"
+                         :marks
+                         [{:object :mark, :type :bold}
+                          {:object :mark, :type :italic}
+                          {:object :mark, :type :highlight}]}]}
+                      {:object :text
+                       :leaves
+                       [{:object :leaf
+                         :text "   "
+                         :marks
+                         [{:object :mark, :type :bold}
+                          {:object :mark, :type :italic}]}]}
+                      {:object :text
+                       :leaves
+                       [{:object :leaf
+                         :text "bold and strikethrough"
+                         :marks
+                         [{:object :mark, :type :bold}
+                          {:object :mark, :type :strikethrough}]}]}
+                      {:object :text
+                       :leaves
+                       [{:object :leaf
+                         :text "   "
+                         :marks [{:object :mark, :type :bold}]}]}
+                      {:object :inline
+                       :type :link
+                       :data {:url "https://google.com"}
+                       :nodes
+                       [{:object :text
+                         :leaves
+                         [{:object :leaf
+                           :text "a bold link"
+                           :marks [{:object :mark, :type :bold}]}]}]}]}]}]}}}))
 
 (deftest hiccup->slate-edn--complex
   (test-hiccup->slate-edn

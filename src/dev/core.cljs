@@ -3,13 +3,13 @@
             ; [cljss.core :as css]
             ; NOTE: Keep all of these imports.
             ;  They're needed for devcards.
-            [dev.features.todo]
             [dev.features.done]
-            [dev.issues.todo]
-            [dev.issues.resolved]
-            [dev.issues.wontfix]
+            [dev.features.todo]
             [dev.gen.exercise]
-            [dev.gen.slate-hiccup-examples]))
+            [dev.gen.slate-hiccup-examples]
+            [dev.issues.resolved]
+            [dev.issues.todo]
+            [dev.issues.wontfix]))
 
 (defn stop []
   (js/console.log "Stopping..."))
