@@ -97,10 +97,7 @@
   ([node]
    (let [ast [:mark node]
          result (slateify-mark ast initial-mark-result)]
-     ; TODO: returning this
-     {:object :inline
-      :type :mark-wrapper ; NOTE: this type does not exist and is purely to make the output more human readable
-      :nodes (:nodes result)})))
+     (get result :nodes))))
 
 (defn slateify-node
   "Nodes tend to be higher up in the AST and typically
@@ -116,7 +113,7 @@
             (when (some? type) {:type type})
             (when (some? attrs) {:data attrs})
             (when (vector? nodes)
-              {:nodes (child-nodes-transformation-fn nodes)}))))
+              {:nodes (vec (flatten (child-nodes-transformation-fn nodes)))}))))
   ([object node]
    (slateify-node object node #(vec (map ast->slate-edn %)))))
 

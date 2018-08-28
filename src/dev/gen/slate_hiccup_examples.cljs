@@ -4,7 +4,9 @@
             [cljs.test :refer-macros (is)]
             [util.slate-hiccup :as slate-hiccup]
             [util.slate :as slate]
-            [util.slate-hiccup-test :as slate-hiccup-test]))
+            [util.slate-hiccup-test :as slate-hiccup-test]
+            [clojure.spec.alpha :as s]
+            [clojure.test.check.generators]))
 
 (def hiccup-example
   [:document
@@ -32,40 +34,35 @@
     [{:object :block
       :type :header1
       :nodes
-      [{:object :text, :leaves [{:object :leaf, :text "foo", :marks []}]}
-       {:object :inline
-        :type :mark-wrapper
-        :nodes
-        [{:object :text
-          :leaves
-          [{:object :leaf
-            :text "2"
-            :marks [{:object :mark, :type :bold}]}]}
-         {:object :text
-          :leaves
-          [{:object :leaf
-            :text "bar"
-            :marks [{:object :mark, :type :bold}]}]}]}]}
+      [{:object :text
+        :leaves [{:object :leaf, :text "foo", :marks []}]}
+       {:object :text
+        :leaves
+        [{:object :leaf
+          :text "2"
+          :marks [{:object :mark, :type :bold}]}]}
+       {:object :text
+        :leaves
+        [{:object :leaf
+          :text "bar"
+          :marks [{:object :mark, :type :bold}]}]}]}
      {:object :block
       :type :paragraph
       :nodes
       [{:object :inline
-        :type :mark-wrapper
+        :type :link
+        :data {:url "https://www.lipsum.com/"}
         :nodes
-        [{:object :inline
-          :type :link
-          :data {:url "https://www.lipsum.com/"}
-          :nodes
-          [{:object :text
-            :leaves
-            [{:object :leaf
-              :text "Lorem"
-              :marks [{:object :mark, :type :strikethrough}]}]}]}
-         {:object :text
+        [{:object :text
           :leaves
           [{:object :leaf
-            :text " Ipsum"
-            :marks [{:object :mark, :type :strikethrough}]}]}]}]}]}})
+            :text "Lorem"
+            :marks [{:object :mark, :type :strikethrough}]}]}]}
+       {:object :text
+        :leaves
+        [{:object :leaf
+          :text " Ipsum"
+          :marks [{:object :mark, :type :strikethrough}]}]}]}]}})
 (deftest and-passes-this-test
   (is (= expected-slate-edn
          (slate-hiccup/ast->slate-edn
@@ -128,11 +125,18 @@
 (defcard-doc
  "# Generators
 
-  Since the schema is defined in Clojure Spec, it's possible to generate valid SlateJS Values for use in property based tests.
+  Since the schema is defined in Clojure Spec, it's possible to generate valid SlateJS Values for use in property based tests."
 
-  ```
-  TODO: add examples...
-  ```")
+ "## s/exercise
+  generates valid slate-hiccup documents and returns them in tuples along with their conformed value"
+ '(s/exercise ::slate-hiccup/document 1)
+ (s/exercise ::slate-hiccup/document 1)
+
+ "### 4 more examples
+  with the conformed values removed, so it's just the hiccup remaining"
+ '(map first (s/exercise ::slate-hiccup/document 4))
+ "*As you can see they get more complex each generation (Refresh to update)*"
+ (map first (s/exercise ::slate-hiccup/document 4)))
 
 (deftest slate-hiccup-test
   "# Tests

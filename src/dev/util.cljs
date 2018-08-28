@@ -1,4 +1,5 @@
 (ns dev.util
+  (:require-macros [dev.util])
   (:require [reagent.core :as r]
             [util.slate-hiccup :as sh]
             [dev.components.editor-value :refer [editor-value]]

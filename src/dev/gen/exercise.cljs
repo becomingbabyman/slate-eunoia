@@ -27,18 +27,17 @@
 
   If a test reveals an issue copy the test data into a new issue card.")
 
- ; (s/exercise ::sh/document 3))
-
-(js/console.log ">>>>>")
+; (js/console.log ">>>>>")
 (def gen-5 (gen-hiccup 5))
-(pprint gen-5)
+; (pprint gen-5)
+
 (try
   (defeditor gen-5-editor gen-5)
   (catch :default e
-    (js/console.warn e)
+    (js/console.warn "defeditor gen-5-editor failed to mount" e)
     (js/console.log (.stringify js/JSON (clj->js gen-5) nil 2))))
-(defcard-doc "## Hiccup" gen-5)
 
+(defcard-doc "## Hiccup" gen-5)
 (defcard-doc "## edn" (sh/ast->slate-edn (sh/make-ast gen-5)))
 (defcard-doc
  "## Slate Value"
