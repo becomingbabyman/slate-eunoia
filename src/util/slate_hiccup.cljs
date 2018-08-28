@@ -1,8 +1,7 @@
 (ns util.slate-hiccup
   (:require [clojure.spec.alpha :as s]
             [expound.alpha :as expound]
-            [util.slate :as slate]
-            [clojure.spec.gen.alpha :as sgen]))
+            [util.slate :as slate]))
 
 ; high level SlateJS spec:
 ;  https://docs.slatejs.org/guides/data-model#documents-and-nodes
@@ -18,27 +17,31 @@
 ; (s/def ::attrs (s/map-of keyword? any? :gen-max 2))
 (s/def ::attrs (s/map-of #{:url} string? :gen-max 2))
 
-(defn hiccup-tuple [types]
-  ; (s/coll-of ::THIS :kind vector? :gen-max 3))
-  (s/cat :type types
-         :attrs (s/? ::attrs)
-         :nodes (s/* ::node)))
+(s/def ::mark (s/cat :type marks
+                     :attrs (s/? ::attrs)
+                     :nodes (s/* (s/or :text string?
+                                       :text number?
+                                       :mark ::mark
+                                       :inline ::inline))))
 
-(s/def ::mark (hiccup-tuple marks))
+(s/def ::inline (s/cat :type inlines
+                       :attrs (s/? ::attrs)
+                       :nodes (s/* (s/or :text string?
+                                         :text number?
+                                         :mark ::mark
+                                         :inline ::inline))))
 
-(s/def ::inline (hiccup-tuple inlines))
-
-(s/def ::block (hiccup-tuple blocks))
-
-(s/def ::node (s/or :text string?
-                    :text number?
-                    :mark ::mark
-                    :inline ::inline
-                    :block ::block))
+(s/def ::block (s/cat :type blocks
+                      :attrs (s/? ::attrs)
+                      :nodes (s/* (s/or :text string?
+                                        :text number?
+                                        :mark ::mark
+                                        :inline ::inline
+                                        :block ::block))))
 
 (s/def ::document (s/or :document (s/cat :type #{:document}
                                          :attrs (s/? ::attrs)
-                                         :nodes (s/* (s/or :block ::block)))))
+                                         :nodes (s/+ (s/or :block ::block)))))
 
 (declare ast->slate-edn)
 (declare slateify-mark)

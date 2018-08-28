@@ -3,7 +3,8 @@
             [devcards.core :refer-macros [defcard defcard-doc]]
             [clojure.spec.alpha :as s]
             [util.slate-hiccup :as sh]
-            [clojure.test.check.generators :as gen]))
+            [clojure.pprint :refer [pprint]]
+            [clojure.test.check.generators]))
 
 (defn gen-hiccup
   ([n-generations]
@@ -26,7 +27,11 @@
 
   If a test reveals an issue copy the test data into a new issue card.")
 
+ ; (s/exercise ::sh/document 3))
+
+(js/console.log ">>>>>")
 (def gen-5 (gen-hiccup 5))
+(pprint gen-5)
 (try
   (defeditor gen-5-editor gen-5)
   (catch :default e
