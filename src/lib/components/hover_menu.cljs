@@ -147,6 +147,7 @@
         blurred? (.. value -isBlurred)
         empty? (try (.. value -isEmpty) (catch :default e false))
         link? (try (= "link" (.. value -anchorInline -type)) (catch :default e false))
+        anchor-block-type (try (.. value -anchorBlock -type) (catch :default e nil))
         active-style (if (or (and (not blurred?) (not empty?))
                              @focused-on-link?)
                        (selection-style @menu-ref) {})
@@ -192,12 +193,12 @@
               (tooltip "Large Header" "# Space"
                        (button
                          {:on-mouse-down (transform-handler (header/transform 1))
-                          :style {:color (when (= (.. value -anchorBlock -type) "header1") c/white)}}
+                          :style {:color (when (= anchor-block-type "header1") c/white)}}
                          "H" (small "1")))
               (tooltip "Small Header" "## Space"
                        (button
                          {:on-mouse-down (transform-handler (header/transform 2))
-                          :style {:color (when (= (.. value -anchorBlock -type) "header2") c/white)}}
+                          :style {:color (when (= anchor-block-type "header2") c/white)}}
                          (small "H2")))
               (tooltip "TODO:" "..."
                        (button (icon "list")))

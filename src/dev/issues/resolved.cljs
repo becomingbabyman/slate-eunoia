@@ -13,3 +13,12 @@
  "
  [:document
   [:paragraph "select some of this text"]])
+
+(defeditor
+ hover-menu-type-null
+ "### Solution
+  The hover menu was trying to query value.anchorBlock.type, when 
+  anchorBlock was null. Adding a catch fixed it."
+ '(:document
+   (:paragraph
+    (:link))))
