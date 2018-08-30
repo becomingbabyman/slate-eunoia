@@ -54,7 +54,7 @@ Open [localhost:8021](http://localhost:8021/) for live test watching.
 
 - [x] express slate documents in hiccup (investigate [hyperscript](https://github.com/ianstormtaylor/slate/blob/master/docs/reference/slate-hyperscript/index.md))
 - [x] start links
-- [ ] make a better interactive test env to spec and fix edge cases - dev cards
+- [x] make a better interactive test env to spec and fix edge cases - dev cards
 - [ ] start schema
 - [ ] start lists (ul, ol, checklist)
 - [ ] start testing
