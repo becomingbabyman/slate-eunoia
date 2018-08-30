@@ -39,6 +39,7 @@
                                         :inline ::inline
                                         :block ::block))))
 
+; TODO: update this spec to disallow duplicate nested types. E.g. `[:document [:paragraph [:link [:paragraph "foo"]]]]` shoud be invalid because there are two paragraphs along the same branch. This is mostly needed to make the generators consitently return valid slate documents
 (s/def ::document (s/or :document (s/cat :type #{:document}
                                          :attrs (s/? ::attrs)
                                          :nodes (s/+ (s/or :block ::block)))))

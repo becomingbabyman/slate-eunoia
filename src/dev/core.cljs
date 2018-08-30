@@ -6,6 +6,7 @@
             [dev.features.done]
             [dev.features.todo]
             [dev.gen.exercise]
+            [dev.gen.issue1]
             [dev.gen.slate-hiccup-examples]
             [dev.issues.resolved]
             [dev.issues.todo]
