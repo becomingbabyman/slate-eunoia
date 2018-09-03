@@ -6,14 +6,14 @@
             ; NOTE: Keep all of these imports.
             ;  They're needed for devcards.
             [dev.a-features.done]
-            [dev.a-features.slate-to-hiccup]
             [dev.a-features.todo]
             [dev.b-issues.resolved]
             [dev.b-issues.todo]
             [dev.b-issues.wontfix]
             [dev.c-gen.exercise]
             [dev.c-gen.issue1]
-            [dev.c-gen.slate-hiccup-examples]))
+            [dev.c-gen.slate-hiccup-examples]
+            [dev.c-gen.slate-hiccup-roundtrip-example]))
 
 (defeditor example-editor
            "This is the same hiccup used in the example namespace."

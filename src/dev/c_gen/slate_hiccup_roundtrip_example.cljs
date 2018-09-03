@@ -1,4 +1,4 @@
-(ns dev.a-features.slate-to-hiccup
+(ns dev.c-gen.slate-hiccup-roundtrip-example
   (:require [devcards.core :refer-macros [defcard]]
             [dev.util :refer-macros [defeditor]]
             [util.slate-hiccup :as sh]
