@@ -5,10 +5,11 @@
             [util.slate-hiccup :as slate-hiccup]))
 
 (defn editor-value []
-  (let [state (r/atom {:show :nothing})
+  (let [state (r/atom {:show :nothing
+                       :scroll false})
         meta (atom {:pre-ref nil})]
     (fn [props]
-      (when (:pre-ref @meta) ; TODO: only scroll if change is at the end of the doc
+      (when (and (:scroll @state) (:pre-ref @meta)) ; TODO: only scroll if change is at the end of the doc
         (.setTimeout js/window
                      #(.scrollTo (:pre-ref @meta) 0 1000000)))
       (if (= :nothing (:show @state))
@@ -22,6 +23,12 @@
           (dc/row
            (dc/title "value")
            (dc/button-bar
+            [:label {:style {:font-size "14px" :color "#aaa"}
+                     :title "auto scrolls to bottom on change"}
+             [:input {:type "checkbox" :checked (:scroll @state)
+                      :on-click #(swap! state assoc :scroll (not (:scroll @state)))}]
+             "auto-scroll"]
+            [:span {:style {:color "#ddd"}} " | "]
             (dc/link-button {:disabled (= :edn (:show @state))
                              :on-click #(swap! state assoc :show :edn)}
                             "edn")
@@ -34,25 +41,23 @@
             [:span {:style {:color "#ddd"}} " | "]
             (dc/link-button {:on-click #(swap! state assoc :show :nothing)}
                             "hide")))
-          (case (:show @state)
-            :edn [dc/md-code-wrap {:ref #(swap! meta assoc :pre-ref %)}
-                  (-> (get @props :value)
-                      (js/JSON.stringify nil 2)
-                      (js/JSON.parse)
-                      (js->clj :keywordize-keys true)
-                      (devcards/mkdn-pprint-code)
-                      (devcards/markdown->react))
-                  [:div {:class "bottom"} ""]]
-            :json [dc/md-code-wrap {:ref #(swap! meta assoc :pre-ref %)}
-                   (as-> (get @props :value) v
-                         (js/JSON.stringify v nil 2)
-                         (str "```\n" v "\n```")
-                         (devcards/markdown->react v))
-                   [:div {:class "bottom"} ""]]
-            :hiccup [dc/md-code-wrap {:ref #(swap! meta assoc :pre-ref %)}
-                     (-> (get @props :value)
-                         (slate-hiccup/slate->hiccup)
-                         (devcards/mkdn-pprint-code)
-                         (devcards/markdown->react))
-                     [:div {:class "bottom"} ""]]
-            nil))]))))
+          (when (:show @state)
+            [dc/md-code-wrap {:ref #(swap! meta assoc :pre-ref %)}
+             (case (:show @state)
+               :edn
+               (-> (get @props :value)
+                   (js/JSON.stringify nil 2)
+                   (js/JSON.parse)
+                   (js->clj :keywordize-keys true)
+                   (devcards/mkdn-pprint-code)
+                   (devcards/markdown->react))
+               :json
+               (as-> (get @props :value) v
+                     (js/JSON.stringify v nil 2)
+                     (str "```\n" v "\n```")
+                     (devcards/markdown->react v))
+               :hiccup
+               (-> (get @props :value)
+                   (slate-hiccup/slate->hiccup)
+                   (devcards/mkdn-pprint-code)
+                   (devcards/markdown->react)))]))]))))
