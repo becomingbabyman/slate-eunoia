@@ -16,7 +16,6 @@
 (defstyled row :div
            {:display "flex"
             :flex-direction "row"
-            :flex 1
             :position "relative"})
 
 (defstyled column :div
@@ -28,9 +27,12 @@
 (defstyled spacer :div
            {:width "10px"})
 
-(defstyled md-wrap :div
+(defstyled md-code-wrap :div
            {:max-height "400px"
-            :overflow "auto"})
+            :overflow "auto"
+            :position "sticky"
+            :top 0
+            "*" {:font-family "Hasklig, Fira Code, Iosevka Web, SourceCodePro, monospace"}})
 
 (defstyled pre :pre
            {:display "flex"

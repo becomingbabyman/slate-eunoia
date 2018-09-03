@@ -12,8 +12,8 @@
 (def inlines #{:link}) ;:emoji :mention :tag})
 
 (def blocks #{:paragraph :header1 :header2 :header3
-              :blockquote :code-block})
-              ; :ordered-list :unordered-list :list-item :image :divider})
+              :blockquote :code-block :divider})
+              ; :ordered-list :unordered-list :list-item :image})
 
 ; (s/def ::attrs (s/map-of keyword? any? :gen-max 2))
 (s/def ::attrs (s/map-of #{:url} string? :gen-max 2))
