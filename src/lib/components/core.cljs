@@ -83,9 +83,10 @@
 (defstyled pre :pre
            {:background dark-white
             :border (str "1px solid " light-grey)
-            :font-family "Hasklig, Fira Code, Iosevka Web, SourceCodePro, monospace"
             :padding "5px"
-            :border-radius "2px"})
+            :border-radius "2px"
+            :overflow "auto"
+            :font-family "Hasklig, Fira Code, Iosevka Web, SourceCodePro, monospace"})
 
 (defstyled a :a
            {:color blue
