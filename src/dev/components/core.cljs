@@ -23,7 +23,7 @@
            {:display "flex"
             :flex-direction "column"
             :flex 1
-            :overflow "hidden"})
+            :width 0})
 
 (defstyled spacer :div
            {:width "10px"})
