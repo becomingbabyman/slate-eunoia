@@ -1,5 +1,7 @@
-(ns dev.issues.todo
+(ns dev.b-issues.todo
   (:require [dev.util :refer-macros [defeditor]]))
+
+; NOTE: add new issues to the bottom of this file.
 
 (defeditor
  arrow-key-navigation-breaks-on-links

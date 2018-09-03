@@ -1,4 +1,4 @@
-(ns dev.gen.exercise
+(ns dev.c-gen.exercise
   (:require [dev.util :refer-macros [defeditor]]
             [devcards.core :refer-macros [defcard defcard-doc]]
             [clojure.spec.alpha :as s]

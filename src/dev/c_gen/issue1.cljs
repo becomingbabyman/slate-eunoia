@@ -1,4 +1,4 @@
-(ns dev.gen.issue1
+(ns dev.c-gen.issue1
   (:require [dev.util :refer-macros [defeditor]]))
 
 ; (defeditor issue1

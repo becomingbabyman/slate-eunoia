@@ -1,5 +1,7 @@
-(ns dev.issues.resolved
+(ns dev.b-issues.resolved
   (:require [dev.util :refer-macros [defeditor]]))
+
+; NOTE: add recently resolved issues to the top. Right below this line.
 
 (defeditor
  hover-menu-position-too-low
@@ -17,7 +19,7 @@
 (defeditor
  hover-menu-type-null
  "### Solution
-  The hover menu was trying to query value.anchorBlock.type, when 
+  The hover menu was trying to query value.anchorBlock.type, when
   anchorBlock was null. Adding a catch fixed it."
  '(:document
    (:paragraph

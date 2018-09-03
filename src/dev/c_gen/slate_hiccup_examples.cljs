@@ -1,4 +1,4 @@
-(ns dev.gen.slate-hiccup-examples
+(ns dev.c-gen.slate-hiccup-examples
   (:require [dev.util :refer-macros [defeditor]]
             [devcards.core :refer-macros [defcard deftest defcard-doc]]
             [cljs.test :refer-macros (is)]
