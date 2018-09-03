@@ -1,7 +1,8 @@
 (ns dev.components.editor-value
   (:require [reagent.core :as r]
             [dev.components.core :as dc]
-            [devcards.core :as devcards]))
+            [devcards.core :as devcards]
+            [util.slate-hiccup :as slate-hiccup]))
 
 (defn editor-value []
   (let [state (r/atom {:show :nothing})
@@ -16,7 +17,7 @@
                                  :inline "end"}))))
       (if (= :nothing (:show @state))
         (dc/button-bar
-         (dc/link-button {:on-click #(swap! state assoc :show :edn)}
+         (dc/link-button {:on-click #(swap! state assoc :show :hiccup)}
                          "show editor value"))
         [:<>
          (dc/spacer)
@@ -37,9 +38,7 @@
                       (dc/link-button {:on-click #(swap! state assoc :show :nothing)}
                                       "hide")))
                     (case (:show @state)
-                      :edn [:div {:ref #(swap! meta assoc :pre-ref %)
-                                  :style {:max-height "400px"
-                                          :overflow "auto"}}
+                      :edn [dc/md-wrap {:ref #(swap! meta assoc :pre-ref %)}
                             (-> (get @props :value)
                                 (js/JSON.stringify nil 2)
                                 (js/JSON.parse)
@@ -47,15 +46,16 @@
                                 (devcards/mkdn-pprint-code)
                                 (devcards/markdown->react))
                             [:div {:class "bottom"} ""]]
-                      :json [:div {:ref #(swap! meta assoc :pre-ref %)
-                                   :style {:max-height "400px"
-                                           :overflow "auto"}}
+                      :json [dc/md-wrap {:ref #(swap! meta assoc :pre-ref %)}
                              (as-> (get @props :value) v
                                    (js/JSON.stringify v nil 2)
                                    (str "```\n" v "\n```")
                                    (devcards/markdown->react v))
                              [:div {:class "bottom"} ""]]
-                      :hiccup (dc/pre {:ref #(swap! meta assoc :pre-ref %)}
-                                "TODO: make edn->hiccup converter"
-                                [:div {:class "bottom"} ""])
+                      :hiccup [dc/md-wrap {:ref #(swap! meta assoc :pre-ref %)}
+                               (-> (get @props :value)
+                                   (slate-hiccup/slate->hiccup)
+                                   (devcards/mkdn-pprint-code)
+                                   (devcards/markdown->react))
+                               [:div {:class "bottom"} ""]]
                       nil))]))))

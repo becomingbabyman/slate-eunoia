@@ -28,6 +28,10 @@
 (defstyled spacer :div
            {:width "10px"})
 
+(defstyled md-wrap :div
+           {:max-height "400px"
+            :overflow "auto"})
+
 (defstyled pre :pre
            {:display "flex"
             :flex-direction "column"

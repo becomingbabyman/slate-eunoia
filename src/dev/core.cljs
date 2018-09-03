@@ -4,6 +4,7 @@
             ; NOTE: Keep all of these imports.
             ;  They're needed for devcards.
             [dev.a-features.done]
+            [dev.a-features.slate-to-hiccup]
             [dev.a-features.todo]
             [dev.b-issues.resolved]
             [dev.b-issues.todo]

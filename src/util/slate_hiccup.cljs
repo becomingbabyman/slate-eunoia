@@ -1,7 +1,8 @@
 (ns util.slate-hiccup
   (:require [clojure.spec.alpha :as s]
             [expound.alpha :as expound]
-            [util.slate :as slate]))
+            [util.slate :as slate]
+            [util.core :as util]))
 
 ; high level SlateJS spec:
 ;  https://docs.slatejs.org/guides/data-model#documents-and-nodes
@@ -148,3 +149,53 @@
       (make-ast)
       (ast->slate-edn)
       (slate/edn->slate)))
+
+(declare edn->ast)
+
+(defn slate->edn
+  "Converts a Slate Value in JS to edn"
+  ([slate-value & opts]
+   (let [{:keys [remove-empty-values]} opts
+         edn (js->clj (.toJSON slate-value) :keywordize-keys true)]
+     (if remove-empty-values (util/remove-empty-values edn) edn)))
+  ([slate-value]
+   (slate->edn slate-value :remove-empty-values true)))
+
+(defn astify-leaf [leaf]
+  (let [{:keys [text marks]} leaf]
+    (when (not (empty? text))
+      (if (not (empty? marks))
+        [:mark {:type (keyword (:type (first marks)))
+                :nodes [(astify-leaf {:text text :marks (rest marks)})]}]
+        [:text text]))))
+
+(defn astify-node [node]
+  [(keyword (:object node))
+   (merge
+    {:type (keyword (or (:type node) (:object node)))}
+    (when (:data node) {:attrs (:data node)})
+    (when (:nodes node)
+      {:nodes (vec (remove #(nil? (first %)) (map edn->ast (:nodes node))))}))])
+
+(defn edn->ast [slate-edn]
+  (let [{:keys [object]} slate-edn]
+    (case (keyword object)
+      :value (astify-node (:document slate-edn))
+      :block (astify-node slate-edn)
+      :inline (astify-node slate-edn)
+      :text (first (map astify-leaf (:leaves slate-edn))))))
+
+(defn ast->hiccup [ast]
+  (s/unform ::document ast))
+
+(defn vectorize-hiccup [hiccup]
+  (if (or (seq? hiccup) (list? hiccup) (vector? hiccup))
+    (mapv vectorize-hiccup hiccup)
+    hiccup))
+
+(defn slate->hiccup [slate-value]
+  (-> slate-value
+      (slate->edn)
+      (edn->ast)
+      (ast->hiccup)
+      (vectorize-hiccup)))
