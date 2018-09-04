@@ -114,7 +114,7 @@
      (merge (when (some? object) {:object object})
             (when (some? type) {:type type})
             (when (some? attrs) {:data attrs})
-            (when (vector? nodes)
+            (when (sequential? nodes)
               {:nodes (vec (flatten (child-nodes-transformation-fn nodes)))}))))
   ([object node]
    (slateify-node object node #(vec (map ast->slate-edn %)))))
@@ -169,13 +169,26 @@
                 :nodes [(astify-leaf {:text text :marks (rest marks)})]}]
         [:text text]))))
 
+(defn remove-double-wraps [s]
+  (if (sequential? s)
+    (reduce (fn [acc v]
+              (if (every? sequential? v)
+                (concat acc v)
+                (conj (vec acc) v)))
+            []
+            s)
+    s))
+
 (defn astify-node [node]
   [(keyword (:object node))
    (merge
     {:type (keyword (or (:type node) (:object node)))}
     (when (:data node) {:attrs (:data node)})
     (when (:nodes node)
-      {:nodes (vec (remove #(nil? (first %)) (map edn->ast (:nodes node))))}))])
+      {:nodes (vec
+               (remove-double-wraps
+                (remove #(nil? (first %))
+                        (map edn->ast (:nodes node)))))}))])
 
 (defn edn->ast [slate-edn]
   (let [{:keys [object]} slate-edn]
@@ -183,13 +196,13 @@
       :value (astify-node (:document slate-edn))
       :block (astify-node slate-edn)
       :inline (astify-node slate-edn)
-      :text (first (map astify-leaf (:leaves slate-edn))))))
+      :text (vec (map astify-leaf (:leaves slate-edn))))))
 
 (defn ast->hiccup [ast]
   (s/unform ::document ast))
 
 (defn vectorize-hiccup [hiccup]
-  (if (or (seq? hiccup) (list? hiccup) (vector? hiccup))
+  (if (sequential? hiccup)
     (mapv vectorize-hiccup hiccup)
     hiccup))
 

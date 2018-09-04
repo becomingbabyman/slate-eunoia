@@ -9,55 +9,61 @@
    [:paragraph
     "foo"
     [:bold
+     2
      [:italic
       [:link
        {:url "https://clojure.org"}
        "bar"
-       "baz"]]]]])
+       3
+       [:strikethrough
+        "baz"]]]]]])
 
 (defeditor
  initial-hiccup
  "Here's some example hiccup. We will get back to this by the end. The order of the `mark` and `inline` tags are mostly interchangeable.  (click \"show editor value\" > \"hiccup\")"
  hiccup)
 
-(def ast (sh/make-ast hiccup))
-
 (defcard
  hiccup->ast
  "The hiccup conformed to the `::document` spec."
- ast)
-
-(def edn (sh/ast->slate-edn ast))
+ (sh/make-ast hiccup))
 
 (defcard
  ast->edn
  "The ast converted to a Slate doc."
- edn)
-
-(def slate-value (slate/edn->slate edn))
+ (sh/ast->slate-edn
+  (sh/make-ast hiccup)))
 
 (defcard
  edn->slate-value
  "The edn version of the doc converted to the final JS Slate Value."
- slate-value)
-
-(def re-edn (sh/slate->edn slate-value))
+ (slate/edn->slate
+  (sh/ast->slate-edn
+   (sh/make-ast hiccup))))
 
 (defcard
  edn<-slate-value
  "Back to edn."
- re-edn)
-
-(def re-ast (sh/edn->ast re-edn))
+ (sh/slate->edn
+  (slate/edn->slate
+   (sh/ast->slate-edn
+    (sh/make-ast hiccup)))))
 
 (defcard
  ast<-edn
  "Back to ast."
- re-ast)
-
-(def re-hiccup (sh/ast->hiccup re-ast))
+ (sh/edn->ast
+  (sh/slate->edn
+   (slate/edn->slate
+    (sh/ast->slate-edn
+     (sh/make-ast hiccup))))))
 
 (defeditor
  hiccup<-ast-as-editor
  "Back to hiccup! This editor should look the same as the one above even though the hiccup is in a different order. Click \"show editor value\" > \"hiccup\" to see the hiccup."
- re-hiccup)
+ (sh/ast->hiccup
+  (sh/edn->ast
+   (sh/slate->edn
+    (slate/edn->slate
+     (sh/ast->slate-edn
+      (sh/make-ast hiccup)))))))

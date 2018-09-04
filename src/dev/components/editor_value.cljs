@@ -29,15 +29,15 @@
                       :on-click #(swap! state assoc :scroll (not (:scroll @state)))}]
              "auto-scroll"]
             [:span {:style {:color "#ddd"}} " | "]
+            (dc/link-button {:disabled (= :hiccup (:show @state))
+                             :on-click #(swap! state assoc :show :hiccup)}
+                            "hiccup")
             (dc/link-button {:disabled (= :edn (:show @state))
                              :on-click #(swap! state assoc :show :edn)}
                             "edn")
             (dc/link-button {:disabled (= :json (:show @state))
                              :on-click #(swap! state assoc :show :json)}
                             "json")
-            (dc/link-button {:disabled (= :hiccup (:show @state))
-                             :on-click #(swap! state assoc :show :hiccup)}
-                            "hiccup")
             [:span {:style {:color "#ddd"}} " | "]
             (dc/link-button {:on-click #(swap! state assoc :show :nothing)}
                             "hide")))
