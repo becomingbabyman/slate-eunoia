@@ -50,3 +50,12 @@
    [:code-block
     [:blockquote
      "I'm a paragraph > code-block > blockquote. But I should just be a paragraph."]]]])
+
+(defeditor
+ multiple-editors-on-the-same-page-break-link-hover-menu-part-1
+ "Part 1. Selecting some text and clicking the link button opens a hover-menu in every editor on the page."
+ [:document [:paragraph "\nSelect me and make me a link.\n"]])
+(defeditor
+ multiple-editors-on-the-same-page-break-link-hover-menu-part-2
+ "Part 2. See part 1."
+ [:document [:paragraph "\nMy link hover-menu opens even when I'm not in focus.\n"]])
