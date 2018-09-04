@@ -1,7 +1,8 @@
 (ns lib.plugins.features.header
   (:require [lib.components.core :as c]
             [lib.plugins.helpers.auto-replace :refer [auto-replace]]
-            [lib.plugins.helpers.hotkey :refer [hotkey]]))
+            [lib.plugins.helpers.hotkey :refer [hotkey]]
+            [lib.plugins.helpers.unwrap-nested-block :refer [unwrap-nested-block]]))
 
 (defn transform
   ([change n]
@@ -50,6 +51,9 @@
       (hotkey
        {:key "cmd+opt+3"
         :transform (transform 3)})
+      (unwrap-nested-block {:type "header1"})
+      (unwrap-nested-block {:type "header2"})
+      (unwrap-nested-block {:type "header3"})
       {:renderNode render-node}])})
   ([]
    (header {})))

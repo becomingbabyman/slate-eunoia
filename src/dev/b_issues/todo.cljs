@@ -41,17 +41,6 @@
    [:link {:url "http://google.com"} "link"]]])
 
 (defeditor
- nested-block-nodes-should-not-be-allowed-in-the-schema
- "Nested block nodes are never valid except maybe lists. The default
-  behaviour of the schema should be to disallow. If nested blocks are
-  encountered everything but the top level block should be removed."
- [:document
-  [:paragraph
-   [:code-block
-    [:blockquote
-     "I'm a paragraph > code-block > blockquote. But I should just be a paragraph."]]]])
-
-(defeditor
  multiple-editors-on-the-same-page-break-link-hover-menu-part-1
  "Part 1. Selecting some text and clicking the link button opens a hover-menu in every editor on the page."
  [:document [:paragraph "\nSelect me and make me a link.\n"]])

@@ -1,7 +1,8 @@
 (ns lib.plugins.features.code-block
   (:require [lib.components.core :as c]
             [lib.plugins.helpers.auto-replace :refer [auto-replace]]
-            [lib.plugins.helpers.softbreak :refer [softbreak]]))
+            [lib.plugins.helpers.softbreak :refer [softbreak]]
+            [lib.plugins.helpers.unwrap-nested-block :refer [unwrap-nested-block]]))
 
 (defn transform [change]
   (.setBlocks change
@@ -25,6 +26,7 @@
         :before #"^(\`\`)$"
         :transform transform})
       (softbreak {:type "code-block"})
+      (unwrap-nested-block {:type "code-block"})
       ; TODO: write something like this https://github.com/GitbookIO/slate-edit-code
       ; TODO: write something like this https://github.com/GitbookIO/slate-prism
       {:renderNode render-node}])})

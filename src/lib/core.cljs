@@ -17,7 +17,8 @@
             [lib.plugins.features.divider :refer [divider]]
             [lib.plugins.collapse-on-escape :refer [collapse-on-escape]]
             [lib.plugins.trailing-block :refer [trailing-block]]
-            [lib.plugins.backspace :refer [backspace]]))
+            [lib.plugins.backspace :refer [backspace]]
+            [lib.plugins.helpers.unwrap-nested-block :refer [unwrap-nested-block]]))
 
 (def slate-value (r/atom (hiccup->slate [:document [:paragraph ""]])))
 
@@ -38,7 +39,8 @@
                (:plugins (blockquote))
                ; (:plugins (divider)) ; TODO: FIX: this is too buggy to use. Often crashes editor when deleted
                [(collapse-on-escape)
-                (trailing-block)])))
+                (trailing-block)
+                (unwrap-nested-block {:type "paragraph"})])))
 
 (def schema
   (clj->js
@@ -46,13 +48,13 @@
     {:nodes
      [{:min 1
        :match
-       [{:type :paragraph}
-        {:type :header1}
-        {:type :header2}
-        {:type :header3}
-        {:type :code-block}
-        {:type :blockquote}
-        {:type :divider}]}]}}))
+       [{:type "paragraph"}
+        {:type "header1"}
+        {:type "header2"}
+        {:type "header3"}
+        {:type "code-block"}
+        {:type "blockquote"}
+        {:type "divider"}]}]}}))
 
 (defn eunoia-editor
   ([passed-in-props]
