@@ -1,7 +1,7 @@
-(ns dev.c-gen.issue1
+(ns dev.c-gen.crash1
   (:require [dev.util :refer-macros [defeditor]]))
 
-; (defeditor issue1
+; (defeditor crash1
 ;            '(:document
 ;              {:url "T7"}
 ;              (:header3
@@ -45,7 +45,7 @@
 ;                 ""
 ;                 "")))))
 
-; (defeditor issue1
+; (defeditor crash1
 ;            '(:document
 ;              {:url "T7"}
 ;              (:header3
@@ -92,7 +92,7 @@
 ;                ;  "")))))
 
 
-; (defeditor issue1
+; (defeditor crash1
 ;            '(:document
 ;              {:url "T7"}
 ;              (:header3
@@ -107,7 +107,7 @@
 ;                  (:link
 ;                   (:link))))))))
 
-(defeditor issue1
+(defeditor crash1
            "TODO: remove nested links from the spec. They just should not be generated in the first place.
             TODO: also consider adding a normalizer to the the schema to remove nested links."
            '(:document

@@ -5,13 +5,14 @@
             ; [cljss.core :as css]
             ; NOTE: Keep all of these imports.
             ;  They're needed for devcards.
-            [dev.a-features.done]
-            [dev.a-features.todo]
+            [dev.a-features.backlog]
+            [dev.a-features.completed]
+            [dev.a-features.crdt]
+            [dev.b-issues.open]
             [dev.b-issues.resolved]
-            [dev.b-issues.todo]
             [dev.b-issues.wontfix]
+            [dev.c-gen.crash1]
             [dev.c-gen.exercise]
-            [dev.c-gen.issue1]
             [dev.c-gen.slate-hiccup-examples]
             [dev.c-gen.slate-hiccup-roundtrip-example]))
 

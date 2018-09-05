@@ -1,4 +1,4 @@
-(ns dev.a-features.done
+(ns dev.a-features.completed
   (:require [dev.util :refer-macros [defeditor]]))
 
 (defeditor

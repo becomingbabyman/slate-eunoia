@@ -11,7 +11,8 @@
    (->> (s/exercise ::sh/document n-generations)
         (drop (- n-generations 1))
         (first)
-        (first)))
+        (first)
+        (sh/vectorize-hiccup)))
   ([] (gen-hiccup 5)))
 
 (defcard-doc

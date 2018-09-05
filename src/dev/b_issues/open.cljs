@@ -1,4 +1,4 @@
-(ns dev.b-issues.todo
+(ns dev.b-issues.open
   (:require [dev.util :refer-macros [defeditor]]))
 
 ; NOTE: add new issues to the bottom of this file.
